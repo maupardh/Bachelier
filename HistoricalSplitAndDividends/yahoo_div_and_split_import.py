@@ -2,7 +2,7 @@
 
 __author__ = 'hmaupard'
 
-from datetime import datetime
+import datetime
 import urllib2
 import logging
 import os.path
@@ -12,7 +12,7 @@ import my_universes
 def _get_dividends_and_splits(ticker, start_date, end_date):
 
     logging.info('Importing Yahoo div and split data for ticker %s from %s to %s'
-                 % (ticker, datetime.isoformat(start_date), datetime.isoformat(end_date)))
+                 % (ticker, datetime.date.isoformat(start_date), datetime.date.isoformat(end_date)))
 
     try:
 

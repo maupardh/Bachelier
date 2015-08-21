@@ -4,12 +4,12 @@
 <dict>
 
     <key>Label</key>
-    <string>com.MarketDataPipeline.Daily.GoogleIntraday</string>
+    <string>com.MarketDataPipeline.Daily.YahooDivAndSplit</string>
 
     <key>ProgramArguments</key>
     <array>
     <string>python</string>
-    <string>/Users/hmaupard/Documents/PythonCode/HistoricalIntradayPrices/daily_google_intraday_script.py</string>
+    <string>/Users/hmaupard/Documents/PythonCode/HistoricalSplitAndDividends/monthly_yahoo_div_and_split_script.py</string>
     </array>
 
     <key>StartCalendarInterval</key>
@@ -17,7 +17,7 @@
         <key>Hour</key>
         <integer>17</integer>
         <key>Minute</key>
-        <integer>00</integer>
+        <integer>05</integer>
     </dict>
 </dict>
 </plist>

@@ -22,3 +22,5 @@ def main():
     end_date = datetime.date.today()
     yahoo_div_and_split_import.retrieve_and_store_split_and_div(universe, start_date, end_date)
     return 0
+
+main()

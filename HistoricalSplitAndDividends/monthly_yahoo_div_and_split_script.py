@@ -10,6 +10,9 @@ import my_logging
 
 def run():
 
+    if datetime.date.today().day not in [1, 8, 15, 22, 29]:
+        return 0
+
     my_logging.initialize_logging(datetime.date.today().isoformat()+"-YahooImport.txt")
 
     etf_universe = my_universes.get_etf_universe()
