@@ -2,19 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="05d776d5-a9cb-44c6-ab7e-fb8cb2a56fa2" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../HistoricalIntradayPrices/daily_google_intraday_script.plist" afterPath="$PROJECT_DIR$/../HistoricalIntradayPrices/daily_google_intraday_script.plist" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../HistoricalIntradayPrices/daily_google_intraday_script.py" afterPath="$PROJECT_DIR$/../HistoricalIntradayPrices/daily_google_intraday_script.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../HistoricalIntradayPrices/google_intraday_import.py" afterPath="$PROJECT_DIR$/../HistoricalIntradayPrices/google_intraday_import.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../HistoricalIntradayPrices/main.py" afterPath="$PROJECT_DIR$/../HistoricalIntradayPrices/main.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../HistoricalSplitAndDividends/main.py" afterPath="$PROJECT_DIR$/../HistoricalSplitAndDividends/main.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../HistoricalSplitAndDividends/.idea/misc.xml" afterPath="$PROJECT_DIR$/../HistoricalSplitAndDividends/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../HistoricalSplitAndDividends/monthly_yahoo_div_and_split_script.plist" afterPath="$PROJECT_DIR$/../HistoricalSplitAndDividends/monthly_yahoo_div_and_split_script.plist" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../HistoricalSplitAndDividends/monthly_yahoo_div_and_split_script.py" afterPath="$PROJECT_DIR$/../HistoricalSplitAndDividends/monthly_yahoo_div_and_split_script.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../HistoricalSplitAndDividends/.idea/vcs.xml" afterPath="$PROJECT_DIR$/../HistoricalSplitAndDividends/.idea/vcs.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../HistoricalIntradayPrices/.idea/workspace.xml" afterPath="$PROJECT_DIR$/../HistoricalIntradayPrices/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../HistoricalSplitAndDividends/.idea/workspace.xml" afterPath="$PROJECT_DIR$/../HistoricalSplitAndDividends/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../HistoricalSplitAndDividends/yahoo_div_and_split_import.py" afterPath="$PROJECT_DIR$/../HistoricalSplitAndDividends/yahoo_div_and_split_import.py" />
     </list>
     <ignored path="Utilities.iws" />
     <ignored path=".idea/workspace.xml" />

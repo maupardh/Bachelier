@@ -10,6 +10,9 @@ from my_logging import initialize_logging
 
 def main():
 
+    if datetime.date.today().weekday() >=5:
+        return 0
+
     initialize_logging(datetime.date.today().isoformat()+"-GoogleImport.txt")
 
     etf_universe = get_etf_universe()
