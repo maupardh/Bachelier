@@ -16,7 +16,7 @@ def main():
     stock_universe = \
         get_named_universe('SPY') + get_named_universe('MDY') + get_named_universe('IWV') \
         + get_named_universe('QQQ')
-    universe = sorted(list(set(etf_universe + stock_universe)))
+    universe = sorted(list(set(etf_universe + stock_universe)))[1800:]
 
     retrieve_and_store_today_price(universe)
     return 0

@@ -17,7 +17,7 @@ def _get_price_from_google(ticker):
         f = urllib2.urlopen(query)
         s = f.read()
         f.close()
-    except RuntimeError, err:
+    except Exception, err:
         logging.critical('      Google import failed for ' + ticker + ': error: ' + err.message)
     return s
 
@@ -33,7 +33,7 @@ def _store_content(source, ticker, date, content):
             f.write(content)
         if len(str.split(content, '\n')) <= 8:
             logging.warning('       Empty/small Google data for ticker '+ticker)
-    except RuntimeError, err:
+    except Exception, err:
         logging.critical('      Storing Google price data failed for ticker ' + ticker
                          + ' on ' + date.isoformat() + ': error: ' + err.message)
 

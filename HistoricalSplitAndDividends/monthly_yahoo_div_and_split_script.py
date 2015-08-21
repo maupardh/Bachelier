@@ -2,6 +2,9 @@
 
 __author__ = 'hmaupard'
 
+import sys
+sys.path.append('/Users/hmaupard/Documents/PythonCode/Utilities')
+
 import datetime
 import yahoo_div_and_split_import
 import my_universes

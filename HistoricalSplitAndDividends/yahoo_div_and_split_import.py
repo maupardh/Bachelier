@@ -45,7 +45,7 @@ def _store_content(source, ticker, content):
             f.close()
         if len(str.split(content, '\n')) <= 8:
             logging.warning('       Empty/small Yahoo data for ticker ' + ticker)
-    except RuntimeError, err:
+    except Exception,  err:
         logging.critical('      Storing Yahoo price data failed for ticker ' + ticker
                          + ': error: ' + err.message)
 
