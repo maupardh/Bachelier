@@ -13,6 +13,9 @@ import my_logging
 
 def run():
 
+    if datetime.date.today().weekday() >= 5:
+        return 0
+
     my_logging.initialize_logging(datetime.date.today().isoformat()+"-GoogleImport.txt")
 
     etf_universe = my_universes.get_etf_universe()
