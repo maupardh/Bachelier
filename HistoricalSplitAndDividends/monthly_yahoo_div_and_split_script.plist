@@ -6,6 +6,11 @@
     <key>Label</key>
     <string>com.MarketDataPipeline.Monthly.YahooDivAndSplit</string>
 
+    <key>KeepAlive</key>
+    <false/>
+    <key>RunAtLoad</key>
+    <false/>
+
     <key>ProgramArguments</key>
     <array>
     <string>python</string>
