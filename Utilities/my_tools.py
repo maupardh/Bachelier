@@ -23,3 +23,12 @@ def get_text_content_from_pdf(pdf_path):
     except Exception, err:
         logging.warning('Unknown error: '+err.message)
         return ""
+
+
+def read_csv_all_lines(file_path, sep='\r'):
+    try:
+        with open(file_path, 'r') as f:
+                output = str.split(f.read(), sep)
+        return output
+    except:
+        return ['']

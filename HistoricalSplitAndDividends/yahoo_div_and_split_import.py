@@ -6,7 +6,6 @@ import datetime
 import urllib2
 import logging
 import os.path
-import my_universes
 
 
 def _get_dividends_and_splits(ticker, start_date, end_date):
@@ -32,25 +31,26 @@ def _get_dividends_and_splits(ticker, start_date, end_date):
         return ""
 
 
-def _store_content(source, ticker, content):
+def _store_content(output_path, content, ticker):
 
     try:
-        dir_name = os.path.join(my_universes.financialDataDirectory, source)
-        output_path = os.path.join(dir_name, ticker + '.txt')
+        dir_name = os.path.dirname(output_path)
         if not os.path.exists(dir_name):
-            os.makedirs(dir_name)
+            os.mkdir(dir_name)
         with open(output_path, 'w+') as f:
             f.write(content)
-            f.close()
         if len(str.split(content, '\n')) <= 8:
-            logging.warning('       Empty/small Yahoo data for ticker ' + ticker)
-    except Exception,  err:
+            logging.warning('       Empty/small Yahoo data for ticker '+ticker)
+    except Exception, err:
         logging.critical('      Storing Yahoo price data failed for ticker ' + ticker
                          + ': error: ' + err.message)
 
 
-def retrieve_and_store_split_and_div(list_of_tickers, start_date, end_date):
+def retrieve_and_store_split_and_div(list_of_tickers, start_date, end_date, directory_name):
 
+    logging.info('Yahoo import starting for %s tickers' % len(list_of_tickers))
     for ticker in list_of_tickers:
         content = _get_dividends_and_splits(ticker, start_date, end_date)
-        _store_content('Yahoo', ticker, content)
+        output_path = os.path.join(directory_name, ticker + '.txt')
+        _store_content(output_path, content, ticker)
+    logging.info('Yahoo import completed')

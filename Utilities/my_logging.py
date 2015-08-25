@@ -7,14 +7,18 @@ import logging.config
 import os.path
 
 
-__LOG_DIRECTORY = '/Users/hmaupard/Documents/FinancialData/Logs/'
+__LOG_DIRECTORY = '/Users/hmaupard/Documents/FinancialData/'
 
 
-def initialize_logging(log_file_name):
+def initialize_logging(log_file_path):
 
     console_handler = logging.StreamHandler()
     console_handler.setLevel(logging.DEBUG)
-    file_handler = logging.FileHandler(os.path.join(__LOG_DIRECTORY, log_file_name), mode='a', encoding=None, delay=0)
+
+    if not os.path.exists(os.path.dirname(log_file_path)):
+        os.mkdir(os.path.dirname(log_file_path))
+
+    file_handler = logging.FileHandler(log_file_path, mode='a', encoding=None, delay=0)
     file_handler.setLevel(logging.DEBUG)
 
     logger = logging.getLogger()
@@ -27,3 +31,7 @@ def initialize_logging(log_file_name):
 
     logger.addHandler(console_handler)
     logger.addHandler(file_handler)
+
+
+def shutdown():
+    logging.shutdown()
