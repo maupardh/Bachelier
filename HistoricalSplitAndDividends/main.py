@@ -14,7 +14,7 @@ def main():
     # if datetime.date.today().day not in [1, 8, 15, 22, 29]:
     #     return 0
 
-    #Stock Import
+    # Stock Import
     log_file_path = \
         os.path.join('/Users/hmaupard/Documents/FinancialData/US/Equities/Logs/',
                      datetime.date.today().isoformat()+"-YahooImport.txt")

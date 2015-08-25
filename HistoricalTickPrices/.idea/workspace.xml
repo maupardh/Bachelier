@@ -2,20 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="32003744-97ec-41ac-b82b-1ec6f18285a3" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../Utilities/my_universes.py" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../HistoricalIntradayPrices/daily_google_intraday_script.py" afterPath="$PROJECT_DIR$/../HistoricalIntradayPrices/daily_google_intraday_script.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../HistoricalIntradayPrices/google_intraday_import.py" afterPath="$PROJECT_DIR$/../HistoricalIntradayPrices/google_intraday_import.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../HistoricalIntradayPrices/main.py" afterPath="$PROJECT_DIR$/../HistoricalIntradayPrices/main.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../HistoricalSplitAndDividends/main.py" afterPath="$PROJECT_DIR$/../HistoricalSplitAndDividends/main.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../HistoricalSplitAndDividends/monthly_yahoo_div_and_split_script.py" afterPath="$PROJECT_DIR$/../HistoricalSplitAndDividends/monthly_yahoo_div_and_split_script.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../Utilities/my_logging.py" afterPath="$PROJECT_DIR$/../Utilities/my_logging.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../Utilities/my_tools.py" afterPath="$PROJECT_DIR$/../Utilities/my_tools.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../HistoricalIntradayPrices/.idea/workspace.xml" afterPath="$PROJECT_DIR$/../HistoricalIntradayPrices/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../HistoricalSplitAndDividends/.idea/workspace.xml" afterPath="$PROJECT_DIR$/../HistoricalSplitAndDividends/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../Utilities/.idea/workspace.xml" afterPath="$PROJECT_DIR$/../Utilities/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../HistoricalSplitAndDividends/yahoo_div_and_split_import.py" afterPath="$PROJECT_DIR$/../HistoricalSplitAndDividends/yahoo_div_and_split_import.py" />
     </list>
     <ignored path="HistoricalTickPrices.iws" />
     <ignored path=".idea/workspace.xml" />

@@ -23,7 +23,7 @@ def run():
                      datetime.date.today().isoformat()+"-YahooImport.txt")
     my_logging.initialize_logging(log_file_path)
 
-    start_date = datetime.date(2010, 1, 1)
+    start_date = datetime.date(2005, 1, 1)
     end_date = datetime.date.today()
     stock_universe = \
         my_tools.read_csv_all_lines('/Users/hmaupard/Documents/FinancialData/US/Equities/Universes/SPY.csv') + \
@@ -43,7 +43,7 @@ def run():
                      datetime.date.today().isoformat()+"-YahooImport.txt")
     my_logging.initialize_logging(log_file_path)
 
-    start_date = datetime.date(2010, 1, 1)
+    start_date = datetime.date(2005, 1, 1)
     end_date = datetime.date.today()
     etf_universe = sorted(list(set(
         my_tools.read_csv_all_lines('/Users/hmaupard/Documents/FinancialData/US/ETFs/Universes/ETFUniverse.csv'))))
