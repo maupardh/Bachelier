@@ -52,5 +52,5 @@ def retrieve_and_store_today_price(list_of_tickers, directory_name):
         logging.info('   Retrieving Prices for: '+ticker)
         content = _get_price_from_google(ticker)
         output_path = os.path.join(directory_name, ticker, datetime.date.today().isoformat() + '.txt')
-        _store_content(output_path, content)
+        _store_content(output_path, content, ticker)
     logging.info('Output completed')
