@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="32003744-97ec-41ac-b82b-1ec6f18285a3" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../HistoricalSplitAndDividends/monthly_yahoo_div_and_split_script.plist" afterPath="$PROJECT_DIR$/../HistoricalSplitAndDividends/monthly_yahoo_div_and_split_script.plist" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../HistoricalIntradayPrices/google_intraday_import.py" afterPath="$PROJECT_DIR$/../HistoricalIntradayPrices/google_intraday_import.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../HistoricalExtradayPrices/main.py" afterPath="$PROJECT_DIR$/../HistoricalExtradayPrices/main.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../HistoricalIntradayPrices/main.py" afterPath="$PROJECT_DIR$/../HistoricalIntradayPrices/main.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../HistoricalExtradayPrices/quandl_extraday_import.py" afterPath="$PROJECT_DIR$/../HistoricalExtradayPrices/quandl_extraday_import.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../HistoricalExtradayPrices/.idea/workspace.xml" afterPath="$PROJECT_DIR$/../HistoricalExtradayPrices/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../HistoricalIntradayPrices/.idea/workspace.xml" afterPath="$PROJECT_DIR$/../HistoricalIntradayPrices/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../HistoricalSplitAndDividends/.idea/workspace.xml" afterPath="$PROJECT_DIR$/../HistoricalSplitAndDividends/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
@@ -278,7 +282,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />

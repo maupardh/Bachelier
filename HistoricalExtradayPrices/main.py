@@ -25,9 +25,9 @@ def main():
 
     stock_universe = \
         my_tools.read_csv_all_lines('/Users/hmaupard/Documents/FinancialData/US/Equities/Universes/SPY.csv') + \
-        my_tools.read_csv_all_lines('/Users/hmaupard/Documents/FinancialData/US/Equities/Universes/MDY.csv') + \
-        my_tools.read_csv_all_lines('/Users/hmaupard/Documents/FinancialData/US/Equities/Universes/IWV.csv') + \
-        my_tools.read_csv_all_lines('/Users/hmaupard/Documents/FinancialData/US/Equities/Universes/QQQ.csv')
+        my_tools.read_csv_all_lines('/Users/hmaupard/Documents/FinancialData/US/Equities/Universes/MDY.csv') # + \
+        #my_tools.read_csv_all_lines('/Users/hmaupard/Documents/FinancialData/US/Equities/Universes/IWV.csv') + \
+        #my_tools.read_csv_all_lines('/Users/hmaupard/Documents/FinancialData/US/Equities/Universes/QQQ.csv')
     stock_universe = sorted(list(set(stock_universe)))
 
     quandl_extraday_import.retrieve_and_store_today_price(stock_universe,
@@ -47,3 +47,6 @@ def main():
                                                           '/Users/hmaupard/Documents/FinancialData/US/ETFs/Quandl/')
 
     return 0
+
+main()
+

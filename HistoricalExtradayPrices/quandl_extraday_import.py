@@ -56,20 +56,23 @@ def retrieve_and_store_today_price(list_of_tickers, directory_name):
 
     logging.info('Retrieving Quandl Extraday Prices for %s tickers' % len(list_of_tickers))
     number_of_batches = int(len(list_of_tickers)/__QUOTA_PER_INTERVAL) + 1
+    time_delta_to_sleep = datetime.timedelta(0)
 
     for i in range(1, number_of_batches + 1):
+
+        logging.info('System to sleep for %s before next batch - as per quota' % str(time_delta_to_sleep))
+        time.sleep(time_delta_to_sleep.total_seconds())
+
         cur_batch = list_of_tickers[__QUOTA_PER_INTERVAL * (i - 1):min(__QUOTA_PER_INTERVAL * i, len(list_of_tickers))]
-        logging.info('Starting batch ' + cur_batch)
+        logging.info('Starting batch %s' % i)
+
         with chrono.Timer() as timed:
             for ticker in cur_batch:
                 logging.info('   Retrieving Prices for: '+ticker)
                 content = _get_price_from_quandl(ticker)
                 output_path = os.path.join(directory_name, ticker, datetime.date.today().isoformat() + '.txt')
                 _store_content(output_path, content, ticker)
-
+            time_delta_to_sleep = __INTERVAL - datetime.timedelta(0,timed.elapsed) + __SAFETY_MARGIN
         logging.info('Batch completed: %s tickers imported' % len(cur_batch))
-        time_delta_to_sleep = __INTERVAL - datetime.timedelta(0,timed.elapsed) + __SAFETY_MARGIN
-        logging.info('System to sleep for %s before next batch - as per quota' % time_delta_to_sleep.isoformat())
-        time.sleep(__INTERVAL.total_seconds() - timed.elapsed + __SAFETY_MARGIN.total_seconds())
 
     logging.info('Import completed: total %s tickers imported' % len(list_of_tickers))
