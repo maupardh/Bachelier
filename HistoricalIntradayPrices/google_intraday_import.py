@@ -24,6 +24,7 @@ def _get_standardized_intraday_dtindex(country, date):
     end_reg = local_market_time_zone.localize(datetime.datetime(date.year, date.month, date.day))\
               + my_markets.MARKETS_BY_COUNTRY_CONFIG[country]['MarketClose']
     reg_idx = pd.date_range(start_reg, end_reg, freq='1T')
+    reg_idx.name = __STANDARD_INDEX_NAME
     return reg_idx
 
 
@@ -46,12 +47,6 @@ def _get_price_from_google(ticker, std_index):
         start_time = datetime.datetime(today.year, today.month, today.day, 0, 0, 0, 0, pytz.UTC) + \
                      datetime.timedelta(minutes=int(stock_dat.at['MARKET_OPEN_MINUTE', 'Value']) -
                                                 int(stock_dat.at['TIMEZONE_OFFSET', 'Value']))
-
-        def parse_google_time_to_UTC(t):
-            try:
-                return start_time + datetime.timedelta(minutes=int(t))
-            except:
-                return start_time
 
         price_dat = price_dat.convert_objects(convert_numeric=True, convert_dates=False, convert_timedeltas=False)
         price_dat['Time'] = price_dat['Time'].fillna(0)

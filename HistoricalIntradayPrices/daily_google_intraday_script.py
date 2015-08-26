@@ -29,9 +29,12 @@ def run():
         my_tools.read_csv_all_lines('/Users/hmaupard/Documents/FinancialData/US/Equities/Universes/IWV.csv') + \
         my_tools.read_csv_all_lines('/Users/hmaupard/Documents/FinancialData/US/Equities/Universes/QQQ.csv')
     stock_universe = sorted(list(set(stock_universe)))
+    country = 'US'
 
-    google_intraday_import.retrieve_and_store_today_price(stock_universe,
-                                                          '/Users/hmaupard/Documents/FinancialData/US/Equities/Google/')
+    google_intraday_import.retrieve_and_store_today_price\
+        (
+            stock_universe, '/Users/hmaupard/Documents/FinancialData/US/Equities/Google/', country
+        )
 
     my_logging.shutdown()
 
@@ -43,8 +46,12 @@ def run():
                      datetime.date.today().isoformat() + "-GoogleImport.txt")
     my_logging.initialize_logging(log_file_path)
 
-    google_intraday_import.retrieve_and_store_today_price(etf_universe,
-                                                          '/Users/hmaupard/Documents/FinancialData/US/ETFs/Google/')
+    country = 'US'
+
+    google_intraday_import.retrieve_and_store_today_price\
+        (
+            etf_universe, '/Users/hmaupard/Documents/FinancialData/US/ETFs/Google/', country
+        )
 
     return 0
 
