@@ -16,7 +16,7 @@ def initialize_logging(log_file_path):
     console_handler.setLevel(logging.DEBUG)
 
     if not os.path.exists(os.path.dirname(log_file_path)):
-        os.mkdir(os.path.dirname(log_file_path))
+        os.makedirs(os.path.dirname(log_file_path))
 
     file_handler = logging.FileHandler(log_file_path, mode='a', encoding=None, delay=0)
     file_handler.setLevel(logging.DEBUG)

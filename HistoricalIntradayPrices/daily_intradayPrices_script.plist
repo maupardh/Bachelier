@@ -14,7 +14,7 @@
     <key>ProgramArguments</key>
     <array>
     <string>python</string>
-    <string>/Users/hmaupard/Documents/PythonCode/HistoricalIntradayPrices/daily_google_intraday_script.py</string>
+    <string>~/Documents/PythonCode/HistoricalIntradayPrices/daily_google_intraday_script.py</string>
     </array>
 
     <key>StartCalendarInterval</key>

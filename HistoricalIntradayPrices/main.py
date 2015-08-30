@@ -3,7 +3,7 @@
 __author__ = 'hmaupard'
 
 import sys
-sys.path.append('/Users/hmaupard/Documents/PythonCode/Utilities')
+sys.path.append('/home/maupardh/Documents/PythonCode/Utilities')
 
 import datetime
 import common_intraday_tools
@@ -15,26 +15,26 @@ import os.path
 
 def run():
 
-    if datetime.date.today().weekday() >= 5:
-        return 0
+    # if datetime.date.today().weekday() >= 5:
+    #     return 0
 
     # Stocks
     log_file_path = \
-        os.path.join('/Users/hmaupard/Documents/FinancialData/US/Equities/Logs/',
+        os.path.join('/home/maupardh/Documents/FinancialData/US/Equities/Logs/',
                      datetime.date.today().isoformat()+"-YahooImport.txt")
     my_logging.initialize_logging(log_file_path)
 
     stock_universe = \
-        my_tools.read_csv_all_lines('/Users/hmaupard/Documents/FinancialData/US/Equities/Universes/SPY.csv') + \
-        my_tools.read_csv_all_lines('/Users/hmaupard/Documents/FinancialData/US/Equities/Universes/MDY.csv') + \
-        my_tools.read_csv_all_lines('/Users/hmaupard/Documents/FinancialData/US/Equities/Universes/IWV.csv') + \
-        my_tools.read_csv_all_lines('/Users/hmaupard/Documents/FinancialData/US/Equities/Universes/QQQ.csv')
+        my_tools.read_csv_all_lines('/home/maupardh/Documents/FinancialData/US/Equities/Universes/SPY.csv') + \
+        my_tools.read_csv_all_lines('/home/maupardh/Documents/FinancialData/US/Equities/Universes/MDY.csv') + \
+        my_tools.read_csv_all_lines('/home/maupardh/Documents/FinancialData/US/Equities/Universes/IWM.csv') + \
+        my_tools.read_csv_all_lines('/home/maupardh/Documents/FinancialData/US/Equities/Universes/QQQ.csv')
     stock_universe = sorted(list(set(stock_universe)))
     country = 'US'
 
     common_intraday_tools.retrieve_and_store_today_price\
         (
-            stock_universe, '/Users/hmaupard/Documents/FinancialData/US/Equities/Yahoo/', country,
+            stock_universe, '/home/maupardh/Documents/FinancialData/US/Equities/Yahoo/', country,
             yahoo_intraday_import.get_price_from_yahoo
         )
 
@@ -42,16 +42,16 @@ def run():
 
     # ETFs
     etf_universe = sorted(list(set(
-        my_tools.read_csv_all_lines('/Users/hmaupard/Documents/FinancialData/US/ETFs/Universes/ETFUniverse.csv'))))
+        my_tools.read_csv_all_lines('/home/maupardh/Documents/FinancialData/US/ETFs/Universes/ETFUniverse.csv'))))
     log_file_path = \
-        os.path.join('/Users/hmaupard/Documents/FinancialData/US/ETFs/Logs/',
+        os.path.join('/home/maupardh/Documents/FinancialData/US/ETFs/Logs/',
                      datetime.date.today().isoformat() + "-YahooImport.txt")
     my_logging.initialize_logging(log_file_path)
 
     country = 'US'
     common_intraday_tools.retrieve_and_store_today_price\
         (
-            etf_universe, '/Users/hmaupard/Documents/FinancialData/US/ETFs/Yahoo/', country,
+            etf_universe, '/home/maupardh/Documents/FinancialData/US/ETFs/Yahoo/', country,
             yahoo_intraday_import.get_price_from_yahoo
         )
 
