@@ -7,8 +7,6 @@ import os.path
 import logging
 import cPickle
 
-__CPICKLE_PROTOCOL = 2
-
 
 def get_text_content_from_pdf(pdf_path):
 
@@ -28,13 +26,15 @@ def get_text_content_from_pdf(pdf_path):
         return ""
 
 
-def read_csv_all_lines(file_path, sep='\r'):
+def read_csv_all_lines(file_path, sep='\n'):
     try:
         with open(file_path, 'r') as f:
                 output = str.split(f.read(), sep)
+        logging.info('CSV %s read successfully' % file_path)
         return output
-    except:
-        return ['']
+    except Exception, err:
+        logging.critical('CSV %s read failed with error: %s' % (file_path, err.message))
+        return []
 
 
 def mkdir_and_log(directory_name):

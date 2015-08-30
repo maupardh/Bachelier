@@ -3,7 +3,7 @@
 __author__ = 'hmaupard'
 
 import sys
-sys.path.append('/home/maupardh/Documents/PythonCode/Utilities')
+sys.path.append('/home/maupardh/Documents/pythonCode/Utilities')
 
 import datetime
 import common_intraday_tools
@@ -15,8 +15,8 @@ import os.path
 
 def run():
 
-    # if datetime.date.today().weekday() >= 5:
-    #     return 0
+    if datetime.date.today().weekday() >= 5:
+        return 0
 
     # Stocks
     log_file_path = \

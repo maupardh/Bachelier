@@ -39,13 +39,14 @@ REINDEXES_CACHE = \
 
 def retrieve_and_store_today_price(list_of_tickers, root_directory_name, country, price_importer):
 
-    csv_directory = os.path.join(root_directory_name, 'csv', datetime.date.today().isoformat())
+    today = datetime.date.today()
+    csv_directory = os.path.join(root_directory_name, 'csv', today.isoformat())
     my_tools.mkdir_and_log(csv_directory)
 
-    cpickle_directory = os.path.join(root_directory_name, 'cpickle', datetime.date.today().isoformat())
+    cpickle_directory = os.path.join(root_directory_name, 'cpickle', today.isoformat())
     my_tools.mkdir_and_log(cpickle_directory)
 
-    logging.info('Retrieving Google Intraday Prices for %s tickers' % len(list_of_tickers))
+    logging.info('Retrieving Intraday Prices for %s tickers' % len(list_of_tickers))
     for ticker in list_of_tickers:
         logging.info('   Retrieving Prices for: '+ticker)
         pandas_content = price_importer(ticker, country)

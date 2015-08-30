@@ -35,3 +35,4 @@ def initialize_logging(log_file_path):
 
 def shutdown():
     logging.shutdown()
+    reload(logging)

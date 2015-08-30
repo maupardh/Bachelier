@@ -8,7 +8,6 @@ import logging
 import common_intraday_tools
 
 
-
 def get_price_from_yahoo(ticker, country):
 
     today = datetime.date.today()
@@ -64,6 +63,7 @@ def get_price_from_yahoo(ticker, country):
         price_dat = price_dat.apply(lambda t: propagate_on_zero_volume(t, 'Close'), axis=1)
         price_dat['Open'] = price_dat['Open'].fillna(method='bfill')
         price_dat = price_dat.apply(lambda t: propagate_on_zero_volume(t, 'Open'), axis=1)
+        price_dat = price_dat.fillna(0)
 
         logging.info('Yahoo price import and pandas enrich successful for: %s' % ticker)
         return price_dat
