@@ -8,6 +8,8 @@ import datetime
 import logging
 import chrono
 import time
+import pandas as pd
+import common_extraday_tools
 
 __API_KEY = 'hszzExszkLyULRzUyGzP'
 __QUOTA_PER_INTERVAL = 2000
@@ -15,18 +17,55 @@ __INTERVAL = datetime.timedelta(0, 0, 0, 0, 10, 0, 0)
 __SAFETY_MARGIN = datetime.timedelta(0, 30)
 
 
-def _get_price_from_quandl(ticker):
+def _get_price_from_quandl(ticker, start_date, end_date, country):
 
-    s = ""
+    std_index = common_extraday_tools.REINDEXES_CACHE[country][start_date.isoformat()]
+
+    if std_index is None:
+        common_extraday_tools.REINDEXES_CACHE[
+            (country, start_date.isoformat(), end_date.isoformat())
+        ] = common_extraday_tools.get_standardized_extraday_dtindex(country, start_date.isoformat(), end_date.isoformat())
+        std_index = common_extraday_tools.REINDEXES_CACHE[(country, start_date.isoformat(), end_date.isoformat())]
+
+
     try:
-        query = 'https://www.quandl.com/api/v3/datasets/WIKI/' + ticker + '.csv?api_key=' + __API_KEY
-        f = urllib2.urlopen(query)
-        s = f.read()
-        f.close()
+        if start_date is not None and end_date is not None:
+            query = 'https://www.quandl.com/api/v3/datasets/WIKI/' + ticker + '.csv?start_date=' + start_date.isoformat()\
+                + '&end_date=' + end_date.toisoformat() + '&api_key=' + __API_KEY
+        else:
+            query = 'https://www.quandl.com/api/v3/datasets/WIKI/' + ticker + '.csv?api_key=' + __API_KEY
+        price_dat = pd.DataFrame(query)
+        price_dat = price_dat.convert_objects(convert_numeric=True, convert_dates=False, convert_timedeltas=False)
+        price_dat = price_dat.rename(lambda col: str.capitalize(str.replace(str.replace(col, ' ', ''), '.', '')),
+                                     inplace=True)
+        price_dat.index = price_dat['Date']
+        price_dat.index.name = common_extraday_tools.STANDARD_INDEX_NAME
+        price_dat = price_dat[[common_extraday_tools.STANDARD_COL_NAMES]]
+
+        price_dat = price_dat.reindex(index=std_index, method=None)
+        price_dat['Volume'] = price_dat['Volume'].fillna(0)
+
+        def propagate_on_zero_volume(t):
+            if t['Volume'] == 0:
+                close = t['Close']
+                adj_close = t['AdjClose']
+                if close > 0 and adj_close > 0:
+                    return [close]*2+[adj_close]+[0]
+                else:
+                    return [0]*4
+            else:
+                return t.values
+
+        price_dat['Close'] = price_dat['Close'].fillna(method='ffill')
+        price_dat['AdjClose'] = price_dat['AdjClose'].fillna(method='ffill')
+        price_dat['Open'] = price_dat['Open'].fillna(method='bfill')
+        price_dat = price_dat.fillna(0)
+        price_dat = price_dat.apply(propagate_on_zero_volume, axis=1)
+
         logging.info('Single ticker Quandl price import completed')
     except Exception, err:
         logging.critical('      Quandl import failed for ' + ticker + ': error: ' + err.message)
-    return s
+    return price_dat
 
 
 def _store_content(output_path, content, ticker):

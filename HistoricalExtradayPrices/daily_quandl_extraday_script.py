@@ -25,10 +25,10 @@ def run():
 
     stock_universe = \
         my_tools.read_csv_all_lines('/Users/hmaupard/Documents/FinancialData/US/Equities/Universes/SPY.csv') + \
-        my_tools.read_csv_all_lines('/Users/hmaupard/Documents/FinancialData/US/Equities/Universes/MDY.csv') + \
-        my_tools.read_csv_all_lines('/Users/hmaupard/Documents/FinancialData/US/Equities/Universes/IWV.csv') + \
-        my_tools.read_csv_all_lines('/Users/hmaupard/Documents/FinancialData/US/Equities/Universes/QQQ.csv')
-    stock_universe = sorted(list(set(stock_universe)))
+        #my_tools.read_csv_all_lines('/Users/hmaupard/Documents/FinancialData/US/Equities/Universes/MDY.csv') + \
+        #my_tools.read_csv_all_lines('/Users/hmaupard/Documents/FinancialData/US/Equities/Universes/IWV.csv') + \
+        #my_tools.read_csv_all_lines('/Users/hmaupard/Documents/FinancialData/US/Equities/Universes/QQQ.csv')
+    stock_universe = sorted(list(set(stock_universe)))[:10]
 
     quandl_extraday_import.retrieve_and_store_today_price(stock_universe,
                                                           '/Users/hmaupard/Documents/FinancialData/US/Equities/Quandl/')
