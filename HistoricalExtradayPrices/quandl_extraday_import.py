@@ -63,9 +63,12 @@ def _get_price_from_quandl(ticker, start_date, end_date, country):
         price_dat = price_dat.apply(propagate_on_zero_volume, axis=1)
 
         logging.info('Single ticker Quandl price import completed')
+        return price_dat
+
     except Exception, err:
         logging.critical('      Quandl import failed for ' + ticker + ': error: ' + err.message)
-    return price_dat
+        price_dat = pd.DataFrame(data=0, index=std_index, columns=common_extraday_tools.STANDARD_COL_NAMES, dtype=float)
+        return price_dat
 
 
 def _store_content(output_path, content, ticker):
