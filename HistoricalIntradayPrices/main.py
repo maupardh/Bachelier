@@ -28,7 +28,8 @@ def run():
         my_tools.read_csv_all_lines('/home/maupardh/Documents/FinancialData/US/Equities/Universes/SPY.csv') + \
         my_tools.read_csv_all_lines('/home/maupardh/Documents/FinancialData/US/Equities/Universes/MDY.csv') + \
         my_tools.read_csv_all_lines('/home/maupardh/Documents/FinancialData/US/Equities/Universes/IWM.csv') + \
-        my_tools.read_csv_all_lines('/home/maupardh/Documents/FinancialData/US/Equities/Universes/QQQ.csv')
+        my_tools.read_csv_all_lines('/home/maupardh/Documents/FinancialData/US/Equities/Universes/QQQ.csv') + \
+        my_tools.read_csv_all_lines('/home/maupardh/Documents/FinancialData/US/Equities/Universes/IWC.csv')
     stock_universe = sorted(list(set(stock_universe)))
     country = 'US'
 
