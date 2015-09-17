@@ -7,7 +7,7 @@ import logging.config
 import os.path
 
 
-__LOG_DIRECTORY = '/Users/hmaupard/Documents/FinancialData/'
+__LOG_DIRECTORY = '/home/maupardh/Documents/FinancialData/'
 
 
 def initialize_logging(log_file_path):

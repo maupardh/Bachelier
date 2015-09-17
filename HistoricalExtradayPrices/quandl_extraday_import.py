@@ -19,7 +19,7 @@ __SAFETY_MARGIN = datetime.timedelta(0, 30)
 
 def _get_price_from_quandl(ticker, start_date, end_date, country):
 
-    std_index = common_extraday_tools.REINDEXES_CACHE[country][start_date.isoformat()]
+    std_index = common_extraday_tools.REINDEXES_CACHE.get((country, start_date.isoformat(), end_date.isoformat()))
 
     if std_index is None:
         common_extraday_tools.REINDEXES_CACHE[
@@ -31,7 +31,7 @@ def _get_price_from_quandl(ticker, start_date, end_date, country):
     try:
         if start_date is not None and end_date is not None:
             query = 'https://www.quandl.com/api/v3/datasets/WIKI/' + ticker + '.csv?start_date=' + start_date.isoformat()\
-                + '&end_date=' + end_date.toisoformat() + '&api_key=' + __API_KEY
+                + '&end_date=' + end_date.isoformat() + '&api_key=' + __API_KEY
         else:
             query = 'https://www.quandl.com/api/v3/datasets/WIKI/' + ticker + '.csv?api_key=' + __API_KEY
         price_dat = pd.DataFrame(query)

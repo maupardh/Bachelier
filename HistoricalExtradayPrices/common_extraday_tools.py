@@ -40,10 +40,10 @@ def retrieve_and_store_today_price(list_of_tickers, root_directory_name, start_d
     my_tools.mkdir_and_log(cpickle_directory)
 
     logging.info('Retrieving Extraday Prices for %s tickers' % len(list_of_tickers))
-    pandas_content = pd.DataFrame(data=None,index=STANDARD_INDEX_NAME, columns=STANDARD_COL_NAMES)
+    pandas_content = pd.DataFrame(data=None)
     for ticker in list_of_tickers:
         logging.info('   Retrieving Prices for: '+ticker)
-        new_pandas_content = price_importer(ticker, country, start_date, end_date)
+        new_pandas_content = price_importer(ticker, start_date, end_date, country)
         new_pandas_content['Ticker'] = ticker
         pandas_content = pandas_content.append(new_pandas_content)
 
