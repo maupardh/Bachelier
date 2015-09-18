@@ -2,6 +2,7 @@ __author__ = 'hmaupard'
 
 import datetime
 import pytz
+import pandas
 
 MARKETS_BY_COUNTRY_CONFIG = \
     {
@@ -12,3 +13,12 @@ MARKETS_BY_COUNTRY_CONFIG = \
                 'TimeZone': pytz.timezone('America/New_York')
             }
     }
+
+HOLIDAYS_BY_COUNTRY_CONFIG = \
+    {
+        'US':
+    }
+
+
+def read_holidays(country):
+

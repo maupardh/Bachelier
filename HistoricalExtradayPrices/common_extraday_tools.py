@@ -3,16 +3,12 @@
 __author__ = 'hmaupard'
 
 import os.path
-import urllib2
 import pandas as pd
-from StringIO import StringIO
 import datetime
-import pytz
 import logging
 import my_tools
-import my_markets
 
-STANDARD_COL_NAMES = ['Open', 'Close', 'CloseAdj', 'Volume']
+STANDARD_COL_NAMES = ['Open', 'Close', 'AdjClose', 'Volume']
 STANDARD_INDEX_NAME = 'Date'
 
 

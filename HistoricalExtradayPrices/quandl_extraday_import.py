@@ -4,12 +4,13 @@ __author__ = 'hmaupard'
 
 import urllib2
 import os.path
-import datetime
 import logging
 import chrono
 import time
+import datetime
 import pandas as pd
 import common_extraday_tools
+from StringIO import StringIO
 
 __API_KEY = 'hszzExszkLyULRzUyGzP'
 __QUOTA_PER_INTERVAL = 2000
@@ -34,33 +35,42 @@ def _get_price_from_quandl(ticker, start_date, end_date, country):
                 + '&end_date=' + end_date.isoformat() + '&api_key=' + __API_KEY
         else:
             query = 'https://www.quandl.com/api/v3/datasets/WIKI/' + ticker + '.csv?api_key=' + __API_KEY
-        price_dat = pd.DataFrame(query)
+        f = urllib2.urlopen(query)
+        s = f.read()
+        f.close()
+
+        content = StringIO(s)
+        price_dat = pd.read_csv(content, sep=',')
         price_dat = price_dat.convert_objects(convert_numeric=True, convert_dates=False, convert_timedeltas=False)
-        price_dat = price_dat.rename(lambda col: str.capitalize(str.replace(str.replace(col, ' ', ''), '.', '')),
-                                     inplace=True)
+        price_dat.columns = map(lambda col: str.replace(str.replace(col, ' ', ''), '.', ''), price_dat.columns)
+        price_dat['Date'] = map(lambda d: datetime.datetime.strptime(d, "%Y-%m-%d").date(), price_dat['Date'])
         price_dat.index = price_dat['Date']
         price_dat.index.name = common_extraday_tools.STANDARD_INDEX_NAME
-        price_dat = price_dat[[common_extraday_tools.STANDARD_COL_NAMES]]
+        price_dat = price_dat[common_extraday_tools.STANDARD_COL_NAMES]
 
         price_dat = price_dat.reindex(index=std_index, method=None)
-        price_dat['Volume'] = price_dat['Volume'].fillna(0)
 
         def propagate_on_zero_volume(t):
             if t['Volume'] == 0:
                 close = t['Close']
                 adj_close = t['AdjClose']
+                open = t['Open']
                 if close > 0 and adj_close > 0:
-                    return [close]*2+[adj_close]+[0]
+                    if open > 0:
+                        return [open, close, adj_close, 0]
+                    else:
+                        return [close, close, adj_close, 0]
                 else:
                     return [0]*4
             else:
                 return t.values
 
+        price_dat['Volume'] = price_dat['Volume'].fillna(0)
         price_dat['Close'] = price_dat['Close'].fillna(method='ffill')
         price_dat['AdjClose'] = price_dat['AdjClose'].fillna(method='ffill')
-        price_dat['Open'] = price_dat['Open'].fillna(method='bfill')
+        price_dat['Open'] = price_dat['Open'].fillna(0)
+        price_dat = price_dat.apply(lambda t: propagate_on_zero_volume(t), axis=1)
         price_dat = price_dat.fillna(0)
-        price_dat = price_dat.apply(propagate_on_zero_volume, axis=1)
 
         logging.info('Single ticker Quandl price import completed')
         return price_dat
