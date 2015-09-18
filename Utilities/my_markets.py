@@ -2,7 +2,9 @@ __author__ = 'hmaupard'
 
 import datetime
 import pytz
-import pandas
+import my_tools
+import os.path
+import logging
 
 MARKETS_BY_COUNTRY_CONFIG = \
     {
@@ -16,9 +18,7 @@ MARKETS_BY_COUNTRY_CONFIG = \
 
 HOLIDAYS_BY_COUNTRY_CONFIG = \
     {
-        'US':
+        'US': my_tools.read_holidays('US')
     }
 
-
-def read_holidays(country):
 

@@ -7,6 +7,7 @@ import pandas as pd
 import datetime
 import logging
 import my_tools
+import my_markets
 
 STANDARD_COL_NAMES = ['Open', 'Close', 'AdjClose', 'Volume']
 STANDARD_INDEX_NAME = 'Date'
@@ -16,6 +17,8 @@ def get_standardized_extraday_dtindex(country, start_date, end_date):
 
     reg_idx = pd.bdate_range(start_date, end_date)
     reg_idx.name = STANDARD_INDEX_NAME
+    holidays_idx = my_markets.HOLIDAYS_BY_COUNTRY_CONFIG[country]
+    reg_idx = reg_idx.difference(holidays_idx)
     return reg_idx
 
 

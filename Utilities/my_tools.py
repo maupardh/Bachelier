@@ -6,6 +6,8 @@ import pyPdf
 import os.path
 import logging
 import cPickle
+import pandas as pd
+import datetime
 
 
 def get_text_content_from_pdf(pdf_path):
@@ -70,3 +72,19 @@ def store_and_log_pandas_df(file_path, pandas_content):
             logging.info('Storing pandas as csv successful for path: %s' % file_path)
     except Exception, err:
         logging.critical('      Storing pandas d.f. failed to path: %s, with error: %s' % (file_path, err.message))
+
+
+def read_holidays(country):
+
+    try:
+        holidays_path = os.path.join('/home/maupardh/Documents/FinancialData', country, 'Holidays/MarketHolidays.txt')
+        if not os.path.exists(holidays_path):
+            return pd.Index(data=None, name='Date')
+        else:
+            holidays_idx = pd.read_csv(holidays_path, names=['Date'])
+            holidays_idx['Date'] = map(lambda d: datetime.datetime.strptime(d, "%Y-%m-%d"), holidays_idx['Date'])
+            holidays_idx.index = holidays_idx['Date']
+            return holidays_idx.index
+    except Exception, err:
+        logging.warning('No market holidays found for country: %s, error:%s' % (country, err.message))
+        return pd.Index(data=None, name='Date')

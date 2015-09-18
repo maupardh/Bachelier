@@ -17,6 +17,7 @@ def main():
     if datetime.date.today().weekday() >= 5:
         return 0
 
+
     # Stocks
     log_file_path = \
         os.path.join('/home/maupardh/Documents/FinancialData/US/Equities/Logs/',
@@ -28,8 +29,8 @@ def main():
         my_tools.read_csv_all_lines('/home/maupardh/Documents/FinancialData/US/Equities/Universes/MDY.csv') # + \
     stock_universe = ['AA', 'AAPL', 'A', 'HP']  #sorted(list(set(stock_universe)))[:10]
 
-    start_date = datetime.date(2015,9,1)
-    end_date = datetime.date(2015,9,14)
+    start_date = datetime.date(2015, 9, 1)
+    end_date = datetime.date(2015, 9, 14)
     country = 'US'
 
     common_extraday_tools.retrieve_and_store_today_price(stock_universe,
