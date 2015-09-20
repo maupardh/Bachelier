@@ -2,11 +2,8 @@
 
 __author__ = 'hmaupard'
 
-import os.path
 import pandas as pd
 import datetime
-import logging
-import my_general_tools
 import my_markets
 
 STANDARD_COL_NAMES = ['Close', 'High', 'Low', 'Open', 'Volume']
@@ -34,22 +31,4 @@ REINDEXES_CACHE = \
     }
 
 
-def retrieve_and_store_today_price(list_of_tickers, root_directory_name, country, price_importer):
-
-    today = datetime.date.today()
-    csv_directory = os.path.join(root_directory_name, 'csv', today.isoformat())
-    my_general_tools.mkdir_and_log(csv_directory)
-
-    cpickle_directory = os.path.join(root_directory_name, 'cpickle', today.isoformat())
-    my_general_tools.mkdir_and_log(cpickle_directory)
-
-    logging.info('Retrieving Intraday Prices for %s tickers' % len(list_of_tickers))
-    for ticker in list_of_tickers:
-        logging.info('   Retrieving Prices for: '+ticker)
-        pandas_content = price_importer(ticker, country)
-        csv_output_path = os.path.join(csv_directory, ticker + '.csv')
-        cpickle_output_path = os.path.join(cpickle_directory, ticker + '.pk2')
-        my_general_tools.store_and_log_pandas_df(csv_output_path, pandas_content)
-        my_general_tools.store_and_log_pandas_df(cpickle_output_path, pandas_content)
-    logging.info('Output completed')
 

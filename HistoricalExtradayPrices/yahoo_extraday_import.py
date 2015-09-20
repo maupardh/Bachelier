@@ -13,16 +13,15 @@ import common_extraday_tools
 from StringIO import StringIO
 import my_general_tools
 
-__API_KEY = 'hszzExszkLyULRzUyGzP'
 __QUOTA_PER_INTERVAL = 2000
-__INTERVAL = datetime.timedelta(minutes=10)
-__INTERVAL_SAFETY_MARGIN = datetime.timedelta(seconds=30)
+__INTERVAL = datetime.timedelta(minutes=60)
+__INTERVAL_SAFETY_MARGIN = datetime.timedelta(minutes=5)
 __QUOTA_SAFETY_MARGIN = 50
 __QUOTA_SAFE = __QUOTA_PER_INTERVAL - __QUOTA_SAFETY_MARGIN
 __INTERVAL_SAFE = __INTERVAL + __INTERVAL_SAFETY_MARGIN
 
 
-def _get_price_from_quandl(ticker, start_date, end_date, country):
+def _get_price_from_yahoo(ticker, start_date, end_date, country):
 
     std_index = common_extraday_tools.REINDEXES_CACHE.get((country, start_date.isoformat(), end_date.isoformat()))
 
@@ -32,13 +31,17 @@ def _get_price_from_quandl(ticker, start_date, end_date, country):
         ] = common_extraday_tools.get_standardized_extraday_dtindex(country, start_date.isoformat(), end_date.isoformat())
         std_index = common_extraday_tools.REINDEXES_CACHE[(country, start_date.isoformat(), end_date.isoformat())]
 
-
     try:
-        if start_date is not None and end_date is not None:
-            query = 'https://www.quandl.com/api/v3/datasets/WIKI/' + ticker + '.csv?start_date=' + start_date.isoformat()\
-                + '&end_date=' + end_date.isoformat() + '&api_key=' + __API_KEY
-        else:
-            query = 'https://www.quandl.com/api/v3/datasets/WIKI/' + ticker + '.csv?api_key=' + __API_KEY
+        query = 'http://ichart.finance.yahoo.com/table.csv?' + \
+                'a=' + str(start_date.month - 1) + \
+                '&b=' + str(start_date.day) + \
+                '&c=' + str(start_date.year) + \
+                'd=' + str(end_date.month - 1) + \
+                '&e=' + str(end_date.day) + \
+                '&f=' + str(end_date.year) + \
+                '&g=d&' + \
+                '&s=' + ticker + \
+                '&ignore=.csv'
         f = urllib2.urlopen(query)
         s = f.read()
         f.close()
@@ -75,16 +78,20 @@ def _get_price_from_quandl(ticker, start_date, end_date, country):
         price_dat = price_dat.apply(lambda t: propagate_on_zero_volume(t), axis=1)
         price_dat = price_dat.fillna(0)
 
-        logging.info('Single ticker Quandl price import completed')
+        logging.info('Yahoo Single ticker price import completed')
         return price_dat
 
     except Exception, err:
-        logging.critical('      Quandl import failed for ticker %s with error: %s' % (ticker, err.message))
+        logging.critical('      Yahoo import failed for ticker %s with error: %s' % (ticker, err.message))
         price_dat = pd.DataFrame(data=0, index=std_index, columns=common_extraday_tools.STANDARD_COL_NAMES, dtype=float)
         return price_dat
 
 
 def retrieve_and_store_historical_prices(list_of_tickers, root_directory_name, start_date, end_date, country):
+
+    days_span = (end_date-start_date).total_seconds()/(3600*24)
+    if days_span > 365:
+        logging.warning('Retrieving Yahoo historical prices for more than a year - possible OOM - %s days requested' %days_span)
 
     csv_directory = os.path.join(root_directory_name, 'csv')
     my_general_tools.mkdir_and_log(csv_directory)
@@ -108,7 +115,7 @@ def retrieve_and_store_historical_prices(list_of_tickers, root_directory_name, s
         with chrono.Timer() as timed:
             for ticker in cur_batch:
                 logging.info('   Retrieving Prices for: '+ticker)
-                new_pandas_content = _get_price_from_quandl(ticker, start_date, end_date, country)
+                new_pandas_content = _get_price_from_yahoo(ticker, start_date, end_date, country)
                 new_pandas_content['Ticker'] = ticker
                 pandas_content = pandas_content.append(new_pandas_content)
 

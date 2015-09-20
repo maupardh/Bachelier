@@ -6,7 +6,17 @@ from StringIO import StringIO
 import datetime
 import logging
 import common_intraday_tools
+import os.path
+import my_general_tools
+import time
+import chrono
 
+__QUOTA_PER_INTERVAL = 2000
+__INTERVAL = datetime.timedelta(minutes=60)
+__INTERVAL_SAFETY_MARGIN = datetime.timedelta(minutes=5)
+__QUOTA_SAFETY_MARGIN = 50
+__QUOTA_SAFE = __QUOTA_PER_INTERVAL - __QUOTA_SAFETY_MARGIN
+__INTERVAL_SAFE = __INTERVAL + __INTERVAL_SAFETY_MARGIN
 
 def get_price_from_yahoo(ticker, country):
 
@@ -71,3 +81,45 @@ def get_price_from_yahoo(ticker, country):
         price_dat = pd.DataFrame(data=0, index=std_index, columns=common_intraday_tools.STANDARD_COL_NAMES, dtype=float)
         return price_dat
 
+
+def retrieve_and_store_today_price_from_yahoo(list_of_tickers, root_directory_name, country):
+
+    today = datetime.date.today()
+    csv_directory = os.path.join(root_directory_name, 'csv', today.isoformat())
+    my_general_tools.mkdir_and_log(csv_directory)
+
+    cpickle_directory = os.path.join(root_directory_name, 'cpickle', today.isoformat())
+    my_general_tools.mkdir_and_log(cpickle_directory)
+
+    number_of_batches = int(len(list_of_tickers)/__QUOTA_SAFE) + 1
+    logging.info('Retrieving Intraday Prices for %s tickers in %s batches' % (len(list_of_tickers), number_of_batches))
+    time_delta_to_sleep = datetime.timedelta(0)
+
+    for i in range(1, number_of_batches + 1):
+
+        logging.info('Thread to sleep for %s before next batch - as per quota' % str(time_delta_to_sleep))
+        time.sleep(time_delta_to_sleep.total_seconds())
+
+        cur_batch = list_of_tickers[__QUOTA_SAFE * (i - 1):min(__QUOTA_SAFE * i, len(list_of_tickers))]
+        logging.info('Starting batch %s' % i)
+
+        with chrono.Timer() as timed:
+            for ticker in cur_batch:
+                logging.info('   Retrieving Prices for: '+ticker)
+                pandas_content = get_price_from_yahoo(ticker, country)
+                csv_output_path = os.path.join(csv_directory, ticker + '.csv')
+                cpickle_output_path = os.path.join(cpickle_directory, ticker + '.pk2')
+                my_general_tools.store_and_log_pandas_df(csv_output_path, pandas_content)
+                my_general_tools.store_and_log_pandas_df(cpickle_output_path, pandas_content)
+
+        time_delta_to_sleep = max\
+            (
+                __INTERVAL_SAFE -
+                datetime.timedelta(seconds=timed.elapsed % __INTERVAL_SAFE.total_seconds()),
+                datetime.timedelta(seconds=0)
+            )
+        logging.info('Batch completed: %s tickers imported' % len(cur_batch))
+
+    logging.info('Output completed')
+    logging.info('Thread to sleep for %s before next task - as per quota' % str(time_delta_to_sleep))
+    time.sleep(time_delta_to_sleep.total_seconds())

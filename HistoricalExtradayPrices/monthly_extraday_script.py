@@ -9,20 +9,20 @@ import datetime
 import my_general_tools
 import my_logging
 import os.path
-import yahoo_extraday_import
+import quandl_extraday_import
 import my_datetime_tools
 import my_holidays
 
 
-def test():
+def run():
 
-    # if not (datetime.date.today().day <= 7 and datetime.date.today().isoweekday() == 6):
-    #     return 0
+    if not datetime.date.today().Day == 1:
+        return 0
 
     # Stocks
     log_file_path = \
         os.path.join('/home/maupardh/Documents/FinancialData/US/Equities/Logs/',
-                     datetime.date.today().isoformat()+"-YahooExtradayImport.txt")
+                     datetime.date.today().isoformat()+"-QuandlImport.txt")
     my_logging.initialize_logging(log_file_path)
 
     stock_universe = \
@@ -35,9 +35,9 @@ def test():
     
     country = 'US'
     end_date = my_datetime_tools.nearest_past_or_now_workday(datetime.date.today())
-    start_date = my_datetime_tools.add_business_days(end_date, -252 * 10, my_holidays.HOLIDAYS_BY_COUNTRY_CONFIG[country])
+    start_date = my_datetime_tools.add_business_days(end_date, -25, my_holidays.HOLIDAYS_BY_COUNTRY_CONFIG[country])
 
-    yahoo_extraday_import.retrieve_and_store_historical_prices\
+    quandl_extraday_import.retrieve_and_store_historical_prices\
         (
             stock_universe,
             '/home/maupardh/Documents/FinancialData/US/Equities/ExtradayPrices/',
@@ -50,10 +50,10 @@ def test():
         my_general_tools.read_csv_all_lines('/home/maupardh/Documents/FinancialData/US/ETFs/Universe/ETFUniverse.csv'))))
     log_file_path = \
         os.path.join('/home/maupardh/Documents/FinancialData/US/ETFs/Logs/',
-                     datetime.date.today().isoformat() + "-YahooExtradayImport.txt")
+                     datetime.date.today().isoformat() + "-QuandlImport.txt")
     my_logging.initialize_logging(log_file_path)
 
-    yahoo_extraday_import.retrieve_and_store_historical_prices\
+    quandl_extraday_import.retrieve_and_store_historical_prices\
         (
             etf_universe,
             '/home/maupardh/Documents/FinancialData/US/ETFs/ExtradayPrices/',
@@ -62,4 +62,4 @@ def test():
 
     return 0
 
-test()
+run()

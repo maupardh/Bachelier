@@ -6,7 +6,6 @@ import sys
 sys.path.append('/home/maupardh/Documents/pythonCode/Utilities')
 
 import datetime
-import common_intraday_tools
 import yahoo_intraday_import
 import my_general_tools
 import my_logging
@@ -15,7 +14,7 @@ import os.path
 
 def run():
 
-    if datetime.date.today().weekday() >= 5:
+    if datetime.date.today().isoweekday() >= 6:
         return 0
 
     # Stocks
@@ -33,10 +32,9 @@ def run():
     stock_universe = sorted(list(set(stock_universe)))
     country = 'US'
 
-    common_intraday_tools.retrieve_and_store_today_price\
+    yahoo_intraday_import.retrieve_and_store_today_price_from_yahoo\
         (
-            stock_universe, '/home/maupardh/Documents/FinancialData/US/Equities/IntradayPrices/', country,
-            yahoo_intraday_import.get_price_from_yahoo
+            stock_universe, '/home/maupardh/Documents/FinancialData/US/Equities/IntradayPrices/', country
         )
 
     my_logging.shutdown()
@@ -50,10 +48,9 @@ def run():
     my_logging.initialize_logging(log_file_path)
 
     country = 'US'
-    common_intraday_tools.retrieve_and_store_today_price\
+    yahoo_intraday_import.retrieve_and_store_today_price_from_yahoo\
         (
-            etf_universe, '/home/maupardh/Documents/FinancialData/US/ETFs/IntradayPrices/', country,
-            yahoo_intraday_import.get_price_from_yahoo
+            etf_universe, '/home/maupardh/Documents/FinancialData/US/ETFs/IntradayPrices/', country
         )
 
     return 0
