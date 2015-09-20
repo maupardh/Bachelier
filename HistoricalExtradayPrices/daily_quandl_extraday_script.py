@@ -7,7 +7,7 @@ sys.path.append('/Users/hmaupard/Documents/PythonCode/Utilities')
 
 import datetime
 import quandl_extraday_import
-import my_tools
+import my_general_tools
 import my_logging
 import os.path
 
@@ -24,7 +24,7 @@ def run():
     my_logging.initialize_logging(log_file_path)
 
     stock_universe = \
-        my_tools.read_csv_all_lines('/Users/hmaupard/Documents/FinancialData/US/Equities/Universes/SPY.csv')
+        my_general_tools.read_csv_all_lines('/Users/hmaupard/Documents/FinancialData/US/Equities/Universes/SPY.csv')
         #my_tools.read_csv_all_lines('/Users/hmaupard/Documents/FinancialData/US/Equities/Universes/MDY.csv') + \
         #my_tools.read_csv_all_lines('/Users/hmaupard/Documents/FinancialData/US/Equities/Universes/IWV.csv') + \
         #my_tools.read_csv_all_lines('/Users/hmaupard/Documents/FinancialData/US/Equities/Universes/QQQ.csv')
@@ -37,7 +37,7 @@ def run():
 
     # ETFs
     etf_universe = sorted(list(set(
-        my_tools.read_csv_all_lines('/Users/hmaupard/Documents/FinancialData/US/ETFs/Universes/ETFUniverse.csv'))))
+        my_general_tools.read_csv_all_lines('/Users/hmaupard/Documents/FinancialData/US/ETFs/Universes/ETFUniverse.csv'))))
     log_file_path = \
         os.path.join('/Users/hmaupard/Documents/FinancialData/US/ETFs/Logs/',
                      datetime.date.today().isoformat() + "-QuandlImport.txt")

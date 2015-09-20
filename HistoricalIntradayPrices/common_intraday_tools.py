@@ -3,13 +3,10 @@
 __author__ = 'hmaupard'
 
 import os.path
-import urllib2
 import pandas as pd
-from StringIO import StringIO
 import datetime
-import pytz
 import logging
-import my_tools
+import my_general_tools
 import my_markets
 
 STANDARD_COL_NAMES = ['Close', 'High', 'Low', 'Open', 'Volume']
@@ -41,10 +38,10 @@ def retrieve_and_store_today_price(list_of_tickers, root_directory_name, country
 
     today = datetime.date.today()
     csv_directory = os.path.join(root_directory_name, 'csv', today.isoformat())
-    my_tools.mkdir_and_log(csv_directory)
+    my_general_tools.mkdir_and_log(csv_directory)
 
     cpickle_directory = os.path.join(root_directory_name, 'cpickle', today.isoformat())
-    my_tools.mkdir_and_log(cpickle_directory)
+    my_general_tools.mkdir_and_log(cpickle_directory)
 
     logging.info('Retrieving Intraday Prices for %s tickers' % len(list_of_tickers))
     for ticker in list_of_tickers:
@@ -52,7 +49,7 @@ def retrieve_and_store_today_price(list_of_tickers, root_directory_name, country
         pandas_content = price_importer(ticker, country)
         csv_output_path = os.path.join(csv_directory, ticker + '.csv')
         cpickle_output_path = os.path.join(cpickle_directory, ticker + '.pk2')
-        my_tools.store_and_log_pandas_df(csv_output_path, pandas_content)
-        my_tools.store_and_log_pandas_df(cpickle_output_path, pandas_content)
+        my_general_tools.store_and_log_pandas_df(csv_output_path, pandas_content)
+        my_general_tools.store_and_log_pandas_df(cpickle_output_path, pandas_content)
     logging.info('Output completed')
 

@@ -11,6 +11,7 @@ import datetime
 import pandas as pd
 import common_extraday_tools
 from StringIO import StringIO
+import my_general_tools
 
 __API_KEY = 'hszzExszkLyULRzUyGzP'
 __QUOTA_PER_INTERVAL = 2000
@@ -45,7 +46,6 @@ def _get_price_from_quandl(ticker, start_date, end_date, country):
         price_dat.columns = map(lambda col: str.replace(str.replace(col, ' ', ''), '.', ''), price_dat.columns)
         price_dat['Date'] = map(lambda d: datetime.datetime.strptime(d, "%Y-%m-%d").date(), price_dat['Date'])
         price_dat.index = price_dat['Date']
-        price_dat.index.name = common_extraday_tools.STANDARD_INDEX_NAME
         price_dat = price_dat[common_extraday_tools.STANDARD_COL_NAMES]
 
         price_dat = price_dat.reindex(index=std_index, method=None)
@@ -76,7 +76,7 @@ def _get_price_from_quandl(ticker, start_date, end_date, country):
         return price_dat
 
     except Exception, err:
-        logging.critical('      Quandl import failed for ' + ticker + ': error: ' + err.message)
+        logging.critical('      Quandl import failed for ticker %s with error: %s' % (ticker, err.message))
         price_dat = pd.DataFrame(data=0, index=std_index, columns=common_extraday_tools.STANDARD_COL_NAMES, dtype=float)
         return price_dat
 
@@ -96,19 +96,18 @@ def _store_content(output_path, content, ticker):
                          + ': error: ' + err.message)
 
 
-def retrieve_and_store_today_price(list_of_tickers, directory_name):
+def retrieve_and_store_historical_prices(list_of_tickers, root_directory_name, start_date, end_date, country):
 
-    if not os.path.exists(directory_name):
-        logging.warning('Directory ' + directory_name + ' does not exist - being created')
-        try:
-            os.mkdir(directory_name)
-        except:
-            logging.critical('directory could not be created')
-            return ''
+    csv_directory = os.path.join(root_directory_name, 'csv')
+    my_general_tools.mkdir_and_log(csv_directory)
 
-    logging.info('Retrieving Quandl Extraday Prices for %s tickers' % len(list_of_tickers))
+    cpickle_directory = os.path.join(root_directory_name, 'cpickle')
+    my_general_tools.mkdir_and_log(cpickle_directory)
+
     number_of_batches = int(len(list_of_tickers)/__QUOTA_PER_INTERVAL) + 1
+    logging.info('Retrieving Extraday Prices for %s tickers in %s batches' % (len(list_of_tickers), number_of_batches))
     time_delta_to_sleep = datetime.timedelta(0)
+    pandas_content = pd.DataFrame(data=None)
 
     for i in range(1, number_of_batches + 1):
 
@@ -121,10 +120,27 @@ def retrieve_and_store_today_price(list_of_tickers, directory_name):
         with chrono.Timer() as timed:
             for ticker in cur_batch:
                 logging.info('   Retrieving Prices for: '+ticker)
-                content = _get_price_from_quandl(ticker)
-                output_path = os.path.join(directory_name, ticker, datetime.date.today().isoformat() + '.txt')
-                _store_content(output_path, content, ticker)
-            time_delta_to_sleep = __INTERVAL - datetime.timedelta(0,timed.elapsed) + __SAFETY_MARGIN
+                new_pandas_content = _get_price_from_quandl(ticker, start_date, end_date, country)
+                new_pandas_content['Ticker'] = ticker
+                pandas_content = pandas_content.append(new_pandas_content)
+
+        time_delta_to_sleep = __INTERVAL - datetime.timedelta(seconds=timed.elapsed) + __SAFETY_MARGIN
         logging.info('Batch completed: %s tickers imported' % len(cur_batch))
 
-    logging.info('Import completed: total %s tickers imported' % len(list_of_tickers))
+    pandas_content['Date'] = pandas_content.index
+    pandas_content = pandas_content.reset_index(drop=True)
+    groups_by_date = pandas_content.groupby('Date')
+
+    logging.info('Printing Extraday Prices by date..')
+    for date, group in groups_by_date:
+        date = datetime.date(date.year, date.month, date.day)
+        group.index = group['Ticker']
+        group = group[common_extraday_tools.STANDARD_COL_NAMES]
+        group.index.name = common_extraday_tools.STANDARD_INDEX_NAME
+        csv_output_path = os.path.join(csv_directory, date.isoformat() + '.csv')
+        cpickle_output_path = os.path.join(cpickle_directory, date.isoformat() + '.pk2')
+        my_general_tools.store_and_log_pandas_df(csv_output_path, group)
+        my_general_tools.store_and_log_pandas_df(cpickle_output_path, group)
+        logging.info('Printing prices of %s tickers for %s successful' % (len(list_of_tickers), date.isoformat()))
+
+    logging.info('Output completed')

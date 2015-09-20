@@ -33,6 +33,7 @@ def read_csv_all_lines(file_path, sep='\n'):
         with open(file_path, 'r') as f:
                 output = str.split(f.read(), sep)
         logging.info('CSV %s read successfully' % file_path)
+        output.remove('')
         return output
     except Exception, err:
         logging.critical('CSV %s read failed with error: %s' % (file_path, err.message))
@@ -74,17 +75,7 @@ def store_and_log_pandas_df(file_path, pandas_content):
         logging.critical('      Storing pandas d.f. failed to path: %s, with error: %s' % (file_path, err.message))
 
 
-def read_holidays(country):
 
-    try:
-        holidays_path = os.path.join('/home/maupardh/Documents/FinancialData', country, 'Holidays/MarketHolidays.txt')
-        if not os.path.exists(holidays_path):
-            return pd.Index(data=None, name='Date')
-        else:
-            holidays_idx = pd.read_csv(holidays_path, names=['Date'])
-            holidays_idx['Date'] = map(lambda d: datetime.datetime.strptime(d, "%Y-%m-%d"), holidays_idx['Date'])
-            holidays_idx.index = holidays_idx['Date']
-            return holidays_idx.index
-    except Exception, err:
-        logging.warning('No market holidays found for country: %s, error:%s' % (country, err.message))
-        return pd.Index(data=None, name='Date')
+
+
+
