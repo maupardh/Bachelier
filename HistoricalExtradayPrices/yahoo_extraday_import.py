@@ -36,7 +36,7 @@ def _get_price_from_yahoo(ticker, start_date, end_date, country):
                 'a=' + str(start_date.month - 1) + \
                 '&b=' + str(start_date.day) + \
                 '&c=' + str(start_date.year) + \
-                'd=' + str(end_date.month - 1) + \
+                '&d=' + str(end_date.month - 1) + \
                 '&e=' + str(end_date.day) + \
                 '&f=' + str(end_date.year) + \
                 '&g=d&' + \
