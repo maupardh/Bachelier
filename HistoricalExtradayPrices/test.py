@@ -16,8 +16,8 @@ import my_holidays
 
 def test():
 
-    # if not (datetime.date.today().day <= 7 and datetime.date.today().isoweekday() == 6):
-    #     return 0
+    if not (datetime.date.today().day <= 7 and datetime.date.today().isoweekday() == 6):
+        return 0
 
     # Stocks
     log_file_path = \

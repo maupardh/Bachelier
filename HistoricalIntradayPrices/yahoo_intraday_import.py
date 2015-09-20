@@ -18,6 +18,7 @@ __QUOTA_SAFETY_MARGIN = 50
 __QUOTA_SAFE = __QUOTA_PER_INTERVAL - __QUOTA_SAFETY_MARGIN
 __INTERVAL_SAFE = __INTERVAL + __INTERVAL_SAFETY_MARGIN
 
+
 def get_price_from_yahoo(ticker, country):
 
     today = datetime.date.today()

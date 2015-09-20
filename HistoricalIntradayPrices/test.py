@@ -14,8 +14,8 @@ import os.path
 
 def run():
 
-    if datetime.date.today().isoweekday() >= 6:
-        return 0
+    # if datetime.date.today().isoweekday() >= 6:
+    #     return 0
 
     # Stocks
     log_file_path = \
