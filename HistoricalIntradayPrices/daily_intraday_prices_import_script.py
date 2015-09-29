@@ -3,7 +3,7 @@
 __author__ = 'hmaupard'
 
 import sys
-sys.path.append('/home/maupardh/Documents/pythonCode/Utilities')
+sys.path.append('F:/pythonCode/Utilities')
 
 import datetime
 import yahoo_intraday_import
