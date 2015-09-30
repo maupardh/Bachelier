@@ -6,9 +6,9 @@ import pyPdf
 import os.path
 import logging
 import cPickle
-import pandas as pd
-import datetime
-
+from zipfile import ZipFile
+from StringIO import StringIO
+import zipfile
 
 def get_text_content_from_pdf(pdf_path):
 
@@ -75,7 +75,44 @@ def store_and_log_pandas_df(file_path, pandas_content):
         logging.critical('      Storing pandas d.f. failed to path: %s, with error: %s' % (file_path, err.message))
 
 
+def unzip_string(zipped_string):
+
+    unzipped_string = None
+    logging.info('Unzipping..')
+    try:
+        zipfile = ZipFile(StringIO(zipped_string))
+        for name in zipfile.namelist():
+            unzipped_string += zipfile.open(name).read()
+        logging.info('Unzipping successful')
+    except Exception, err:
+        logging.critical('Unzip failed with message: %s' % err.message)
+
+    return unzipped_string
 
 
+def unzip_file(file_path):
+
+    content = None
+    logging.info('Unzipping file path %s' % file_path)
+    try:
+        s = StringIO(file_path)
+        content = unzip_string(s.read())
+        s.close()
+        logging.info('Unzipping successful')
+    except Exception, err:
+        logging.critical('Unzipping failed with error message: %s' % err.message)
+    return content
 
 
+def zip_string(string_to_zip, file_path):
+
+    logging.info('Zipping to %s' % file_path)
+
+    try:
+        compression = zipfile.ZIP_DEFLATED
+        zf = zipfile.ZipFile(file_path, mode='w')
+        zf.write(string_to_zip, compress_type=compression)
+        zf.close()
+        logging.info('Zipping to %s successful' % file_path)
+    except Exception, err:
+        logging.info('Zippinf to %s failed' % file_path)
