@@ -10,6 +10,7 @@ from zipfile import ZipFile
 from StringIO import StringIO
 import zipfile
 
+
 def get_text_content_from_pdf(pdf_path):
 
     if not os.path.exists(pdf_path):
@@ -21,7 +22,6 @@ def get_text_content_from_pdf(pdf_path):
         content = ""
         for i in range(0, pdfl.getNumPages()):
             content += pdfl.getPage(i).extractText().encode('ascii', 'ignore') + '\n'
-        f.close()
         return content
     except Exception, err:
         logging.warning('Unknown error: '+err.message)
@@ -77,7 +77,7 @@ def store_and_log_pandas_df(file_path, pandas_content):
 
 def unzip_string(zipped_string):
 
-    unzipped_string = None
+    unzipped_string = ''
     logging.info('Unzipping..')
     try:
         zipfile = ZipFile(StringIO(zipped_string))
@@ -104,15 +104,16 @@ def unzip_file(file_path):
     return content
 
 
-def zip_string(string_to_zip, file_path):
+def zip_string_to_file(stringIO_to_zip, file_path):
 
     logging.info('Zipping to %s' % file_path)
 
     try:
+        mkdir_and_log(os.path.dirname(file_path))
         compression = zipfile.ZIP_DEFLATED
         zf = zipfile.ZipFile(file_path, mode='w')
-        zf.write(string_to_zip, compress_type=compression)
+        zf.write(stringIO_to_zip, compress_type=compression)
         zf.close()
         logging.info('Zipping to %s successful' % file_path)
     except Exception, err:
-        logging.info('Zippinf to %s failed' % file_path)
+        logging.info('Zipping to %s failed with error message: %s' % (file_path, err.message))
