@@ -3,59 +3,40 @@
 __author__ = 'hmaupard'
 
 import sys
-sys.path.append('/home/maupardh/Documents/pythonCode/Utilities')
-
+sys.path.append('F:/pythonCode/Utilities')
 import datetime
 import yahoo_intraday_import
-import my_general_tools
 import my_logging
-import os.path
 import my_assets
-
+import os.path
+import pandas as pd
+import common_intraday_tools
 
 def run():
 
-    my_assets.get_assets_from_OpenBBGSymbiology('Equity', 'ADR', datetime.date.today())
-
-    # if datetime.date.today().isoweekday() >= 6:
-    #     return 0
+    if datetime.date.today().isoweekday() >= 6:
+        return 0
 
     # Stocks
-    # log_file_path = \
-    #     os.path.join('/home/maupardh/Documents/FinancialData/US/Equities/Logs/',
-    #                  datetime.date.today().isoformat()+"-YahooImport.txt")
-    # my_logging.initialize_logging(log_file_path)
-    #
-    # stock_universe = \
-    #     my_general_tools.read_csv_all_lines('/home/maupardh/Documents/FinancialData/US/Equities/Universe/SPY.csv') + \
-    #     my_general_tools.read_csv_all_lines('/home/maupardh/Documents/FinancialData/US/Equities/Universe/MDY.csv') + \
-    #     my_general_tools.read_csv_all_lines('/home/maupardh/Documents/FinancialData/US/Equities/Universe/IWM.csv') + \
-    #     my_general_tools.read_csv_all_lines('/home/maupardh/Documents/FinancialData/US/Equities/Universe/QQQ.csv') + \
-    #     my_general_tools.read_csv_all_lines('/home/maupardh/Documents/FinancialData/US/Equities/Universe/IWC.csv')
-    # stock_universe = sorted(list(set(stock_universe)))
-    # country = 'US'
-    #
-    # yahoo_intraday_import.retrieve_and_store_today_price_from_yahoo\
-    #     (
-    #         stock_universe, '/home/maupardh/Documents/FinancialData/US/Equities/IntradayPrices/', country
-    #     )
-    #
-    # my_logging.shutdown()
-    #
-    # # ETFs
-    # etf_universe = sorted(list(set(
-    #     my_general_tools.read_csv_all_lines('/home/maupardh/Documents/FinancialData/US/ETFs/Universe/ETFUniverse.csv'))))
-    # log_file_path = \
-    #     os.path.join('/home/maupardh/Documents/FinancialData/US/ETFs/Logs/',
-    #                  datetime.date.today().isoformat() + "-YahooImport.txt")
-    # my_logging.initialize_logging(log_file_path)
-    #
-    # country = 'US'
-    # yahoo_intraday_import.retrieve_and_store_today_price_from_yahoo\
-    #     (
-    #         etf_universe, '/home/maupardh/Documents/FinancialData/US/ETFs/IntradayPrices/', country
-    #     )
-    #
-    # return 0
+    log_file_path = \
+        os.path.join('F:/FinancialData/Logs/',
+                     datetime.date.today().isoformat(), "IntradayYahooImport.txt")
+    my_logging.initialize_logging(log_file_path)
+
+    stock_universe = common_intraday_tools.get_equity_import_universe_from_nasdaq_trader()
+    stock_universe = pd.DataFrame(list(stock_universe), columns=['CQS Symbol'])
+    assets = my_assets.get_assets(datetime.date.today())
+
+    assets = pd.merge(stock_universe, assets, left_on='CQS Symbol', right_on='ID_BB_SEC_NUM_DES', how='inner')
+    assets = assets[assets['FEED_SOURCE'] == 'US']
+    assets = assets.drop(['CQS Symbol'], inplace=True, axis=1)
+
+    yahoo_intraday_import.retrieve_and_store_today_price_from_yahoo\
+        (
+            assets, 'F:/FinancialData/HistoricalIntradayPrices/'
+        )
+
+    my_logging.shutdown()
+    return 0
 
 run()

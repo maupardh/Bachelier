@@ -8,6 +8,7 @@ sys.path.append('F:/pythonCode/Utilities')
 import datetime
 import my_logging
 import os.path
+import asset_import_tools
 import my_assets
 
 
@@ -33,6 +34,6 @@ def run():
 
     path_to_zip = os.path.join(my_assets.__ASSETS_DIRECTORY, datetime.date.today().isoformat(), 'Assets.csv')
 
-    my_assets.historize_assets(bbg_open_symbiology_configs, path_to_zip)
+    asset_import_tools.historize_assets(bbg_open_symbiology_configs, path_to_zip)
 
 run()
