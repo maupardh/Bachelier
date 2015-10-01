@@ -10,6 +10,7 @@ import logging
 import common_intraday_tools
 import os.path
 import my_general_tools
+import my_datetime_tools
 import time
 import chrono
 
@@ -38,7 +39,7 @@ def get_price_from_yahoo(yahoo_ticker, feed_source, today=None):
 
     try:
 
-        query = 'http://chartapi.finance.yahoo.com/instrument/1.0/' + \
+        query = 'http://chartapi.finance.yahoo.com/instrument/2.0/' + \
                 yahoo_ticker + '/chartdata;type=quote;range=1d/csv'
         f = urllib2.urlopen(query)
         s = f.read()
@@ -63,8 +64,8 @@ def get_price_from_yahoo(yahoo_ticker, feed_source, today=None):
         if price_dat.shape[0] == std_index.shape[0]:
             price_dat.index = std_index
         else:
-            price_dat.index = price_dat.index.map(lambda t: (t // 60 + 1) * 60 if (t % 60 >= 30) else t // 60 * 60)
             price_dat.index = price_dat.index.map(lambda t: datetime.datetime.utcfromtimestamp(t))
+            price_dat.index = price_dat.index.map(my_datetime_tools.round_to_nearest_minute)
 
         price_dat = price_dat[common_intraday_tools.STANDARD_COL_NAMES]
         price_dat = price_dat.groupby(price_dat.index).agg\

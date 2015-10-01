@@ -21,3 +21,10 @@ def nearest_past_or_now_workday(d, holidays=[]):
         return add_business_days(d, -1, holidays)
     else:
         return d
+
+
+def round_to_nearest_minute(t):
+    if t.second >= 30:
+        return t + datetime.timedelta(minutes=1, seconds=-t.second, microseconds=-t.microsecond)
+    else:
+        return t + datetime.timedelta(minutes=0, seconds=-t.second, microseconds=-t.microsecond)
