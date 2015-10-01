@@ -32,8 +32,8 @@ def run():
         {'market_sector': 'Equity', 'security_type': 'MLP', 'date': datetime.date.today()}
     ]
 
-    path_to_zip = os.path.join(my_assets.__ASSETS_DIRECTORY, datetime.date.today().isoformat(), 'Assets.csv')
+    path_to_csv = os.path.join(my_assets.__ASSETS_DIRECTORY, datetime.date.today().isoformat(), 'Assets.csv')
 
-    asset_import_tools.historize_assets(bbg_open_symbiology_configs, path_to_zip)
+    asset_import_tools.historize_assets(bbg_open_symbiology_configs, path_to_csv)
 
 run()
