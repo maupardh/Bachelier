@@ -61,11 +61,8 @@ def get_price_from_yahoo(yahoo_ticker, feed_source, today=None):
         price_dat = price_dat.convert_objects(convert_numeric=True, convert_dates=False, convert_timedeltas=False)
         price_dat.index.name = 'Time'
 
-        if price_dat.shape[0] == std_index.shape[0]:
-            price_dat.index = std_index
-        else:
-            price_dat.index = price_dat.index.map(lambda t: datetime.datetime.utcfromtimestamp(t))
-            price_dat.index = price_dat.index.map(my_datetime_tools.round_to_nearest_minute)
+        price_dat.index = price_dat.index.map(lambda t: datetime.datetime.utcfromtimestamp(t))
+        price_dat.index = price_dat.index.map(my_datetime_tools.truncate_to_minute)
 
         price_dat = price_dat[common_intraday_tools.STANDARD_COL_NAMES]
         price_dat = price_dat.groupby(price_dat.index).agg\

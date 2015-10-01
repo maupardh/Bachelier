@@ -28,3 +28,7 @@ def round_to_nearest_minute(t):
         return t + datetime.timedelta(minutes=1, seconds=-t.second, microseconds=-t.microsecond)
     else:
         return t + datetime.timedelta(minutes=0, seconds=-t.second, microseconds=-t.microsecond)
+
+
+def truncate_to_minute(t):
+    return t + datetime.timedelta(seconds=-t.second, microseconds=-t.microsecond)
