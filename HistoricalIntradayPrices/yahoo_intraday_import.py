@@ -21,14 +21,19 @@ __QUOTA_SAFE = __QUOTA_PER_INTERVAL - __QUOTA_SAFETY_MARGIN
 __INTERVAL_SAFE = __INTERVAL + __INTERVAL_SAFETY_MARGIN
 
 
-def get_price_from_yahoo(yahoo_ticker, feed_source):
+def get_price_from_yahoo(yahoo_ticker, feed_source, today=None):
 
-    today = datetime.date.today()
-    std_index = common_intraday_tools.REINDEXES_CACHE[feed_source][today.isoformat()]
+    if today is None:
+        today = datetime.date.today()
+
+    try:
+        std_index = common_intraday_tools.REINDEXES_CACHE[feed_source][today.isoformat()]
+    except:
+        std_index = None
 
     if std_index is None:
         common_intraday_tools.REINDEXES_CACHE[feed_source][today.isoformat()] = \
-            common_intraday_tools.get_standardized_intraday_dtindex(feed_source, today.isoformat())
+            common_intraday_tools.get_standardized_intraday_dtindex(feed_source, today)
         std_index = common_intraday_tools.REINDEXES_CACHE[feed_source][today.isoformat()]
 
     try:
@@ -54,8 +59,13 @@ def get_price_from_yahoo(yahoo_ticker, feed_source):
 
         price_dat = price_dat.convert_objects(convert_numeric=True, convert_dates=False, convert_timedeltas=False)
         price_dat.index.name = 'Time'
-        price_dat.index = price_dat.index.map(lambda t: (t // 60 + 1) * 60 if (t % 60 >= 30) else t // 60 * 60)
-        price_dat.index = price_dat.index.map(lambda t: datetime.datetime.utcfromtimestamp(t))
+
+        if price_dat.shape[0] == std_index.shape[0]:
+            price_dat.index = std_index
+        else:
+            price_dat.index = price_dat.index.map(lambda t: (t // 60 + 1) * 60 if (t % 60 >= 30) else t // 60 * 60)
+            price_dat.index = price_dat.index.map(lambda t: datetime.datetime.utcfromtimestamp(t))
+
         price_dat = price_dat[common_intraday_tools.STANDARD_COL_NAMES]
         price_dat = price_dat.groupby(price_dat.index).agg\
         (
@@ -87,19 +97,31 @@ def get_price_from_yahoo(yahoo_ticker, feed_source):
         return price_dat
 
 
-def retrieve_and_store_today_price_from_yahoo(bbg_assets_df, root_directory_name):
+def retrieve_and_store_today_price_from_yahoo(assets_df, root_directory_name, today=None):
 
-    bbg_assets_df = bbg_assets_df.reset_index(drop=True)
-    bbg_assets_df['YAHOO_TICKER'] = map(lambda t: str.replace(t, '/', '-'), bbg_assets_df['ID_BB_SEC_NUM_DES'])
+    if assets_df is None or assets_df.shape[0]==0:
+        logging.warning('Called yahoo import on an empty asset dataFrame')
+        return
 
-    today = datetime.date.today()
+    assets_df['ID_BB_GLOBAL'] = assets_df.index
+    assets_df = assets_df.reset_index(drop=True)
+    assets_df['YAHOO_TICKER'] = map(lambda t: str.replace(t, '/', '-'), assets_df['ID_BB_SEC_NUM_DES'])
+
+    if today is None:
+        today = datetime.date.today()
+
     csv_directory = os.path.join(root_directory_name, 'csv', today.isoformat())
     my_general_tools.mkdir_and_log(csv_directory)
 
     cpickle_directory = os.path.join(root_directory_name, 'cpickle', today.isoformat())
     my_general_tools.mkdir_and_log(cpickle_directory)
 
-    number_of_assets = bbg_assets_df.shape()[1]
+    number_of_assets = assets_df.shape[0]
+
+    if number_of_assets > 25000:
+        logging.critical('Called yahoo import on %s assets - that is more than the 25, 000 limit' % number_of_assets)
+        return
+
     number_of_batches = int(number_of_assets/__QUOTA_SAFE) + 1
     logging.info('Retrieving Intraday Prices for %s tickers in %s batches' % (number_of_assets, number_of_batches))
     time_delta_to_sleep = datetime.timedelta(0)
@@ -109,17 +131,18 @@ def retrieve_and_store_today_price_from_yahoo(bbg_assets_df, root_directory_name
         logging.info('Thread to sleep for %s before next batch - as per quota' % str(time_delta_to_sleep))
         time.sleep(time_delta_to_sleep.total_seconds())
 
-        cur_batch = bbg_assets_df[__QUOTA_SAFE * (i - 1):min(__QUOTA_SAFE * i, number_of_assets)]
+        cur_batch = assets_df[__QUOTA_SAFE * (i - 1):min(__QUOTA_SAFE * i, number_of_assets)]
         logging.info('Starting batch %s' % i)
 
         with chrono.Timer() as timed:
-            for asset in cur_batch:
+            def historize_asset(asset):
                 logging.info('   Retrieving Prices for: '+asset['ID_BB_SEC_NUM_DES'])
-                pandas_content = get_price_from_yahoo(asset['YAHOO_TICKER'], asset['FEED_SOURCE'])
+                pandas_content = get_price_from_yahoo(asset['YAHOO_TICKER'], asset['FEED_SOURCE'], today=today)
                 csv_output_path = os.path.join(csv_directory, asset['ID_BB_GLOBAL'] + '.csv')
                 cpickle_output_path = os.path.join(cpickle_directory, asset['ID_BB_GLOBAL'] + '.pk2')
                 my_general_tools.store_and_log_pandas_df(csv_output_path, pandas_content)
                 my_general_tools.store_and_log_pandas_df(cpickle_output_path, pandas_content)
+            cur_batch.apply(lambda cur_asset: historize_asset(cur_asset), axis=1)
 
         time_delta_to_sleep = max\
             (

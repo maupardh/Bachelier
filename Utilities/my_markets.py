@@ -5,7 +5,7 @@ import pytz
 import my_holidays
 
 
-MARKETS_BY_COUNTRY_CONFIG = \
+MARKETS_BY_FEED_SOURCE_CONFIG = \
     {
         'US':
             {

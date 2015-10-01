@@ -54,6 +54,8 @@ def historize_assets(list_of_symbiology_confs, path_to_file):
                                      (conf['market_sector'], conf['security_type'], conf['date']))
 
         content.index = content['ID_BB_GLOBAL']
+        content.sort(inplace=True)
+        content.drop('ID_BB_GLOBAL', axis=1, inplace=True)
         my_general_tools.mkdir_and_log(os.path.dirname(path_to_file))
         content.to_csv(path_to_file)
         logging.info('Importing from Open BBG Symbiology successful')
