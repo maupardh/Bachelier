@@ -1,7 +1,3 @@
-#!/usr/bin/env python
-
-__author__ = 'hmaupard'
-
 import urllib2
 import pandas as pd
 from StringIO import StringIO
@@ -62,5 +58,5 @@ def _get_price_from_google(ticker, country):
 
     except:
         logging.warning('Google price import and pandas enrich failed for: %s' % ticker)
-        price_dat = pd.DataFrame(data=0, index=std_index, columns=__STANDARD_COL_NAMES, dtype=float)
+        price_dat = pd.DataFrame(data=0, index=std_index, columns=common_intraday_tools.STANDARD_COL_NAMES, dtype=float)
         return price_dat

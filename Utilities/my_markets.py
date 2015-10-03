@@ -1,11 +1,8 @@
-__author__ = 'hmaupard'
-
 import datetime
 import pytz
-import my_holidays
 
 
-MARKETS_BY_FEED_SOURCE_CONFIG = \
+EQUITY_MARKETS_BY_FEED_SOURCE_CONFIG = \
     {
         'US':
             {
@@ -14,7 +11,3 @@ MARKETS_BY_FEED_SOURCE_CONFIG = \
                 'TimeZone': pytz.timezone('America/New_York')
             }
     }
-
-
-
-

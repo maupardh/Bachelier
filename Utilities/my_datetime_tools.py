@@ -1,5 +1,3 @@
-__author__ = 'maupardh'
-
 import datetime
 import numpy as np
 

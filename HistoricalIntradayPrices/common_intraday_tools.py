@@ -1,9 +1,6 @@
-#!/usr/bin/env python
-
-__author__ = 'hmaupard'
-
 import pandas as pd
 import datetime
+import logging
 import my_markets
 
 STANDARD_COL_NAMES = ['Close', 'High', 'Low', 'Open', 'Volume']
@@ -12,11 +9,11 @@ STANDARD_INDEX_NAME = 'Time'
 
 def get_standardized_intraday_dtindex(country, date):
 
-    local_market_time_zone = my_markets.MARKETS_BY_FEED_SOURCE_CONFIG[country]['TimeZone']
+    local_market_time_zone = my_markets.EQUITY_MARKETS_BY_FEED_SOURCE_CONFIG[country]['TimeZone']
     start_reg = local_market_time_zone.localize(datetime.datetime(date.year, date.month, date.day))\
-                + my_markets.MARKETS_BY_FEED_SOURCE_CONFIG[country]['MarketOpen']
+                + my_markets.EQUITY_MARKETS_BY_FEED_SOURCE_CONFIG[country]['MarketOpen']
     end_reg = local_market_time_zone.localize(datetime.datetime(date.year, date.month, date.day))\
-              + my_markets.MARKETS_BY_FEED_SOURCE_CONFIG[country]['MarketClose']
+              + my_markets.EQUITY_MARKETS_BY_FEED_SOURCE_CONFIG[country]['MarketClose']
     reg_idx = pd.date_range(start_reg, end_reg, freq='1T')
     reg_idx.name = STANDARD_INDEX_NAME
     return reg_idx
@@ -33,15 +30,16 @@ REINDEXES_CACHE = \
 
 def get_equity_import_universe_from_nasdaq_trader():
 
+    logging.info('Retrieving prices from Nasdaq Trader')
     try:
         query = 'ftp://ftp.nasdaqtrader.com/symboldirectory/nasdaqlisted.txt'
         content_first_piece = set(pd.read_csv(query, sep='|')['Symbol'][:-1])
 
         query = 'ftp://ftp.nasdaqtrader.com/symboldirectory/otherlisted.txt'
         content_second_piece = set(pd.read_csv(query, sep='|')['CQS Symbol'][:-1])
+        logging.info('Successful')
         return content_first_piece.union(content_second_piece)
 
-    except Exception ,err:
+    except Exception, err:
+        logging.critical('Nasdaq Trader import failed with error message: %s' % err.message)
         return None
-
-

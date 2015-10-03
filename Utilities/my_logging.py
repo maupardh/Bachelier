@@ -1,7 +1,3 @@
-#!/usr/bin/env python
-
-__author__ = 'hmaupard'
-
 import logging
 import logging.config
 import os.path
@@ -34,5 +30,6 @@ def initialize_logging(log_file_path):
 
 
 def shutdown():
-    logging.shutdown()
-    reload(logging)
+    logger = logging.getLogger()
+    for h in logger.handlers:
+        h.close()

@@ -1,7 +1,9 @@
-__author__ = 'maupardh'
+import pandas as pd
+import pytz
+import datetime
+from dateutil import rrule
 
-#borrowed/tweaked from Quantopian
-
+# borrowed/tweaked from Quantopian
 #
 # Copyright 2013 Quantopian, Inc.
 #
@@ -16,11 +18,6 @@ __author__ = 'maupardh'
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-import pandas as pd
-import pytz
-
-import datetime
-from dateutil import rrule
 
 start = pd.Timestamp('1990-01-01', tz='UTC')
 end_base = pd.Timestamp('today', tz='UTC')

@@ -1,18 +1,14 @@
-#!/usr/bin/env python
-
-__author__ = 'hmaupard'
-
 import urllib2
 import pandas as pd
 from StringIO import StringIO
 import datetime
 import logging
-import common_intraday_tools
 import os.path
-import my_general_tools
-import my_datetime_tools
 import time
 import chrono
+import common_intraday_tools
+import my_general_tools
+import my_datetime_tools
 
 __QUOTA_PER_INTERVAL = 2000
 __INTERVAL = datetime.timedelta(minutes=60)
@@ -97,23 +93,18 @@ def get_price_from_yahoo(yahoo_ticker, feed_source, today=None):
 
 def retrieve_and_store_today_price_from_yahoo(assets_df, root_directory_name, today=None):
 
-    if assets_df is None or assets_df.shape[0]==0:
+    if assets_df is None or assets_df.shape[0] == 0:
         logging.warning('Called yahoo import on an empty asset dataFrame')
         return
 
-    assets_df['ID_BB_GLOBAL'] = assets_df.index
     assets_df = assets_df.reset_index(drop=True)
     assets_df['YAHOO_TICKER'] = map(lambda t: str.replace(t, '/', '-'), assets_df['ID_BB_SEC_NUM_DES'])
 
     if today is None:
         today = datetime.date.today()
 
-    csv_directory = os.path.join(root_directory_name, 'csv', today.isoformat())
+    csv_directory = os.path.join(root_directory_name, 'zip', today.isoformat())
     my_general_tools.mkdir_and_log(csv_directory)
-
-    cpickle_directory = os.path.join(root_directory_name, 'cpickle', today.isoformat())
-    my_general_tools.mkdir_and_log(cpickle_directory)
-
     number_of_assets = assets_df.shape[0]
 
     if number_of_assets > 25000:
@@ -136,12 +127,9 @@ def retrieve_and_store_today_price_from_yahoo(assets_df, root_directory_name, to
             def historize_asset(asset):
                 logging.info('   Retrieving Prices for: '+asset['ID_BB_SEC_NUM_DES'])
                 pandas_content = get_price_from_yahoo(asset['YAHOO_TICKER'], asset['FEED_SOURCE'], today=today)
-                csv_output_path = os.path.join(csv_directory, asset['ID_BB_GLOBAL'] + '.csv')
-                cpickle_output_path = os.path.join(cpickle_directory, asset['ID_BB_GLOBAL'] + '.pk2')
+                csv_output_path = os.path.join(csv_directory, asset['ID_BB_GLOBAL'] + '.csv.zip')
                 my_general_tools.store_and_log_pandas_df(csv_output_path, pandas_content)
-                my_general_tools.store_and_log_pandas_df(cpickle_output_path, pandas_content)
             cur_batch.apply(lambda cur_asset: historize_asset(cur_asset), axis=1)
-
         time_delta_to_sleep = max\
             (
                 __INTERVAL_SAFE -

@@ -1,31 +1,8 @@
-#!/usr/bin/env python
-
-__author__ = 'hmaupard'
-
-import pyPdf
 import os.path
 import logging
-import cPickle
-from zipfile import ZipFile
+import pandas as pd
+import my_zipping
 from StringIO import StringIO
-import zipfile
-
-
-def get_text_content_from_pdf(pdf_path):
-
-    if not os.path.exists(pdf_path):
-        logging.warning('Could not open pdf - path does not exist: '+pdf_path)
-        return ""
-    try:
-        f = open(pdf_path, 'rb')
-        pdfl = pyPdf.PdfFileReader(f)
-        content = ""
-        for i in range(0, pdfl.getNumPages()):
-            content += pdfl.getPage(i).extractText().encode('ascii', 'ignore') + '\n'
-        return content
-    except Exception, err:
-        logging.warning('Unknown error: '+err.message)
-        return ""
 
 
 def read_csv_all_lines(file_path, sep='\n'):
@@ -56,18 +33,12 @@ def store_and_log_pandas_df(file_path, pandas_content):
         logging.warning('Small pandas d.f. stored to path: %s' % file_path)
 
     try:
-        if file_path.endswith('pk2'):
-            with open(file_path, 'w+') as pickle_file:
-                cPickle.dump(pandas_content, pickle_file, protocol=2)
-                logging.info('Storing pandas as pk successful for path: %s' % file_path)
-        elif file_path.endswith('pk1'):
-            with open(file_path, 'w+') as pickle_file:
-                cPickle.dump(pandas_content, pickle_file, protocol=1)
-                logging.info('Storing pandas as pk successful for path: %s' % file_path)
-        elif file_path.endswith('pk0'):
-            with open(file_path, 'w+') as pickle_file:
-                cPickle.dump(pandas_content, pickle_file, protocol=0)
-                logging.info('Storing pandas as pk successful for path: %s' % file_path)
+        if file_path.endswith('zip'):
+            my_zipping.zip_string_with_zipfile(pandas_content.to_csv(), file_path, file_name='pd_df.csv')
+            logging.info('Storing pandas as zip successful for path: %s' % file_path)
+        elif file_path.endswith('csv'):
+            pandas_content.to_csv(file_path, mode='w+')
+            logging.info('Storing pandas as csv successful for path: %s' % file_path)
         else:
             pandas_content.to_csv(file_path, mode='w+')
             logging.info('Storing pandas as csv successful for path: %s' % file_path)
@@ -75,45 +46,21 @@ def store_and_log_pandas_df(file_path, pandas_content):
         logging.critical('      Storing pandas d.f. failed to path: %s, with error: %s' % (file_path, err.message))
 
 
-def unzip_string(zipped_string):
+def read_and_log_pandas_df(file_path):
 
-    unzipped_string = ''
-    logging.info('Unzipping..')
+    content = pd.DataFrame(None)
     try:
-        zipfile = ZipFile(StringIO(zipped_string))
-        for name in zipfile.namelist():
-            unzipped_string += zipfile.open(name).read()
-        logging.info('Unzipping successful')
+        if file_path.endswith('csv.zip'):
+            content = pd.read_csv(StringIO(my_zipping.unzip_file_to_string_with_zipfile(file_path)))
+            logging.info('Reading zip successful for path: %s' % file_path)
+        elif file_path.endswith('csv'):
+            content = pd.read_csv(file_path)
+            logging.info('Reading csv successful for path: %s' % file_path)
+        else:
+            content = pd.read_csv(file_path)
+            logging.info('Reading csv successful for path: %s' % file_path)
     except Exception, err:
-        logging.critical('Unzip failed with message: %s' % err.message)
-
-    return unzipped_string
-
-
-def unzip_file(file_path):
-
-    content = None
-    logging.info('Unzipping file path %s' % file_path)
-    try:
-        s = StringIO(file_path)
-        content = unzip_string(s.read())
-        s.close()
-        logging.info('Unzipping successful')
-    except Exception, err:
-        logging.critical('Unzipping failed with error message: %s' % err.message)
+        logging.critical('      Reading path %s failed, with error: %s' % (file_path, err.message))
+        content = pd.DataFrame(None)
     return content
 
-
-def zip_string_to_file(stringIO_to_zip, file_path):
-
-    logging.info('Zipping to %s' % file_path)
-
-    try:
-        mkdir_and_log(os.path.dirname(file_path))
-        compression = zipfile.ZIP_DEFLATED
-        zf = zipfile.ZipFile(file_path, mode='w')
-        zf.write(stringIO_to_zip, compress_type=compression)
-        zf.close()
-        logging.info('Zipping to %s successful' % file_path)
-    except Exception, err:
-        logging.info('Zipping to %s failed with error message: %s' % (file_path, err.message))

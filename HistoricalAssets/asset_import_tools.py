@@ -1,11 +1,10 @@
-__author__ = 'Hadrien'
-
 import urllib2
 import pandas as pd
 import my_general_tools
 import logging
 import StringIO
 import os.path
+import my_zipping
 
 
 def get_assets_from_open_bbg_symbiology(market_sector, security_type, date):
@@ -16,7 +15,7 @@ def get_assets_from_open_bbg_symbiology(market_sector, security_type, date):
         query = 'http://bdn-ak.bloomberg.com/precanned/' + market_sector + '_' + security_type + \
                 '_' + date.strftime('%Y%m%d') + '.txt.zip'
         f = urllib2.urlopen(query)
-        content = my_general_tools.unzip_string(f.read())
+        content = my_zipping.unzip_string_with_zipfile(f.read())
         f.close()
         s = StringIO.StringIO(content)
         content = pd.read_csv(s, sep='|', comment='#')
@@ -44,7 +43,7 @@ def get_assets_from_open_bbg_symbiology(market_sector, security_type, date):
     return content
 
 
-def historize_assets(list_of_symbiology_confs, path_to_file):
+def historize_assets(list_of_symbiology_confs, paths):
 
     logging.info('Importing assets from Open BBG Symbiology')
     try:
@@ -56,9 +55,9 @@ def historize_assets(list_of_symbiology_confs, path_to_file):
         content.index = content['ID_BB_GLOBAL']
         content.sort(inplace=True)
         content.drop('ID_BB_GLOBAL', axis=1, inplace=True)
-        my_general_tools.mkdir_and_log(os.path.dirname(path_to_file))
-        content.to_csv(path_to_file)
+        for p in paths:
+            my_general_tools.mkdir_and_log(os.path.dirname(p))
+            my_general_tools.store_and_log_pandas_df(p, content)
         logging.info('Importing from Open BBG Symbiology successful')
-    except Exception, err:
-        logging.critical('Historization of assets failed for path: %s' % path_to_file)
-
+    except:
+        logging.critical('Historization of assets failed for some of the paths')
