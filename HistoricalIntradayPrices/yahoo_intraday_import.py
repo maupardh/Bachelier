@@ -97,6 +97,7 @@ def retrieve_and_store_today_price_from_yahoo(assets_df, root_directory_name, to
         logging.warning('Called yahoo import on an empty asset dataFrame')
         return
 
+    assets_df['ID_BB_GLOBAL'] = assets_df.index
     assets_df = assets_df.reset_index(drop=True)
     assets_df['YAHOO_TICKER'] = map(lambda t: str.replace(t, '/', '-'), assets_df['ID_BB_SEC_NUM_DES'])
 

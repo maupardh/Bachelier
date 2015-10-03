@@ -1,7 +1,3 @@
-#!/usr/bin/env python
-
-__author__ = 'hmaupard'
-
 import urllib2
 import os.path
 import logging
