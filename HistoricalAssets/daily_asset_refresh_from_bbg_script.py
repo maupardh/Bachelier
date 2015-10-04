@@ -8,10 +8,10 @@ import refresh_assets_from_bbg
 
 def run():
 
-    # if datetime.date.today().isoweekday() >= 6:
-    #     return 0
+    if datetime.date.today().isoweekday() >= 6:
+        return 0
 
-    today = datetime.date(2015, 10, 3) # datetime.date.today()
+    today = datetime.date.today()
 
     log_file_path = \
         os.path.join('F:/financialData/Logs/',
