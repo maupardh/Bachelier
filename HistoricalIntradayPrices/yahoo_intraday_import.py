@@ -130,7 +130,7 @@ def retrieve_and_store_today_price_from_yahoo(assets_df, root_directory_name, to
                 pandas_content = get_price_from_yahoo(asset['YAHOO_TICKER'], asset['FEED_SOURCE'], today=today)
                 csv_output_path = os.path.join(csv_directory, asset['ID_BB_GLOBAL'] + '.csv.zip')
                 my_general_tools.store_and_log_pandas_df(csv_output_path, pandas_content)
-            cur_batch.apply(lambda cur_asset: historize_asset(cur_asset), axis=1)
+            cur_batch.apply(historize_asset, axis=1)
         time_delta_to_sleep = max\
             (
                 __INTERVAL_SAFE -
@@ -138,6 +138,8 @@ def retrieve_and_store_today_price_from_yahoo(assets_df, root_directory_name, to
                 datetime.timedelta(seconds=0)
             )
         logging.info('Batch completed: %s tickers imported' % len(cur_batch))
+        logging.info('Thread to sleep for %s before next batch - as per quota' % str(time_delta_to_sleep))
+        time.sleep(time_delta_to_sleep.total_seconds())
 
     logging.info('Output completed')
     logging.info('Thread to sleep for %s before next task - as per quota' % str(time_delta_to_sleep))

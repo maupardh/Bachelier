@@ -17,15 +17,15 @@ __QUOTA_SAFE = __QUOTA_PER_INTERVAL - __QUOTA_SAFETY_MARGIN
 __INTERVAL_SAFE = __INTERVAL + __INTERVAL_SAFETY_MARGIN
 
 
-def _get_price_from_yahoo(ticker, start_date, end_date, country):
+def _get_price_from_yahoo(yahoo_ticker, start_date, end_date, feed_source):
 
-    std_index = common_extraday_tools.REINDEXES_CACHE.get((country, start_date.isoformat(), end_date.isoformat()))
+    std_index = common_extraday_tools.REINDEXES_CACHE.get((feed_source, start_date.isoformat(), end_date.isoformat()))
 
     if std_index is None:
         common_extraday_tools.REINDEXES_CACHE[
-            (country, start_date.isoformat(), end_date.isoformat())
-        ] = common_extraday_tools.get_standardized_extraday_dtindex(country, start_date.isoformat(), end_date.isoformat())
-        std_index = common_extraday_tools.REINDEXES_CACHE[(country, start_date.isoformat(), end_date.isoformat())]
+            (feed_source, start_date.isoformat(), end_date.isoformat())
+        ] = common_extraday_tools.get_standardized_extraday_dtindex(feed_source, start_date.isoformat(), end_date.isoformat())
+        std_index = common_extraday_tools.REINDEXES_CACHE[(feed_source, start_date.isoformat(), end_date.isoformat())]
 
     try:
         query = 'http://ichart.finance.yahoo.com/table.csv?' + \
@@ -36,7 +36,7 @@ def _get_price_from_yahoo(ticker, start_date, end_date, country):
                 '&e=' + str(end_date.day) + \
                 '&f=' + str(end_date.year) + \
                 '&g=d&' + \
-                '&s=' + ticker + \
+                '&s=' + yahoo_ticker + \
                 '&ignore=.csv'
         f = urllib2.urlopen(query)
         s = f.read()
@@ -78,41 +78,54 @@ def _get_price_from_yahoo(ticker, start_date, end_date, country):
         return price_dat
 
     except Exception, err:
-        logging.critical('      Yahoo import failed for ticker %s with error: %s' % (ticker, err.message))
+        logging.critical('      Yahoo import failed for ticker %s with error: %s' % (yahoo_ticker, err.message))
         price_dat = pd.DataFrame(data=0, index=std_index, columns=common_extraday_tools.STANDARD_COL_NAMES, dtype=float)
         return price_dat
 
 
-def retrieve_and_store_historical_prices(list_of_tickers, root_directory_name, start_date, end_date, country):
+def retrieve_and_store_historical_prices(assets_df, root_directory_name, start_date, end_date):
+
+    my_general_tools.mkdir_and_log(root_directory_name)
+
+    if assets_df is None or assets_df.shape[0] == 0:
+        logging.warning('Called yahoo import on an empty asset dataFrame')
+        return
+
+    assets_df['ID_BB_GLOBAL'] = assets_df.index
+    assets_df = assets_df.reset_index(drop=True)
+    assets_df['YAHOO_TICKER'] = map(lambda t: str.replace(t, '/', '-'), assets_df['ID_BB_SEC_NUM_DES'])
 
     days_span = (end_date-start_date).total_seconds()/(3600*24)
     if days_span > 365:
-        logging.warning('Retrieving Yahoo historical prices for more than a year - possible OOM - %s days requested' %days_span)
+        logging.warning('Retrieving Yahoo historical prices for more than a year - possible OOM -'
+                        ' %s days requested' % days_span)
 
-    csv_directory = os.path.join(root_directory_name, 'csv')
-    my_general_tools.mkdir_and_log(csv_directory)
+    number_of_assets = assets_df.shape[0]
 
-    cpickle_directory = os.path.join(root_directory_name, 'cpickle')
-    my_general_tools.mkdir_and_log(cpickle_directory)
+    if number_of_assets > 25000:
+        logging.critical('Called yahoo import on %s assets - that is more than the 25, 000 limit' % number_of_assets)
+        return
 
-    number_of_batches = int(len(list_of_tickers)/__QUOTA_SAFE) + 1
-    logging.info('Retrieving Extraday Prices for %s tickers in %s batches' % (len(list_of_tickers), number_of_batches))
+    number_of_batches = int(number_of_assets/__QUOTA_SAFE) + 1
+    logging.info('Retrieving Extraday Prices for %s tickers in %s batches' % (number_of_assets, number_of_batches))
     time_delta_to_sleep = datetime.timedelta(0)
-    pandas_content = pd.DataFrame(data=None)
+
+    pandas_content = pd.DataFrame(None)
 
     for i in range(1, number_of_batches + 1):
 
         logging.info('Thread to sleep for %s before next batch - as per quota' % str(time_delta_to_sleep))
         time.sleep(time_delta_to_sleep.total_seconds())
 
-        cur_batch = list_of_tickers[__QUOTA_SAFE * (i - 1):min(__QUOTA_SAFE * i, len(list_of_tickers))]
+        cur_batch = assets_df[__QUOTA_SAFE * (i - 1):min(__QUOTA_SAFE * i, number_of_assets)]
         logging.info('Starting batch %s' % i)
 
         with chrono.Timer() as timed:
-            for ticker in cur_batch:
-                logging.info('   Retrieving Prices for: '+ticker)
-                new_pandas_content = _get_price_from_yahoo(ticker, start_date, end_date, country)
-                new_pandas_content['Ticker'] = ticker
+            for (index, asset) in cur_batch.iterrows():
+                logging.info('   Retrieving Prices for: ' + asset['ID_BB_SEC_NUM_DES'])
+                new_pandas_content = _get_price_from_yahoo(asset['YAHOO_TICKER'], start_date, end_date,
+                                                           asset['FEED_SOURCE'])
+                new_pandas_content['ID_BB_GLOBAL'] = asset['ID_BB_GLOBAL']
                 pandas_content = pandas_content.append(new_pandas_content)
 
         time_delta_to_sleep = max\
@@ -130,14 +143,12 @@ def retrieve_and_store_historical_prices(list_of_tickers, root_directory_name, s
     logging.info('Printing Extraday Prices by date..')
     for date, group in groups_by_date:
         date = datetime.date(date.year, date.month, date.day)
-        group.index = group['Ticker']
+        group.index = group['ID_BB_GLOBAL']
         group = group[common_extraday_tools.STANDARD_COL_NAMES]
         group.index.name = common_extraday_tools.STANDARD_INDEX_NAME
-        csv_output_path = os.path.join(csv_directory, date.isoformat() + '.csv')
-        cpickle_output_path = os.path.join(cpickle_directory, date.isoformat() + '.pk2')
+        csv_output_path = os.path.join(root_directory_name, date.isoformat() + '.csv.zip')
         my_general_tools.store_and_log_pandas_df(csv_output_path, group)
-        my_general_tools.store_and_log_pandas_df(cpickle_output_path, group)
-        logging.info('Printing prices of %s tickers for %s successful' % (len(list_of_tickers), date.isoformat()))
+        logging.info('Printing prices of %s tickers for %s successful' % (len(assets_df), date.isoformat()))
 
     logging.info('Output completed')
     logging.info('Thread to sleep for %s after last batch - as per quota' % str(time_delta_to_sleep))

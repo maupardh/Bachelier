@@ -1,10 +1,7 @@
-#!/usr/bin/env python
-
-__author__ = 'hmaupard'
-
 import pandas as pd
 import datetime
 import my_holidays
+import logging
 
 STANDARD_COL_NAMES = ['Open', 'Close', 'AdjClose', 'Volume']
 STANDARD_INDEX_NAME = 'Ticker'
@@ -25,3 +22,19 @@ def get_standardized_extraday_dtindex(country, start_date, end_date):
 
 
 REINDEXES_CACHE = {}
+
+def get_equity_import_universe_from_nasdaq_trader():
+
+    logging.info('Retrieving prices from Nasdaq Trader')
+    try:
+        query = 'ftp://ftp.nasdaqtrader.com/symboldirectory/nasdaqlisted.txt'
+        content_first_piece = set(pd.read_csv(query, sep='|')['Symbol'][:-1])
+
+        query = 'ftp://ftp.nasdaqtrader.com/symboldirectory/otherlisted.txt'
+        content_second_piece = set(pd.read_csv(query, sep='|')['CQS Symbol'][:-1])
+        logging.info('Successful')
+        return content_first_piece.union(content_second_piece)
+
+    except Exception, err:
+        logging.critical('Nasdaq Trader import failed with error message: %s' % err.message)
+        return None
