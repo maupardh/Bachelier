@@ -12,6 +12,8 @@ def refresh_assets_from_bbg(date):
         {'market_sector': 'Equity', 'security_type': 'ADR', 'date': date},
         {'market_sector': 'Equity', 'security_type': 'BDR', 'date': date},
         {'market_sector': 'Equity', 'security_type': 'Common_Stock', 'date': date},
+        {'market_sector': 'Equity', 'security_type': 'Preference', 'date': date},
+        {'market_sector': 'Equity', 'security_type': 'ETP', 'date': date},
         {'market_sector': 'Equity', 'security_type': 'REIT', 'date': date},
         {'market_sector': 'Equity', 'security_type': 'MLP', 'date': date},
         {'market_sector': 'Equity', 'security_type': 'Tracking_Stk', 'date': date},

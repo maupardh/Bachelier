@@ -20,3 +20,38 @@ def get_assets():
         logging.critical('Reading assets failed with error message: %s' % err.message)
 
     return content
+
+
+def get_equity_import_universe_from_nasdaq_trader():
+
+    logging.info('Retrieving symbols from Nasdaq Trader')
+    try:
+        query = 'ftp://ftp.nasdaqtrader.com/symboldirectory/nasdaqlisted.txt'
+        content_first_piece = pd.read_csv(query, sep='|')[:-1]
+        content_first_piece = content_first_piece[['Symbol']]
+
+        query = 'ftp://ftp.nasdaqtrader.com/symboldirectory/otherlisted.txt'
+        content_second_piece = pd.read_csv(query, sep='|')[:-1]
+        content_second_piece.rename(columns={'CQS Symbol': 'Symbol'}, inplace=True)
+        content_second_piece = content_second_piece[['Symbol']]
+        logging.info('Successful')
+        return content_first_piece.append(content_second_piece)
+
+    except Exception, err:
+        logging.critical('Nasdaq Trader import failed with error message: %s' % err.message)
+        return pd.DataFrame(None)
+
+
+def get_equity_import_universe_from_oats(file_type='SOD'):
+
+    logging.info('Retrieving symbols from oats')
+    try:
+        query = 'http://oatsreportable.finra.org/OATSReportableSecurities-' + file_type + '.txt'
+        content = pd.read_csv(query, sep='|')
+        content = content[map(str.isalpha, content['Symbol'])]
+        logging.info('Successful')
+        return content
+
+    except Exception, err:
+        logging.critical('Oats symbols import failed with error message: %s' % err.message)
+        return pd.DataFrame(None)

@@ -30,7 +30,7 @@ REINDEXES_CACHE = \
 
 def get_equity_import_universe_from_nasdaq_trader():
 
-    logging.info('Retrieving prices from Nasdaq Trader')
+    logging.info('Retrieving symbols from Nasdaq Trader')
     try:
         query = 'ftp://ftp.nasdaqtrader.com/symboldirectory/nasdaqlisted.txt'
         content_first_piece = set(pd.read_csv(query, sep='|')['Symbol'][:-1])
@@ -43,3 +43,18 @@ def get_equity_import_universe_from_nasdaq_trader():
     except Exception, err:
         logging.critical('Nasdaq Trader import failed with error message: %s' % err.message)
         return None
+
+
+def get_equity_import_universe_from_oats(file_type='SOD'):
+
+    logging.info('Retrieving symbols from oats')
+    try:
+        query = 'http://oatsreportable.finra.org/OATSReportableSecurities-' + file_type + '.txt'
+        content = pd.read_csv(query, sep='|')
+        content['Symbol'] = content.apply(lambda x: str.replace(x['Symbol'], ' ', '/'), axis=1)
+        logging.info('Successful')
+        return content
+
+    except Exception, err:
+        logging.critical('Oats symbols import failed with error message: %s' % err.message)
+        return pd.DataFrame(None)
