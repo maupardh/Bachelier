@@ -2,10 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a53a169c-e610-4f09-b1c4-5e0d769cbf6d" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../HistoricalExtradayPrices/monthly_extraday_script.py" afterPath="$PROJECT_DIR$/../HistoricalExtradayPrices/monthly_extraday_script.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../HistoricalAssets/.idea/workspace.xml" afterPath="$PROJECT_DIR$/../HistoricalAssets/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../HistoricalExtradayPrices/.idea/workspace.xml" afterPath="$PROJECT_DIR$/../HistoricalExtradayPrices/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/yahoo_intraday_import.py" afterPath="$PROJECT_DIR$/yahoo_intraday_import.py" />
     </list>
     <ignored path="HistoricalIntradayPrices.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -36,11 +35,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="daily_intraday_equity_prices_import_script.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="daily_intraday_equity_prices_import_script.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/daily_intraday_equity_prices_import_script.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="1.016">
-              <caret line="38" column="68" selection-start-line="38" selection-start-column="68" selection-end-line="38" selection-end-column="68" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -130,11 +129,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="yahoo_intraday_import.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="yahoo_intraday_import.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/yahoo_intraday_import.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="113" column="0" selection-start-line="113" selection-start-column="0" selection-end-line="113" selection-end-column="0" />
+            <state vertical-scroll-proportion="-0.13333334">
+              <caret line="125" column="0" selection-start-line="125" selection-start-column="0" selection-end-line="125" selection-end-column="0" />
               <folding>
                 <element signature="e#0#14#0" expanded="true" />
                 <element signature="e#560#3507#0" expanded="false" />
@@ -186,9 +185,9 @@
         <option value="$PROJECT_DIR$/../Utilities/my_assets.py" />
         <option value="$PROJECT_DIR$/../Utilities/my_zipping.py" />
         <option value="$PROJECT_DIR$/../Utilities/my_general_tools.py" />
-        <option value="$PROJECT_DIR$/yahoo_intraday_import.py" />
         <option value="$PROJECT_DIR$/common_intraday_tools.py" />
         <option value="$PROJECT_DIR$/daily_intraday_equity_prices_import_script.py" />
+        <option value="$PROJECT_DIR$/yahoo_intraday_import.py" />
       </list>
     </option>
   </component>
@@ -723,7 +722,7 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.21297297" sideWeight="0.54531085" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24895833" sideWeight="0.503992" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.5643243" sideWeight="0.76967776" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.5643243" sideWeight="0.76967776" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329602" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32864866" sideWeight="0.4981511" order="11" side_tool="false" content_ui="tabs" />
@@ -1193,22 +1192,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/yahoo_intraday_import.py">
+    <entry file="file://$PROJECT_DIR$/daily_intraday_equity_prices_import_script.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="113" column="0" selection-start-line="113" selection-start-column="0" selection-end-line="113" selection-end-column="0" />
+          <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/yahoo_intraday_import.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.13333334">
+          <caret line="125" column="0" selection-start-line="125" selection-start-column="0" selection-end-line="125" selection-end-column="0" />
           <folding>
             <element signature="e#0#14#0" expanded="true" />
             <element signature="e#560#3507#0" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/daily_intraday_equity_prices_import_script.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.016">
-          <caret line="38" column="68" selection-start-line="38" selection-start-column="68" selection-end-line="38" selection-end-column="68" />
-          <folding />
         </state>
       </provider>
     </entry>

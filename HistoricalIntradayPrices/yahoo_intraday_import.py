@@ -138,8 +138,6 @@ def retrieve_and_store_today_price_from_yahoo(assets_df, root_directory_name, to
                 datetime.timedelta(seconds=0)
             )
         logging.info('Batch completed: %s tickers imported' % len(cur_batch))
-        logging.info('Thread to sleep for %s before next batch - as per quota' % str(time_delta_to_sleep))
-        time.sleep(time_delta_to_sleep.total_seconds())
 
     logging.info('Output completed')
     logging.info('Thread to sleep for %s before next task - as per quota' % str(time_delta_to_sleep))
