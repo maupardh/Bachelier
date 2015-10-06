@@ -14,8 +14,8 @@ def run():
 
     today = datetime.date.today()
 
-    # if not (today.day <= 7 and today.isoweekday() == 6):
-    #     return 0
+    if not (today.day <= 7 and today.isoweekday() == 6):
+        return 0
 
     log_file_path = \
         os.path.join('F:/FinancialData/Logs/',

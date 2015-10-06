@@ -2,16 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a53a169c-e610-4f09-b1c4-5e0d769cbf6d" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../HistoricalExtradayPrices/.idea/HistoricalExtradayPrices.iml" afterPath="$PROJECT_DIR$/../HistoricalExtradayPrices/.idea/HistoricalExtradayPrices.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../HistoricalExtradayPrices/common_extraday_tools.py" afterPath="$PROJECT_DIR$/../HistoricalExtradayPrices/common_extraday_tools.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/common_intraday_tools.py" afterPath="$PROJECT_DIR$/common_intraday_tools.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/daily_intraday_equity_prices_import_script.py" afterPath="$PROJECT_DIR$/daily_intraday_equity_prices_import_script.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../HistoricalExtradayPrices/.idea/misc.xml" afterPath="$PROJECT_DIR$/../HistoricalExtradayPrices/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../HistoricalExtradayPrices/monthly_extraday_script.py" afterPath="$PROJECT_DIR$/../HistoricalExtradayPrices/monthly_extraday_script.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../Utilities/my_assets.py" afterPath="$PROJECT_DIR$/../Utilities/my_assets.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../HistoricalAssets/refresh_assets_from_bbg.py" afterPath="$PROJECT_DIR$/../HistoricalAssets/refresh_assets_from_bbg.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../HistoricalExtradayPrices/test.py" afterPath="$PROJECT_DIR$/../HistoricalExtradayPrices/test.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../.idea/workspace.xml" afterPath="$PROJECT_DIR$/../.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../HistoricalAssets/.idea/workspace.xml" afterPath="$PROJECT_DIR$/../HistoricalAssets/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../HistoricalExtradayPrices/.idea/workspace.xml" afterPath="$PROJECT_DIR$/../HistoricalExtradayPrices/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />

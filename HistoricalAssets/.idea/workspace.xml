@@ -2,19 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e04b102b-17da-46b9-956a-27f7bdeb866a" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../HistoricalExtradayPrices/.idea/HistoricalExtradayPrices.iml" afterPath="$PROJECT_DIR$/../HistoricalExtradayPrices/.idea/HistoricalExtradayPrices.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../HistoricalExtradayPrices/common_extraday_tools.py" afterPath="$PROJECT_DIR$/../HistoricalExtradayPrices/common_extraday_tools.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../HistoricalIntradayPrices/common_intraday_tools.py" afterPath="$PROJECT_DIR$/../HistoricalIntradayPrices/common_intraday_tools.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../HistoricalIntradayPrices/daily_intraday_equity_prices_import_script.py" afterPath="$PROJECT_DIR$/../HistoricalIntradayPrices/daily_intraday_equity_prices_import_script.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../HistoricalExtradayPrices/.idea/misc.xml" afterPath="$PROJECT_DIR$/../HistoricalExtradayPrices/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../HistoricalExtradayPrices/monthly_extraday_script.py" afterPath="$PROJECT_DIR$/../HistoricalExtradayPrices/monthly_extraday_script.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../Utilities/my_assets.py" afterPath="$PROJECT_DIR$/../Utilities/my_assets.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/refresh_assets_from_bbg.py" afterPath="$PROJECT_DIR$/refresh_assets_from_bbg.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../HistoricalExtradayPrices/test.py" afterPath="$PROJECT_DIR$/../HistoricalExtradayPrices/test.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../.idea/workspace.xml" afterPath="$PROJECT_DIR$/../.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../HistoricalExtradayPrices/.idea/workspace.xml" afterPath="$PROJECT_DIR$/../HistoricalExtradayPrices/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../HistoricalIntradayPrices/.idea/workspace.xml" afterPath="$PROJECT_DIR$/../HistoricalIntradayPrices/.idea/workspace.xml" />
     </list>
     <ignored path="HistoricalAssets.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -483,7 +471,13 @@
       <option name="project" value="LOCAL" />
       <updated>1443935582799</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="'std commit'">
+      <created>1444093162489</created>
+      <option name="number" value="00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1444093162489</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -492,17 +486,17 @@
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25237593" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32864866" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32792208" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32792208" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24973656" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3982684" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
