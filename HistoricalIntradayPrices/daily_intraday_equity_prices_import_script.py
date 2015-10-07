@@ -1,6 +1,5 @@
 import sys
 sys.path.append('F:/pythonCode/Utilities')
-import datetime
 import my_logging
 import my_assets
 import os.path
@@ -9,17 +8,15 @@ import common_intraday_tools
 import yahoo_intraday_import
 
 
-def run():
+def refresh(date):
 
-    today = datetime.date.today()
-
-    if today.isoweekday() >= 6:
+    if date.isoweekday() >= 6:
         return 0
 
     log_file_path = \
         os.path.join('F:/FinancialData/Logs/',
-                     today.isoformat(), "IntradayYahooEquityImport.txt")
-    my_logging.initialize_logging(log_file_path)
+                     date.isoformat(), "IntradayYahooEquityImport.txt")
+    logger = my_logging.initialize_logging(log_file_path)
 
     equity_universe = common_intraday_tools.get_equity_import_universe_from_oats()
     equity_universe = equity_universe.loc[equity_universe['Primary_Listing_Mkt'] != 'U'][['Symbol']]
@@ -38,10 +35,8 @@ def run():
 
     yahoo_intraday_import.retrieve_and_store_today_price_from_yahoo\
         (
-            assets, 'F:/FinancialData/HistoricalIntradayPrices/', today=today
+            assets, 'F:/FinancialData/HistoricalIntradayPrices/', today=date
         )
 
-    my_logging.shutdown()
+    my_logging.shutdown(logger)
     return 0
-
-run()

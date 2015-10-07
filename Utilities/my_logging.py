@@ -2,6 +2,7 @@ import logging
 import logging.config
 import os.path
 
+__console_handler_already_initialized = False
 
 __LOG_DIRECTORY = 'F:/financialData/'
 
@@ -25,11 +26,16 @@ def initialize_logging(log_file_path):
     console_handler.setFormatter(formatter)
     file_handler.setFormatter(formatter)
 
-    logger.addHandler(console_handler)
+    global __console_handler_already_initialized
+    if not __console_handler_already_initialized:
+        logger.addHandler(console_handler)
+        __console_handler_already_initialized = True
+
     logger.addHandler(file_handler)
+    return logger
 
 
-def shutdown():
-    logger = logging.getLogger()
+def shutdown(logger):
+
     for h in logger.handlers:
         h.close()
