@@ -39,4 +39,4 @@ def shutdown(logger):
 
     for h in logger.handlers:
         h.close()
-    logger.shutdown()
+    logging.shutdown()
