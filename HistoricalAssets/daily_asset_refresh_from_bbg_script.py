@@ -17,7 +17,7 @@ def refresh(date):
     log_file_path = \
         os.path.join('F:/financialData/Logs/',
                      today.isoformat(), 'BBGSymbiologyImport.txt')
-    logger = my_logging.initialize_logging(log_file_path)
+    my_logging.initialize_logging(log_file_path)
 
     bbg_open_symbiology_configs = \
     [
@@ -38,5 +38,5 @@ def refresh(date):
 
     asset_import_tools.historize_assets(bbg_open_symbiology_configs, [path_to_zip])
 
-    my_logging.shutdown(logger)
+    my_logging.shutdown()
 

@@ -16,7 +16,7 @@ def refresh(date):
     log_file_path = \
         os.path.join('F:/FinancialData/Logs/',
                      date.isoformat(), "IntradayYahooEquityImport.txt")
-    logger = my_logging.initialize_logging(log_file_path)
+    my_logging.initialize_logging(log_file_path)
 
     equity_universe = common_intraday_tools.get_equity_import_universe_from_oats()
     equity_universe = equity_universe.loc[equity_universe['Primary_Listing_Mkt'] != 'U'][['Symbol']]
@@ -38,5 +38,5 @@ def refresh(date):
             assets, 'F:/FinancialData/HistoricalIntradayPrices/', today=date
         )
 
-    my_logging.shutdown(logger)
+    my_logging.shutdown()
     return 0

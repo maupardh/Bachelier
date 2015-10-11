@@ -32,11 +32,7 @@ def initialize_logging(log_file_path):
         __console_handler_already_initialized = True
 
     logger.addHandler(file_handler)
-    return logger
 
 
-def shutdown(logger):
-
-    for h in logger.handlers:
-        h.close()
+def shutdown():
     logging.shutdown()
