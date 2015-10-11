@@ -63,6 +63,8 @@ def write_extraday_prices_table_for_single_day(new_content, date):
 
         logging.info('Merging')
         merged_content = old_content.append(new_content)
+        merged_content = merged_content[merged_content['Close'] > 0]
+        merged_content = merged_content[merged_content['AdjClose'] > 0]
 
         def resolve_price_for_same_ticker(group):
             if group.shape[0] == 1:

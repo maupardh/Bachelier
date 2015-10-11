@@ -73,6 +73,8 @@ def _get_price_from_yahoo(yahoo_ticker, start_date, end_date, feed_source):
         price_dat['Open'] = price_dat['Open'].fillna(0)
         price_dat = price_dat.apply(lambda t: propagate_on_zero_volume(t), axis=1)
         price_dat = price_dat.fillna(0)
+        price_dat = price_dat[price_dat['Close'] > 0]
+        price_dat = price_dat[price_dat['AdjClose'] > 0]
 
         logging.info('Yahoo Single ticker price import completed')
         return price_dat
