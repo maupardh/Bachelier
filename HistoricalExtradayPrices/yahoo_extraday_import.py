@@ -1,13 +1,11 @@
 import urllib2
-import os.path
 import logging
 import chrono
-import time
 import datetime
 import pandas as pd
 import common_extraday_tools
 from StringIO import StringIO
-import my_general_tools
+import my_datetime_tools
 
 __QUOTA_PER_INTERVAL = 2000
 __INTERVAL = datetime.timedelta(minutes=60)
@@ -44,37 +42,20 @@ def _get_price_from_yahoo(yahoo_ticker, start_date, end_date, feed_source):
 
         content = StringIO(s)
         price_dat = pd.read_csv(content, sep=',')
-        price_dat = price_dat.convert_objects(convert_numeric=True, convert_dates=False, convert_timedeltas=False)
         price_dat.columns = map(lambda col: str.replace(str.replace(col, ' ', ''), '.', ''), price_dat.columns)
         price_dat['Date'] = map(lambda d: datetime.datetime.strptime(d, "%Y-%m-%d").date(), price_dat['Date'])
+        price_dat[common_extraday_tools.STANDARD_COL_NAMES] = price_dat[common_extraday_tools.STANDARD_COL_NAMES].astype(float)
         price_dat.index = price_dat['Date']
         price_dat = price_dat[common_extraday_tools.STANDARD_COL_NAMES]
 
         price_dat = price_dat.reindex(index=std_index, method=None)
 
-        def propagate_on_zero_volume(t):
-            if t['Volume'] == 0:
-                close = t['Close']
-                adj_close = t['AdjClose']
-                open = t['Open']
-                if close > 0 and adj_close > 0:
-                    if open > 0:
-                        return [open, close, adj_close, 0]
-                    else:
-                        return [close, close, adj_close, 0]
-                else:
-                    return [0]*4
-            else:
-                return t.values
-
         price_dat['Volume'] = price_dat['Volume'].fillna(0)
+        price_dat = price_dat[price_dat['Volume'] > 0]
         price_dat['Close'] = price_dat['Close'].fillna(method='ffill')
         price_dat['AdjClose'] = price_dat['AdjClose'].fillna(method='ffill')
         price_dat['Open'] = price_dat['Open'].fillna(0)
-        price_dat = price_dat.apply(lambda t: propagate_on_zero_volume(t), axis=1)
         price_dat = price_dat.fillna(0)
-        price_dat = price_dat[price_dat['Close'] > 0]
-        price_dat = price_dat[price_dat['AdjClose'] > 0]
 
         logging.info('Yahoo Single ticker price import completed')
         return price_dat
@@ -91,8 +72,7 @@ def retrieve_and_store_historical_prices(assets_df, start_date, end_date):
         logging.warning('Called yahoo import on an empty asset dataFrame')
         return
 
-    assets_df['ID_BB_GLOBAL'] = assets_df.index
-    assets_df = assets_df.reset_index(drop=True)
+    assets_df.reset_index(inplace=True)
     assets_df['YAHOO_TICKER'] = map(lambda t: str.replace(t, '/', '-'), assets_df['ID_BB_SEC_NUM_DES'])
 
     days_span = (end_date-start_date).total_seconds()/(3600*24)
@@ -113,23 +93,28 @@ def retrieve_and_store_historical_prices(assets_df, start_date, end_date):
     for i in range(1, number_of_batches + 1):
 
         logging.info('Thread to sleep for %s before next batch - as per quota' % str(time_delta_to_sleep))
-        time.sleep(time_delta_to_sleep.total_seconds())
+        my_datetime_tools.sleep_with_infinite_loop(10)(time_delta_to_sleep.total_seconds())
 
         cur_batch = assets_df[__QUOTA_SAFE * (i - 1):min(__QUOTA_SAFE * i, number_of_assets)]
         logging.info('Starting batch %s' % i)
 
         with chrono.Timer() as timed:
-            pandas_content = pd.DataFrame(None)
-            for (index, asset) in cur_batch.iterrows():
+            def retrieve_prices(asset):
                 logging.info('   Retrieving Prices for: ' + asset['ID_BB_SEC_NUM_DES'])
                 new_pandas_content = _get_price_from_yahoo(asset['YAHOO_TICKER'], start_date, end_date,
                                                            asset['FEED_SOURCE'])
+                if new_pandas_content.empty:
+                    return pd.DataFrame(None)
                 new_pandas_content['ID_BB_GLOBAL'] = asset['ID_BB_GLOBAL']
-                pandas_content = pandas_content.append(new_pandas_content)
+                new_pandas_content['Date'] = new_pandas_content.index
+                new_pandas_content.index = [new_pandas_content['ID_BB_GLOBAL'], new_pandas_content['Date']]
+                new_pandas_content.index.name = ['ID_BB_GLOBAL', 'Date']
+                new_pandas_content = new_pandas_content[common_extraday_tools.STANDARD_COL_NAMES]
+                return new_pandas_content
 
-
-            pandas_content['Date'] = pandas_content.index
-            pandas_content = pandas_content.reset_index(drop=True)
+            cur_batch = cur_batch.to_dict(orient='index')
+            pandas_content = pd.concat(map(retrieve_prices, cur_batch.values()))
+            pandas_content.reset_index(drop=False, inplace=True)
             groups_by_date = pandas_content.groupby('Date')
 
             logging.info('Printing Extraday Prices by date..')
@@ -139,7 +124,7 @@ def retrieve_and_store_historical_prices(assets_df, start_date, end_date):
                 group = group[common_extraday_tools.STANDARD_COL_NAMES]
                 group.index.name = common_extraday_tools.STANDARD_INDEX_NAME
                 common_extraday_tools.write_extraday_prices_table_for_single_day(group, date)
-                logging.info('Printing prices of %s tickers for %s successful' % (len(assets_df), date.isoformat()))
+                logging.info('Printing prices of %s tickers for %s successful' % (len(cur_batch), date.isoformat()))
 
         time_delta_to_sleep = max\
             (
@@ -149,8 +134,6 @@ def retrieve_and_store_historical_prices(assets_df, start_date, end_date):
             )
         logging.info('Batch completed: %s tickers imported' % len(cur_batch))
 
-
-
     logging.info('Output completed')
     logging.info('Thread to sleep for %s after last batch - as per quota' % str(time_delta_to_sleep))
-    time.sleep(time_delta_to_sleep.total_seconds())
+    my_datetime_tools.sleep_with_infinite_loop(10)(time_delta_to_sleep.total_seconds())

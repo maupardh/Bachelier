@@ -1,10 +1,8 @@
 import sys
 sys.path.append('/home/maupardh/Documents/PythonCode/Utilities')
-import pandas as pd
 import datetime
 import os.path
 import yahoo_extraday_import
-import common_extraday_tools
 import my_datetime_tools
 import my_holidays
 import my_logging
@@ -29,10 +27,10 @@ def run():
     assets = assets[map(str.isalpha, assets['ID_BB_SEC_NUM_DES'])]
     assets = assets[['ID_BB_SEC_NUM_DES', 'FEED_SOURCE']]
     assets.drop_duplicates(inplace=True)
-    assets.sort('ID_BB_SEC_NUM_DES', inplace=True)
+    assets.sort_values(by='ID_BB_SEC_NUM_DES', inplace=True)
 
     end_date = my_datetime_tools.nearest_past_or_now_workday(datetime.date.today())
-    start_date = my_datetime_tools.add_business_days(end_date, -252 * 4, my_holidays.HOLIDAYS_BY_COUNTRY_CONFIG['US'])
+    start_date = my_datetime_tools.add_business_days(end_date, -252 * 5, my_holidays.HOLIDAYS_BY_COUNTRY_CONFIG['US'])
 
     yahoo_extraday_import.retrieve_and_store_historical_prices(assets, start_date, end_date)
     my_logging.shutdown()

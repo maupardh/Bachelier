@@ -1,6 +1,6 @@
 import datetime
 import numpy as np
-
+import time
 
 def add_business_days(d, number, holidays=[]):
     if number == 0:
@@ -30,3 +30,11 @@ def round_to_nearest_minute(t):
 
 def truncate_to_minute(t):
     return t + datetime.timedelta(seconds=-t.second, microseconds=-t.microsecond)
+
+
+def sleep_with_infinite_loop(secs):
+
+    timeout = time.time() + secs
+    while True:
+        if time.time() > timeout:
+            break

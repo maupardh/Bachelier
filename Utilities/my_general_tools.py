@@ -3,6 +3,7 @@ import logging
 import pandas as pd
 import my_zipping
 from StringIO import StringIO
+import time
 
 
 def read_csv_all_lines(file_path, sep='\n'):
@@ -63,4 +64,3 @@ def read_and_log_pandas_df(file_path):
         logging.critical('      Reading path %s failed, with error: %s' % (file_path, err.message))
         content = pd.DataFrame(None)
     return content
-

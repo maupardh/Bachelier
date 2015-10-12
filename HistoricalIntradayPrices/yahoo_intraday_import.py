@@ -4,7 +4,6 @@ from StringIO import StringIO
 import datetime
 import logging
 import os.path
-import time
 import chrono
 import common_intraday_tools
 import my_general_tools
@@ -119,7 +118,7 @@ def retrieve_and_store_today_price_from_yahoo(assets_df, root_directory_name, to
     for i in range(1, number_of_batches + 1):
 
         logging.info('Thread to sleep for %s before next batch - as per quota' % str(time_delta_to_sleep))
-        time.sleep(time_delta_to_sleep.total_seconds())
+        my_datetime_tools.sleep_with_infinite_loop(time_delta_to_sleep.total_seconds())
 
         cur_batch = assets_df[__QUOTA_SAFE * (i - 1):min(__QUOTA_SAFE * i, number_of_assets)]
         logging.info('Starting batch %s' % i)
@@ -141,4 +140,4 @@ def retrieve_and_store_today_price_from_yahoo(assets_df, root_directory_name, to
 
     logging.info('Output completed')
     logging.info('Thread to sleep for %s before next task - as per quota' % str(time_delta_to_sleep))
-    time.sleep(time_delta_to_sleep.total_seconds())
+    my_datetime_tools.sleep_with_infinite_loop(time_delta_to_sleep.total_seconds())
