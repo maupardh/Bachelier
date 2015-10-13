@@ -8,6 +8,7 @@ import chrono
 import common_intraday_tools
 import my_general_tools
 import my_datetime_tools
+import pytz
 
 __QUOTA_PER_INTERVAL = 2000
 __INTERVAL = datetime.timedelta(minutes=60)
@@ -56,7 +57,7 @@ def get_price_from_yahoo(yahoo_ticker, feed_source, today=None):
         price_dat = price_dat.convert_objects(convert_numeric=True, convert_dates=False, convert_timedeltas=False)
         price_dat.index.name = 'Time'
 
-        price_dat.index = price_dat.index.map(lambda t: datetime.datetime.utcfromtimestamp(t))
+        price_dat.index = price_dat.index.map(lambda t: pytz.utc.localize(datetime.datetime.utcfromtimestamp(t)))
         price_dat.index = price_dat.index.map(my_datetime_tools.truncate_to_minute)
 
         price_dat = price_dat[common_intraday_tools.STANDARD_COL_NAMES]
@@ -67,7 +68,7 @@ def get_price_from_yahoo(yahoo_ticker, feed_source, today=None):
             }
         )
         price_dat = price_dat[common_intraday_tools.STANDARD_COL_NAMES]
-        price_dat = price_dat.reindex(index=std_index, method=None)
+        price_dat = price_dat.reindex(index=std_index)
         price_dat['Volume'] = price_dat['Volume'].fillna(0)
 
         def propagate_on_zero_volume(t, field):
