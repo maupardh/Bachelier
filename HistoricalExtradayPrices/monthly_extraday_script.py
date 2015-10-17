@@ -33,8 +33,14 @@ def run():
     start_date = my_datetime_tools.add_business_days(end_date, -252 * 5, my_holidays.HOLIDAYS_BY_COUNTRY_CONFIG['US'])
 
     yahoo_extraday_import.retrieve_and_store_historical_prices(assets, start_date, end_date)
+
+    end_date = start_date
+    start_date= my_datetime_tools.add_business_days(end_date, -252 * 5, my_holidays.HOLIDAYS_BY_COUNTRY_CONFIG['US'])
+
     my_logging.shutdown()
 
     return 0
 
 run()
+
+#CHECK ADJCLOSE BEFORE/AFTER SPLIT ON : ACST, BBG001NMDXS6 2015-10-15

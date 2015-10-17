@@ -52,7 +52,7 @@ def get_extraday_prices(start_date, end_date):
     return content
 
 
-def write_extraday_prices_table_for_single_day(new_content, date):
+def write_extraday_prices_table_for_single_day(new_content, date, resolve_method='R'):
 
     try:
         logging.info('Retrieving existing prices')
@@ -60,15 +60,22 @@ def write_extraday_prices_table_for_single_day(new_content, date):
         new_content.index = [[date]*new_content.shape[0], new_content.index]
         new_content.index.names = ['Date', STANDARD_INDEX_NAME]
 
+        old_content['Age'] = 'Old'
+        new_content['Age'] = 'New'
+
         merged_content = pd.concat([new_content, old_content])
         merged_content = merged_content[merged_content['Volume'] > 0]
 
         def resolve_price_for_same_ticker(group):
             if group.shape[0] == 1:
                 return group
-            else:
-                group = group[group['Volume'] == max(group['Volume'])]
-                return group.head(1)
+            if resolve_method == 'R':
+                if 'New' in set(group['Age']):
+                    group = group[group['Age'] == 'New']
+            if group.shape[0] == 1:
+                return group
+            group = group[group['Volume'] == max(group['Volume'])]
+            return group.head(1)
 
         groups = zip(*merged_content.groupby(level=new_content.index.names))[1]
         merged_content_resolved = pd.concat(map(resolve_price_for_same_ticker, groups))
