@@ -57,28 +57,23 @@ def write_extraday_prices_table_for_single_day(new_content, date, resolve_method
     try:
         logging.info('Retrieving existing prices')
         old_content = _get_extraday_prices(date)
-        new_content.index = [[date]*new_content.shape[0], new_content.index]
-        new_content.index.names = ['Date', STANDARD_INDEX_NAME]
 
-        old_content['Age'] = 'Old'
-        new_content['Age'] = 'New'
+        merged_content_resolved = pd.DataFrame(None)
 
-        merged_content = pd.concat([new_content, old_content])
-        merged_content = merged_content[merged_content['Volume'] > 0]
+        if not old_content.empty:
+            old_content.loc[:, 'Age'] = 'Old'
+            old_content = old_content[old_content['Volume'] > 0]
 
-        def resolve_price_for_same_ticker(group):
-            if group.shape[0] == 1:
-                return group
-            if resolve_method == 'R':
-                if 'New' in set(group['Age']):
-                    group = group[group['Age'] == 'New']
-            if group.shape[0] == 1:
-                return group
-            group = group[group['Volume'] == max(group['Volume'])]
-            return group.head(1)
+        if not new_content.empty:
+            new_content.loc[:, 'Age'] = 'New'
+            new_content = new_content[new_content['Volume'] > 0]
+            new_content.index = [[date]*new_content.shape[0], new_content.index]
+            new_content.index.names = ['Date', STANDARD_INDEX_NAME]
 
-        groups = zip(*merged_content.groupby(level=new_content.index.names))[1]
-        merged_content_resolved = pd.concat(map(resolve_price_for_same_ticker, groups))
+        if resolve_method == 'R':
+            old_content.drop(new_content.index, axis=0, inplace=True, errors='ignore')
+            merged_content_resolved = pd.concat([old_content, new_content])
+
         merged_content_resolved.reset_index(inplace=True, drop=False)
         merged_content_resolved.index = merged_content_resolved[STANDARD_INDEX_NAME]
         merged_content_resolved = merged_content_resolved[STANDARD_COL_NAMES]

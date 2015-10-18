@@ -33,7 +33,7 @@ def _get_price_from_yahoo(yahoo_ticker, start_date, end_date, feed_source):
                 '&d=' + str(end_date.month - 1) + \
                 '&e=' + str(end_date.day) + \
                 '&f=' + str(end_date.year) + \
-                '&g=d&' + \
+                '&g=d' + \
                 '&s=' + yahoo_ticker + \
                 '&ignore=.csv'
         f = urllib2.urlopen(query)

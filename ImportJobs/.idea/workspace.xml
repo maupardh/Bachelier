@@ -8,8 +8,8 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../HistoricalExtradayPrices/common_extraday_tools.py" afterPath="$PROJECT_DIR$/../HistoricalExtradayPrices/common_extraday_tools.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../HistoricalExtradayPrices/monthly_extraday_script.py" afterPath="$PROJECT_DIR$/../HistoricalExtradayPrices/monthly_extraday_script.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../Utilities/my_holidays.py" afterPath="$PROJECT_DIR$/../Utilities/my_holidays.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../HistoricalExtradayPrices/test.py" afterPath="$PROJECT_DIR$/../HistoricalExtradayPrices/test.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../HistoricalExtradayPrices/yahoo_extraday_import.py" afterPath="$PROJECT_DIR$/../HistoricalExtradayPrices/yahoo_extraday_import.py" />
     </list>
     <ignored path="ImportJobs.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -34,9 +34,10 @@
         <entry file="file://$PROJECT_DIR$/../HistoricalExtradayPrices/yahoo_extraday_import.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="105" column="44" selection-start-line="105" selection-start-column="44" selection-end-line="105" selection-end-column="44" />
+              <caret line="9" column="23" selection-start-line="9" selection-start-column="23" selection-end-line="9" selection-end-column="23" />
               <folding>
                 <element signature="e#0#14#0" expanded="true" />
+                <element signature="e#2927#6584#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -70,7 +71,7 @@
         <entry file="file://$PROJECT_DIR$/../HistoricalAssets/daily_asset_refresh_from_bbg_script.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="37" column="0" selection-start-line="37" selection-start-column="0" selection-end-line="37" selection-end-column="0" />
+              <caret line="22" column="5" selection-start-line="22" selection-start-column="5" selection-end-line="22" selection-end-column="5" />
               <folding />
             </state>
           </provider>
@@ -100,7 +101,7 @@
         <entry file="file://$PROJECT_DIR$/../Utilities/my_holidays.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="26" column="0" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
+              <caret line="24" column="16" selection-start-line="24" selection-start-column="16" selection-end-line="24" selection-end-column="16" />
               <folding />
             </state>
           </provider>
@@ -109,18 +110,8 @@
       <file leaf-file-name="monthly_extraday_script.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/../HistoricalExtradayPrices/monthly_extraday_script.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.57954544">
-              <caret line="30" column="0" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="daily_intraday_equity_prices_import_script.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../HistoricalIntradayPrices/daily_intraday_equity_prices_import_script.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.7419355">
+              <caret line="43" column="12" selection-start-line="43" selection-start-column="12" selection-end-line="43" selection-end-column="12" />
               <folding />
             </state>
           </provider>
@@ -130,12 +121,13 @@
         <entry file="file://$PROJECT_DIR$/../HistoricalExtradayPrices/common_extraday_tools.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="89" column="0" selection-start-line="89" selection-start-column="0" selection-end-line="89" selection-end-column="0" />
+              <caret line="54" column="86" selection-start-line="54" selection-start-column="86" selection-end-line="54" selection-end-column="86" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
                 <element signature="e#666#750#0" expanded="false" />
                 <element signature="e#790#1485#0" expanded="false" />
                 <element signature="e#1540#1712#0" expanded="false" />
+                <element signature="e#1807#3125#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -160,14 +152,14 @@
         <option value="$PROJECT_DIR$/../Utilities/my_logging.py" />
         <option value="$PROJECT_DIR$/../Utilities/my_general_tools.py" />
         <option value="$PROJECT_DIR$/../Utilities/my_datetime_tools.py" />
-        <option value="$PROJECT_DIR$/../HistoricalExtradayPrices/yahoo_extraday_import.py" />
         <option value="$PROJECT_DIR$/../HistoricalIntradayPrices/yahoo_intraday_import.py" />
         <option value="$PROJECT_DIR$/../HistoricalIntradayPrices/daily_intraday_equity_prices_import_script.py" />
-        <option value="$PROJECT_DIR$/../HistoricalAssets/daily_asset_refresh_from_bbg_script.py" />
-        <option value="$PROJECT_DIR$/../HistoricalExtradayPrices/common_extraday_tools.py" />
         <option value="$PROJECT_DIR$/../HistoricalExtradayPrices/test.py" />
         <option value="$PROJECT_DIR$/../Utilities/my_holidays.py" />
+        <option value="$PROJECT_DIR$/../HistoricalAssets/daily_asset_refresh_from_bbg_script.py" />
+        <option value="$PROJECT_DIR$/../HistoricalExtradayPrices/common_extraday_tools.py" />
         <option value="$PROJECT_DIR$/../HistoricalExtradayPrices/monthly_extraday_script.py" />
+        <option value="$PROJECT_DIR$/../HistoricalExtradayPrices/yahoo_extraday_import.py" />
       </list>
     </option>
   </component>
@@ -294,7 +286,7 @@
     <property name="recentsLimit" value="5" />
     <property name="FullScreen" value="false" />
   </component>
-  <component name="RunManager" selected="Python.test">
+  <component name="RunManager" selected="Python.monthly_extraday_script">
     <configuration default="false" name="daily_import" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -359,6 +351,23 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="ImportJobs" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../HistoricalIntradayPrices/daily_intraday_equity_prices_import_script.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="daily_asset_refresh_from_bbg_script" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../HistoricalAssets" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="ImportJobs" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../HistoricalAssets/daily_asset_refresh_from_bbg_script.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
@@ -485,18 +494,20 @@
       <option name="USE_KEYWORD" value="false" />
       <method />
     </configuration>
-    <list size="4">
+    <list size="5">
       <item index="0" class="java.lang.String" itemvalue="Python.daily_import" />
       <item index="1" class="java.lang.String" itemvalue="Python.test" />
       <item index="2" class="java.lang.String" itemvalue="Python.monthly_extraday_script" />
       <item index="3" class="java.lang.String" itemvalue="Python.daily_intraday_equity_prices_import_script" />
+      <item index="4" class="java.lang.String" itemvalue="Python.daily_asset_refresh_from_bbg_script" />
     </list>
     <recent_temporary>
-      <list size="4">
-        <item index="0" class="java.lang.String" itemvalue="Python.test" />
-        <item index="1" class="java.lang.String" itemvalue="Python.daily_intraday_equity_prices_import_script" />
-        <item index="2" class="java.lang.String" itemvalue="Python.daily_import" />
-        <item index="3" class="java.lang.String" itemvalue="Python.monthly_extraday_script" />
+      <list size="5">
+        <item index="0" class="java.lang.String" itemvalue="Python.monthly_extraday_script" />
+        <item index="1" class="java.lang.String" itemvalue="Python.daily_asset_refresh_from_bbg_script" />
+        <item index="2" class="java.lang.String" itemvalue="Python.test" />
+        <item index="3" class="java.lang.String" itemvalue="Python.daily_intraday_equity_prices_import_script" />
+        <item index="4" class="java.lang.String" itemvalue="Python.daily_import" />
       </list>
     </recent_temporary>
   </component>
@@ -571,7 +582,13 @@
       <option name="project" value="LOCAL" />
       <updated>1444711451232</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="'std'">
+      <created>1445120195155</created>
+      <option name="number" value="00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1445120195155</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -580,17 +597,17 @@
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25132555" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32972974" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32972974" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32900432" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.39891893" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.39935064" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -623,11 +640,6 @@
           <option name="timeStamp" value="92" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/../HistoricalExtradayPrices/yahoo_extraday_import.py</url>
-          <line>38</line>
-          <option name="timeStamp" value="103" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="python-line">
           <url>file://$PROJECT_DIR$/../HistoricalExtradayPrices/test.py</url>
           <line>23</line>
           <option name="timeStamp" value="104" />
@@ -645,18 +657,11 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="106" />
+      <option name="time" value="126" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/../Utilities/my_datetime_tools.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../Utilities/my_general_tools.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -695,6 +700,7 @@
             <element signature="e#666#750#0" expanded="false" />
             <element signature="e#790#1485#0" expanded="false" />
             <element signature="e#1540#1712#0" expanded="false" />
+            <element signature="e#1807#3125#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -963,16 +969,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../HistoricalExtradayPrices/yahoo_extraday_import.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="105" column="44" selection-start-line="105" selection-start-column="44" selection-end-line="105" selection-end-column="44" />
-          <folding>
-            <element signature="e#0#14#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/daily_import.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -991,14 +987,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../HistoricalAssets/daily_asset_refresh_from_bbg_script.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="37" column="0" selection-start-line="37" selection-start-column="0" selection-end-line="37" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../HistoricalExtradayPrices/test.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1010,28 +998,56 @@
     <entry file="file://$PROJECT_DIR$/../Utilities/my_holidays.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="26" column="0" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
+          <caret line="24" column="16" selection-start-line="24" selection-start-column="16" selection-end-line="24" selection-end-column="16" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../HistoricalAssets/daily_asset_refresh_from_bbg_script.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="22" column="5" selection-start-line="22" selection-start-column="5" selection-end-line="22" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Roaming/Python/Python27/site-packages/pandas/core/indexing.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="3.5256166">
+          <caret line="419" column="0" selection-start-line="419" selection-start-column="0" selection-end-line="419" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../HistoricalExtradayPrices/yahoo_extraday_import.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="9" column="23" selection-start-line="9" selection-start-column="23" selection-end-line="9" selection-end-column="23" />
+          <folding>
+            <element signature="e#0#14#0" expanded="true" />
+            <element signature="e#2927#6584#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../HistoricalExtradayPrices/common_extraday_tools.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="89" column="0" selection-start-line="89" selection-start-column="0" selection-end-line="89" selection-end-column="0" />
+          <caret line="54" column="86" selection-start-line="54" selection-start-column="86" selection-end-line="54" selection-end-column="86" />
           <folding>
             <element signature="e#0#19#0" expanded="true" />
             <element signature="e#666#750#0" expanded="false" />
             <element signature="e#790#1485#0" expanded="false" />
             <element signature="e#1540#1712#0" expanded="false" />
+            <element signature="e#1807#3125#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../HistoricalExtradayPrices/monthly_extraday_script.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.57954544">
-          <caret line="30" column="0" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.7419355">
+          <caret line="43" column="12" selection-start-line="43" selection-start-column="12" selection-end-line="43" selection-end-column="12" />
           <folding />
         </state>
       </provider>
