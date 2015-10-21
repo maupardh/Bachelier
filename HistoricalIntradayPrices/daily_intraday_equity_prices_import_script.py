@@ -1,8 +1,6 @@
 import sys
 sys.path.append('F:/pythonCode/Utilities')
-import my_logging
 import my_assets
-import os.path
 import pandas as pd
 import common_intraday_tools
 import yahoo_intraday_import
@@ -12,11 +10,6 @@ def refresh(date):
 
     if date.isoweekday() >= 6:
         return 0
-
-    log_file_path = \
-        os.path.join('F:/FinancialData/Logs/',
-                     date.isoformat(), "IntradayYahooEquityImport.txt")
-    my_logging.initialize_logging(log_file_path)
 
     equity_universe = common_intraday_tools.get_equity_import_universe_from_oats()
     equity_universe = equity_universe.loc[equity_universe['Primary_Listing_Mkt'] != 'U'][['Symbol']]
@@ -38,5 +31,4 @@ def refresh(date):
             assets, 'F:/FinancialData/HistoricalIntradayPrices/', today=date
         )
 
-    my_logging.shutdown()
     return 0

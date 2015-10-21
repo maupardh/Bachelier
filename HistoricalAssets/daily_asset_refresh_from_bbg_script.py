@@ -1,7 +1,5 @@
 import sys
 sys.path.append('F:/pythonCode/Utilities')
-import datetime
-import my_logging
 import os.path
 import my_assets
 import asset_import_tools
@@ -11,13 +9,6 @@ def refresh(date):
 
     if date.isoweekday() >= 6:
         return 0
-
-    today = datetime.date.today()
-
-    log_file_path = \
-        os.path.join('F:/financialData/Logs/',
-                     today.isoformat(), 'BBGSymbiologyImport.txt')
-    my_logging.initialize_logging(log_file_path)
 
     bbg_open_symbiology_configs = \
     [
@@ -38,5 +29,4 @@ def refresh(date):
 
     asset_import_tools.historize_assets(bbg_open_symbiology_configs, [path_to_zip])
 
-    my_logging.shutdown()
 
