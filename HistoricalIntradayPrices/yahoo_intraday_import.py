@@ -16,60 +16,72 @@ __INTERVAL_SAFETY_MARGIN = datetime.timedelta(minutes=5)
 __QUOTA_SAFETY_MARGIN = 50
 __QUOTA_SAFE = __QUOTA_PER_INTERVAL - __QUOTA_SAFETY_MARGIN
 __INTERVAL_SAFE = __INTERVAL + __INTERVAL_SAFETY_MARGIN
+_MAP_BBG_FEED_SOURCE_TO_YAHOO_FEED_SOURCE = \
+    {
+        'US': '', 'UA': '', 'UB': '', 'UD': '', 'UE': '', 'UF': '', 'UJ': '', 'UM': '', 'UN': '', 'UO': '', 'UP': '',
+        'UR': '', 'UT': '', 'UU': '', 'UV': '', 'UW': '', 'UX': '', 'VJ': '', 'VK': '', 'VY': '',
+        'HK': '.HK',
+        'CS': '.SZ', 'CG': '.SS',
+        'GF': '.F', 'GD': '.DU', 'GY': '.DE', 'GM': '.MU', 'GB': '.BE', 'GI': '.HA', 'GH': '.HM', 'GS': '.SG'
+    }
 
 
-def get_price_from_yahoo(yahoo_ticker, feed_source, today=None):
+def get_price_from_yahoo(yahoo_tickers, country, today=None):
 
     if today is None:
         today = datetime.date.today()
 
     try:
-        std_index = common_intraday_tools.REINDEXES_CACHE[feed_source][today.isoformat()]
+        std_index = common_intraday_tools.REINDEXES_CACHE[country][today.isoformat()]
     except:
         std_index = None
 
     if std_index is None:
-        common_intraday_tools.REINDEXES_CACHE[feed_source][today.isoformat()] = \
-            common_intraday_tools.get_standardized_intraday_dtindex(feed_source, today)
-        std_index = common_intraday_tools.REINDEXES_CACHE[feed_source][today.isoformat()]
+        common_intraday_tools.REINDEXES_CACHE[country][today.isoformat()] = \
+            common_intraday_tools.get_standardized_intraday_dtindex(country, today)
+        std_index = common_intraday_tools.REINDEXES_CACHE[country][today.isoformat()]
 
     try:
 
-        query = 'http://chartapi.finance.yahoo.com/instrument/2.0/' + \
-                yahoo_ticker + '/chartdata;type=quote;range=1d/csv'
-        f = urllib2.urlopen(query)
-        s = f.read()
-        f.close()
+        def get_price_data_of_single_ticker(yahoo_ticker):
+            try:
 
-        s_lines = str.split(s, '\n')
-        number_of_info_lines = min([i for i in range(0, len(s_lines)) if s_lines[i][:1].isdigit()])
+                query = 'http://chartapi.finance.yahoo.com/instrument/2.0/' + \
+                        yahoo_ticker + '/chartdata;type=quote;range=1d/csv'
+                s = urllib2.urlopen(query).read()
+                lines = s.split('\n')
+                number_of_info_lines = min([i for i in range(0, len(lines)) if lines[i][:1].isdigit()])
 
-        content = StringIO(s)
-        stock_dat = pd.read_csv(content, sep=':', names=['Value'], index_col=0, nrows=number_of_info_lines)
+                content = StringIO(s)
+                stock_dat = pd.read_csv(content, sep=':', names=['Value'], index_col=0, nrows=number_of_info_lines)
 
-        content = StringIO(s)
-        col_names = map(lambda title: str.capitalize(title.strip()), str.split(stock_dat.at['values', 'Value'], ','))
-        price_dat = pd.read_csv(content, skiprows=number_of_info_lines, names=col_names, index_col=0)
+                content = StringIO(s)
+                col_names = map(lambda title: str.capitalize(title.strip()), str.split(stock_dat.at['values', 'Value'], ','))
+                small_price_dat = pd.read_csv(content, skiprows=number_of_info_lines, names=col_names)
+                return small_price_dat
+            except:
+                return pd.DataFrame(None)
 
-        if 'gmtoffset' not in stock_dat.index:
-            raise
-
+        price_dat = pd.concat(map(get_price_data_of_single_ticker, yahoo_tickers), ignore_index=True)
         price_dat = price_dat.convert_objects(convert_numeric=True, convert_dates=False, convert_timedeltas=False)
-        price_dat.index.name = 'Time'
+        price_dat.rename(columns={'Timestamp': 'Time'}, inplace=True)
 
-        price_dat.index = price_dat.index.map(lambda t: pytz.utc.localize(datetime.datetime.utcfromtimestamp(t)))
-        price_dat.index = price_dat.index.map(my_datetime_tools.truncate_to_minute)
+        price_dat['Time'] = map(lambda t: pytz.utc.localize(datetime.datetime.utcfromtimestamp(t)), price_dat['Time'])
+        price_dat['Time'] = map(my_datetime_tools.truncate_to_next_minute, price_dat['Time'])
 
-        price_dat = price_dat[common_intraday_tools.STANDARD_COL_NAMES]
-        price_dat = price_dat.groupby(price_dat.index).agg\
-        (
-            {
-                'Close': lambda l: l[-1], 'High': max, 'Low': min, 'Open': lambda l: l[0], 'Volume': sum
-            }
-        )
+        price_dat = price_dat[common_intraday_tools.STANDARD_COL_NAMES+[common_intraday_tools.STANDARD_INDEX_NAME]]
+        price_dat = price_dat[price_dat['Volume'] > 0]
+        price_dat.loc[:, 'Open'] = price_dat['Open'] * price_dat['Volume']
+        price_dat.loc[:, 'Close'] = price_dat['Close'] * price_dat['Volume']
+        price_dat = price_dat.groupby(price_dat['Time'], sort=False).agg(
+             {'Open': sum, 'Close': sum, 'Low': min, 'High': max, 'Volume': sum})
+        price_dat.loc[:, 'Open'] = map(lambda x: round(x, 6), price_dat['Open']/price_dat['Volume'])
+        price_dat.loc[:, 'Close'] = map(lambda x: round(x, 6), price_dat['Close']/price_dat['Volume'])
+
         price_dat = price_dat[common_intraday_tools.STANDARD_COL_NAMES]
         price_dat = price_dat.reindex(index=std_index)
-        price_dat['Volume'] = price_dat['Volume'].fillna(0)
+        price_dat.loc[:, 'Volume'] = price_dat['Volume'].fillna(0)
+        price_dat.loc[:, 'Close'] = price_dat['Close'].fillna(method='ffill')
 
         def propagate_on_zero_volume(t, field):
             if t['Volume'] == 0:
@@ -77,16 +89,17 @@ def get_price_from_yahoo(yahoo_ticker, feed_source, today=None):
             else:
                 return t.values
 
-        price_dat['Close'] = price_dat['Close'].fillna(method='ffill')
         price_dat = price_dat.apply(lambda t: propagate_on_zero_volume(t, 'Close'), axis=1)
         price_dat = price_dat.fillna(0)
 
-        logging.info('Yahoo price import and pandas enrich successful for: %s' % yahoo_ticker)
+        logging.info('Yahoo price import and pandas enrich successful for: %s' % yahoo_tickers)
+        if price_dat['Volume'].sum() == 0:
+            return pd.DataFrame(None)
         return price_dat
 
     except Exception, err:
         logging.warning('Yahoo price import and pandas enrich failed for: %s with message %s' %
-                        (yahoo_ticker, err.message))
+                        (yahoo_tickers, err.message))
         price_dat = pd.DataFrame(data=0, index=std_index, columns=common_intraday_tools.STANDARD_COL_NAMES, dtype=float)
         return price_dat
 
@@ -97,9 +110,29 @@ def retrieve_and_store_today_price_from_yahoo(assets_df, root_directory_name, to
         logging.warning('Called yahoo import on an empty asset dataFrame')
         return
 
-    assets_df['ID_BB_GLOBAL'] = assets_df.index
-    assets_df = assets_df.reset_index(drop=True)
-    assets_df['YAHOO_TICKER'] = map(lambda t: str.replace(t, '/', '-'), assets_df['ID_BB_SEC_NUM_DES'])
+    assets_df = assets_df[['ID_BB_GLOBAL', 'ID_BB_SEC_NUM_DES', 'FEED_SOURCE', 'COMPOSITE_ID_BB_GLOBAL']]
+    assets_df.sort_values('ID_BB_SEC_NUM_DES', inplace=True)
+    assets_df.drop_duplicates(inplace=True)
+
+    def aggregate_by_composite(group):
+        composite_id = group['COMPOSITE_ID_BB_GLOBAL'][0]
+        country = group.loc[composite_id]['FEED_SOURCE']
+        group.drop(composite_id, inplace=True)
+        if group.empty:
+            return pd.DataFrame(None)
+        group['MNEMO_AND_FEED_SOURCE'] = set(zip(group['ID_BB_SEC_NUM_DES'], group['FEED_SOURCE']))
+        output_group = pd.DataFrame({'COUNTRY': [country], 'MNEMO_AND_FEED_SOURCE': [list(group['MNEMO_AND_FEED_SOURCE'])]})
+        return output_group
+
+    assets_df = pd.groupby(assets_df, by='COMPOSITE_ID_BB_GLOBAL').apply(aggregate_by_composite)
+
+    def concat_mnemo_and_feed_source(list_of_tuples):
+        return list(set([str.replace(t[0], '/', '-')+_MAP_BBG_FEED_SOURCE_TO_YAHOO_FEED_SOURCE.get(t[1], '')
+                    for t in list_of_tuples]))
+
+    assets_df['YAHOO_TICKERS'] = map(concat_mnemo_and_feed_source, assets_df['MNEMO_AND_FEED_SOURCE'])
+    assets_df.reset_index(drop=False, inplace=True)
+    assets_df = assets_df[['COMPOSITE_ID_BB_GLOBAL', 'YAHOO_TICKERS', 'COUNTRY']]
 
     if today is None:
         today = datetime.date.today()
@@ -126,19 +159,20 @@ def retrieve_and_store_today_price_from_yahoo(assets_df, root_directory_name, to
 
         with chrono.Timer() as timed:
             def historize_asset(asset):
-                logging.info('   Retrieving Prices for: '+asset['ID_BB_SEC_NUM_DES'])
-                pandas_content = get_price_from_yahoo(asset['YAHOO_TICKER'], asset['FEED_SOURCE'], today=today)
-                csv_output_path = os.path.join(csv_directory, asset['ID_BB_GLOBAL'] + '.csv.zip')
+                logging.info('   Retrieving Prices for: %s , BBG_COMPOSITE: %s'
+                             % (",".join(asset['YAHOO_TICKERS']), asset['COMPOSITE_ID_BB_GLOBAL']))
+                pandas_content = get_price_from_yahoo(asset['YAHOO_TICKERS'], asset['COUNTRY'], today=today)
+                csv_output_path = os.path.join(csv_directory, asset['COMPOSITE_ID_BB_GLOBAL'] + '.csv.zip')
                 my_general_tools.store_and_log_pandas_df(csv_output_path, pandas_content)
             cur_batch.apply(historize_asset, axis=1)
-        time_delta_to_sleep = max\
-            (
-                __INTERVAL_SAFE -
-                datetime.timedelta(seconds=timed.elapsed % __INTERVAL_SAFE.total_seconds()),
-                datetime.timedelta(seconds=0)
-            )
-        logging.info('Batch completed: %s tickers imported' % len(cur_batch))
+        time_delta_to_sleep = 5*60 # max\
+            # (
+            #     __INTERVAL_SAFE -
+            #     datetime.timedelta(seconds=timed.elapsed % __INTERVAL_SAFE.total_seconds()),
+            #     datetime.timedelta(seconds=0)
+            # )
+        logging.info('Batch %s completed: %s tickers imported' % (i, len(cur_batch)))
 
     logging.info('Output completed')
-    logging.info('Thread to sleep for %s before next task - as per quota' % str(time_delta_to_sleep))
-    my_datetime_tools.sleep_with_infinite_loop(time_delta_to_sleep.total_seconds())
+    # logging.info('Thread to sleep for %s before next task - as per quota' % str(time_delta_to_sleep))
+    # my_datetime_tools.sleep_with_infinite_loop(time_delta_to_sleep.total_seconds())

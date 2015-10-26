@@ -30,6 +30,10 @@ def mkdir_and_log(directory_name):
 
 def store_and_log_pandas_df(file_path, pandas_content):
 
+    if pandas_content.empty:
+        logging.warning(' Storing pandas d.f. failed to path: %s, because pandas table is empty' % file_path)
+        return
+
     if pandas_content.shape[0] < 5:
         logging.warning('Small pandas d.f. stored to path: %s' % file_path)
 
