@@ -53,7 +53,6 @@ def store_and_log_pandas_df(file_path, pandas_content):
 
 def read_and_log_pandas_df(file_path):
 
-    content = pd.DataFrame(None)
     try:
         if file_path.endswith('csv.zip'):
             content = pd.read_csv(StringIO(my_zipping.unzip_file_to_string_with_zipfile(file_path)))

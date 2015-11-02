@@ -2,7 +2,7 @@ import pandas as pd
 import logging
 import os.path
 import my_general_tools
-
+import asset_import_tools
 
 __ASSETS_DIRECTORY = os.path.join('F:/', 'financialData', 'Assets')
 
@@ -20,6 +20,28 @@ def get_assets():
         logging.critical('Reading assets failed with error message: %s' % err.message)
 
     return content
+
+
+def refresh_assets(date):
+
+    bbg_open_symbiology_configs = \
+    [
+        {'market_sector': 'Equity', 'security_type': 'ADR', 'date': date},
+        {'market_sector': 'Equity', 'security_type': 'BDR', 'date': date},
+        {'market_sector': 'Equity', 'security_type': 'Common_Stock', 'date': date},
+        {'market_sector': 'Equity', 'security_type': 'Preference', 'date': date},
+        {'market_sector': 'Equity', 'security_type': 'ETP', 'date': date},
+        {'market_sector': 'Equity', 'security_type': 'REIT', 'date': date},
+        {'market_sector': 'Equity', 'security_type': 'MLP', 'date': date},
+        {'market_sector': 'Equity', 'security_type': 'Tracking_Stk', 'date': date},
+        {'market_sector': 'Equity', 'security_type': 'UIT', 'date': date},
+        {'market_sector': 'Equity', 'security_type': 'Unit', 'date': date},
+        {'market_sector': 'Curncy', 'security_type': 'SPOT', 'date': date}
+    ]
+
+    path_to_zip = os.path.join(__ASSETS_DIRECTORY, 'BBGSymbiologyAssets.csv.zip')
+
+    asset_import_tools.historize_assets(bbg_open_symbiology_configs, [path_to_zip])
 
 
 def get_equity_import_universe_from_nasdaq_trader():

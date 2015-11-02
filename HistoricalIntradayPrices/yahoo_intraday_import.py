@@ -10,7 +10,7 @@ import my_general_tools
 import my_datetime_tools
 import pytz
 
-__QUOTA_PER_INTERVAL = 2000
+__QUOTA_PER_INTERVAL = 1000
 __INTERVAL = datetime.timedelta(minutes=60)
 __INTERVAL_SAFETY_MARGIN = datetime.timedelta(minutes=5)
 __QUOTA_SAFETY_MARGIN = 50
@@ -165,7 +165,7 @@ def retrieve_and_store_today_price_from_yahoo(assets_df, root_directory_name, to
                 csv_output_path = os.path.join(csv_directory, asset['COMPOSITE_ID_BB_GLOBAL'] + '.csv.zip')
                 my_general_tools.store_and_log_pandas_df(csv_output_path, pandas_content)
             cur_batch.apply(historize_asset, axis=1)
-        time_delta_to_sleep = 5*60 # max\
+        time_delta_to_sleep = datetime.timedelta(minutes=5)  # max\
             # (
             #     __INTERVAL_SAFE -
             #     datetime.timedelta(seconds=timed.elapsed % __INTERVAL_SAFE.total_seconds()),

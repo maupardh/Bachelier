@@ -114,3 +114,10 @@ FEED_SOURCES_BY_COUNTRY = \
         'CH': ['CG', 'CH', 'CS'],
         'HK': ['HK']
     }
+
+FEED_SOURCES_BY_CONTINENT = \
+    {
+        'NA': ['UA', 'UB', 'UD', 'UE', 'UF', 'UJ', 'UM', 'UN', 'UO', 'UP', 'UR', 'US', 'UT', 'UU', 'UV', 'UW', 'UX', 'VJ', 'VK', 'VY'],
+        'EMEA': ['GF', 'GD', 'GY', 'GM', 'GB', 'GI', 'GH', 'GS', 'GR'],
+        'ASIA': ['CG', 'CH', 'CS', 'HK']
+    }
