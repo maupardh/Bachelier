@@ -29,36 +29,39 @@ def refresh():
     my_logging.initialize_logging(log_file_path)
 
     # Asian Equities import
-    asian_market_close = local_tz.localize(datetime.datetime(
-        today.year, today.month, today.day, tzinfo=my_markets.EQUITY_MARKETS_BY_COUNTRY_CONFIG['CH']['TimeZone'])\
-                      + my_markets.EQUITY_MARKETS_BY_COUNTRY_CONFIG['CH']['MarketClose'])
+    asian_market_close = local_tz.normalize(
+        (my_markets.EQUITY_MARKETS_BY_COUNTRY_CONFIG['CH']['TimeZone']
+         .localize(datetime.datetime(today.year, today.month, today.day)) +
+         my_markets.EQUITY_MARKETS_BY_COUNTRY_CONFIG['CH']['MarketClose']).astimezone(local_tz))
 
-    time_to_sleep_until_asia = max(asian_market_close + datetime.timedelta(minutes=30) - datetime.datetime.now(),
+    time_to_sleep_until_asia = max(asian_market_close + datetime.timedelta(minutes=30) - local_tz.localize(datetime.datetime.now()),
                                  datetime.timedelta(minutes=5))
-    logging.info('System to sleep until asian markets, for : %s', time_to_sleep_until_asia.toString())
-    my_datetime_tools.sleep_with_infinite_loop(time_to_sleep_until_asia)
-    refresh_asia(today)
+    logging.info('System to sleep until asian markets, for : %s minutes', time_to_sleep_until_asia.total_seconds()/60)
+    # my_datetime_tools.sleep_with_infinite_loop(time_to_sleep_until_asia)
+    # refresh_asia(today)
 
     # European Equities
-    emea_market_close = local_tz.localize(datetime.datetime(
-        today.year, today.month, today.day, tzinfo=my_markets.EQUITY_MARKETS_BY_COUNTRY_CONFIG['GR']['TimeZone'])\
-                      + my_markets.EQUITY_MARKETS_BY_COUNTRY_CONFIG['GR']['MarketClose'])
+    emea_market_close = local_tz.normalize(
+        (my_markets.EQUITY_MARKETS_BY_COUNTRY_CONFIG['GR']['TimeZone']
+         .localize(datetime.datetime(today.year, today.month, today.day)) +
+         my_markets.EQUITY_MARKETS_BY_COUNTRY_CONFIG['GR']['MarketClose']).astimezone(local_tz))
 
-    time_to_sleep_until_emea = max(emea_market_close + datetime.timedelta(minutes=30) - datetime.datetime.now(),
+    time_to_sleep_until_emea = max(emea_market_close + datetime.timedelta(minutes=30) - local_tz.localize(datetime.datetime.now()),
                                  datetime.timedelta(minutes=5))
-    logging.info('System to sleep until emea markets, for : %s', time_to_sleep_until_emea.toString())
-    my_datetime_tools.sleep_with_infinite_loop(time_to_sleep_until_emea)
-    refresh_emea(today)
+    logging.info('System to sleep until emea markets, for : %s minutes', time_to_sleep_until_emea.total_seconds()/60)
+    # my_datetime_tools.sleep_with_infinite_loop(time_to_sleep_until_emea)
+    # refresh_emea(today)
 
     # North American Equities import
-    us_market_close = local_tz.localize(datetime.datetime(
-        today.year, today.month, today.day, tzinfo=my_markets.EQUITY_MARKETS_BY_COUNTRY_CONFIG['US']['TimeZone'])\
-                      + my_markets.EQUITY_MARKETS_BY_COUNTRY_CONFIG['US']['MarketClose'])
+    us_market_close = local_tz.normalize(
+        (my_markets.EQUITY_MARKETS_BY_COUNTRY_CONFIG['US']['TimeZone']
+         .localize(datetime.datetime(today.year, today.month, today.day)) +
+         my_markets.EQUITY_MARKETS_BY_COUNTRY_CONFIG['US']['MarketClose']).astimezone(local_tz))
 
-    time_to_sleep_until_us = max(us_market_close + datetime.timedelta(minutes=30) - datetime.datetime.now(),
+    time_to_sleep_until_us = max(us_market_close + datetime.timedelta(minutes=30) - local_tz.localize(datetime.datetime.now()),
                                  datetime.timedelta(minutes=5))
-    logging.info('System to sleep until us markets, for : %s', time_to_sleep_until_us.toString())
-    my_datetime_tools.sleep_with_infinite_loop(time_to_sleep_until_us)
+    logging.info('System to sleep until us markets, for : %s minutes', time_to_sleep_until_us.total_seconds()/60)
+    # my_datetime_tools.sleep_with_infinite_loop(time_to_sleep_until_us)
     refresh_na(today)
 
     my_logging.shutdown()
@@ -123,7 +126,7 @@ def refresh_asia(date):
 
 def refresh_emea(date):
 
-    my_assets.refresh_assets(date)
+    # my_assets.refresh_assets(date)
     try:
         logging.info('Starting to import Emea intraday asset prices')
 
@@ -132,6 +135,12 @@ def refresh_emea(date):
 
         emea_assets = assets[map(lambda x: x in my_markets.FEED_SOURCES_BY_CONTINENT['EMEA'], assets['FEED_SOURCE'])]
         emea_assets = emea_assets[emea_assets['MARKET_SECTOR_DES'] == 'Equity']
+        set_of_qualified_german_composites = set(emea_assets[emea_assets['FEED_SOURCE'] == 'GY']['COMPOSITE_ID_BB_GLOBAL'])
+        set_of_qualified_feed_sources = set(my_markets.FEED_SOURCES_BY_CONTINENT['EMEA']) - \
+                                        {'GF', 'GD', 'GM', 'GB', 'GI', 'GH', 'GS', 'GR'}
+        emea_assets = emea_assets[
+            emea_assets.apply(lambda row: row['FEED_SOURCE'] in set_of_qualified_feed_sources or
+                                          row['COMPOSITE_ID_BB_GLOBAL'] in set_of_qualified_german_composites, axis=1)]
         emea_assets.index = emea_assets['ID_BB_GLOBAL']
         emea_assets = emea_assets[['ID_BB_GLOBAL', 'ID_BB_SEC_NUM_DES', 'FEED_SOURCE', 'COMPOSITE_ID_BB_GLOBAL']]
         emea_assets.sort_values(by='ID_BB_SEC_NUM_DES', axis=0, ascending=True, inplace=True)
@@ -145,3 +154,5 @@ def refresh_emea(date):
 
     except Exception, err:
         logging.critical('Emea intraday price import failed with error: %s', err.message)
+
+refresh()
