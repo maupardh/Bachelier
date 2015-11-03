@@ -82,7 +82,8 @@ def refresh_na(date):
         equity_universe.drop_duplicates(inplace=True)
         us_assets = pd.merge(assets, equity_universe, left_on='ID_BB_SEC_NUM_DES', right_on='Symbol', how='inner')
         us_assets = us_assets[us_assets['MARKET_SECTOR_DES'] == 'Equity']
-        us_assets = us_assets[map(lambda country: country in my_markets.FEED_SOURCES_BY_COUNTRY['US'], us_assets['FEED_SOURCE'])]
+        us_assets = us_assets[map(lambda country: country in my_markets.EQUITY_FEED_SOURCES_BY_CONTINENT['NA'],
+                                  us_assets['FEED_SOURCE'])]
         us_assets.index = us_assets['ID_BB_GLOBAL']
         us_assets = us_assets[['ID_BB_GLOBAL', 'ID_BB_SEC_NUM_DES', 'FEED_SOURCE', 'COMPOSITE_ID_BB_GLOBAL']]
         us_assets.sort_values(by='ID_BB_SEC_NUM_DES', axis=0, ascending=True, inplace=True)
@@ -107,7 +108,7 @@ def refresh_asia(date):
         assets = my_assets.get_assets()
         assets['ID_BB_GLOBAL'] = assets.index
 
-        asia_assets = assets[map(lambda x: x in my_markets.FEED_SOURCES_BY_CONTINENT['ASIA'], assets['FEED_SOURCE'])]
+        asia_assets = assets[map(lambda x: x in my_markets.EQUITY_FEED_SOURCES_BY_CONTINENT['ASIA'], assets['FEED_SOURCE'])]
         asia_assets = asia_assets[asia_assets['MARKET_SECTOR_DES'] == 'Equity']
         asia_assets.index = asia_assets['ID_BB_GLOBAL']
         asia_assets = asia_assets[['ID_BB_GLOBAL', 'ID_BB_SEC_NUM_DES', 'FEED_SOURCE', 'COMPOSITE_ID_BB_GLOBAL']]
@@ -133,11 +134,12 @@ def refresh_emea(date):
         assets = my_assets.get_assets()
         assets['ID_BB_GLOBAL'] = assets.index
 
-        emea_assets = assets[map(lambda x: x in my_markets.FEED_SOURCES_BY_CONTINENT['EMEA'], assets['FEED_SOURCE'])]
+        emea_assets = assets[map(lambda x: x in my_markets.EQUITY_FEED_SOURCES_BY_CONTINENT['EMEA'], assets['FEED_SOURCE'])]
         emea_assets = emea_assets[emea_assets['MARKET_SECTOR_DES'] == 'Equity']
         set_of_qualified_german_composites = set(emea_assets[emea_assets['FEED_SOURCE'] == 'GY']['COMPOSITE_ID_BB_GLOBAL'])
-        set_of_qualified_feed_sources = set(my_markets.FEED_SOURCES_BY_CONTINENT['EMEA']) - \
-                                        {'GF', 'GD', 'GM', 'GB', 'GI', 'GH', 'GS', 'GR'}
+        set_of_qualified_feed_sources = set(my_markets.EQUITY_FEED_SOURCES_BY_CONTINENT['EMEA']) - \
+            my_markets.EQUITY_FEED_SOURCES_BY_COUNTRY['GR'] + ['GY']
+
         emea_assets = emea_assets[
             emea_assets.apply(lambda row: row['FEED_SOURCE'] in set_of_qualified_feed_sources or
                                           row['COMPOSITE_ID_BB_GLOBAL'] in set_of_qualified_german_composites, axis=1)]

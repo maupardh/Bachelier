@@ -23,10 +23,9 @@ _MAP_BBG_FEED_SOURCE_TO_YAHOO_FEED_SOURCE = \
         'US': '', 'UA': '', 'UB': '', 'UD': '', 'UE': '', 'UF': '', 'UJ': '', 'UM': '', 'UN': '', 'UO': '', 'UP': '',
         'UR': '', 'UT': '', 'UU': '', 'UV': '', 'UW': '', 'UX': '', 'VJ': '', 'VK': '', 'VY': '',
         'HK': '.HK',
-        'CS': '.SZ', 'CG': '.SS', 'CH': '.',
-        'GF': '.F', 'GD': '.DU', 'GY': '.DE', 'GM': '.MU', 'GB': '.BE', 'GI': '.HA', 'GH': '.HM', 'GS': '.SG', 'GR': '.',
+        'CS': '.SZ', 'CG': '.SS',
+        'GF': '.F', 'GD': '.DU', 'GY': '.DE', 'GM': '.MU', 'GB': '.BE', 'GI': '.HA', 'GH': '.HM', 'GS': '.SG',
         'FP': '.PA',
-        'PL': '.',
         'LN': '.L',
         'SM': '.MC',
         'IT': '.MI'
@@ -121,14 +120,17 @@ def retrieve_and_store_today_price_from_yahoo(assets_df, root_directory_name, to
     assets_df.sort_values('ID_BB_SEC_NUM_DES', inplace=True)
     assets_df.drop_duplicates(inplace=True)
     assets_df['MNEMO_AND_FEED_SOURCE'] = zip(assets_df['ID_BB_SEC_NUM_DES'], assets_df['FEED_SOURCE'])
-    assets_df = assets_df.groupby(['COMPOSITE_ID_BB_GLOBAL']).agg({'MNEMO_AND_FEED_SOURCE': lambda x: set(x)})
-    assets_df['COUNTRY'] = assets_df['MNEMO_AND_FEED_SOURCE'].apply(lambda x: list(set(zip(*x)[1]).intersection(my_markets.FEED_SOURCES_BY_COUNTRY.keys())))
+    assets_df = assets_df.groupby(['COMPOSITE_ID_BB_GLOBAL']).agg({'MNEMO_AND_FEED_SOURCE': set, 'FEED_SOURCE': set})
+    assets_df = assets_df[assets_df['FEED_SOURCE']
+        .apply(lambda sources: any(source in _MAP_BBG_FEED_SOURCE_TO_YAHOO_FEED_SOURCE.keys() for source in sources))]
+    assets_df['COUNTRY'] = assets_df['MNEMO_AND_FEED_SOURCE']\
+        .apply(lambda x: list(set(zip(*x)[1]).intersection(my_markets.EQUITY_FEED_SOURCES_BY_COUNTRY.keys())))
     assets_df = assets_df[assets_df['COUNTRY'].apply(lambda c: len(c) == 1)]
     assets_df['COUNTRY'] = map(lambda c: c[0], assets_df['COUNTRY'])
 
     def concat_mnemo_and_feed_source(list_of_tuples):
         return list(set([str.replace(t[0], '/', '-')+_MAP_BBG_FEED_SOURCE_TO_YAHOO_FEED_SOURCE[t[1]]
-                    for t in list_of_tuples if _MAP_BBG_FEED_SOURCE_TO_YAHOO_FEED_SOURCE.get(t[1], '.') != '.']))
+                    for t in list_of_tuples if t[1] in _MAP_BBG_FEED_SOURCE_TO_YAHOO_FEED_SOURCE]))
 
     assets_df['YAHOO_TICKERS'] = assets_df['MNEMO_AND_FEED_SOURCE'].apply(concat_mnemo_and_feed_source)
     assets_df = assets_df[assets_df['YAHOO_TICKERS'].apply(lambda l: len(l) > 0)]
