@@ -162,10 +162,13 @@ EQUITY_FEED_SOURCES_BY_CONTINENT = \
         'ASIA':
             {
                 'CH': ['CG', 'CH', 'CS'],  # China
-                'HK': ['HK'],  # HongKong
+                'HK': ['HK'],  # Hong Kong
                 'AU': ['AH', 'AO', 'AT', 'AU', 'AXG'],  # Australia
                 'SP': ['SP']  # Singapore
             }
     }
 
 COUNTRIES = [k for d in EQUITY_FEED_SOURCES_BY_CONTINENT.values() for k in d.keys()]
+
+HISTORIZED_FX_SPOTS = ['BRL', 'CAD', 'MXN', 'EUR', 'CHF', 'GBP',
+                       'SEK', 'NOK', 'DKK', 'ILS', 'CNY', 'CNH', 'HKD', 'AUD', 'SGD']

@@ -7,7 +7,7 @@ import logging
 from tzlocal import get_localzone
 import common_intraday_tools
 import my_datetime_tools
-import yahoo_intraday_import
+import yahoo_intraday_cash_equity_prices_import
 import my_logging
 import my_assets
 import my_markets
@@ -90,7 +90,7 @@ def refresh_na(date):
         us_assets.sort_values(by='ID_BB_SEC_NUM_DES', axis=0, ascending=True, inplace=True)
         us_assets.drop_duplicates(inplace=True)
 
-        yahoo_intraday_import.retrieve_and_store_today_price_from_yahoo(
+        yahoo_intraday_cash_equity_prices_import.retrieve_and_store_today_price_from_yahoo(
             us_assets, 'F:/FinancialData/HistoricalIntradayPrices/', today=date)
         logging.info('NA intraday price import complete')
 
@@ -114,7 +114,7 @@ def refresh_asia(date):
         asia_assets.sort_values(by='ID_BB_SEC_NUM_DES', axis=0, ascending=True, inplace=True)
         asia_assets.drop_duplicates(inplace=True)
 
-        yahoo_intraday_import.retrieve_and_store_today_price_from_yahoo(
+        yahoo_intraday_cash_equity_prices_import.retrieve_and_store_today_price_from_yahoo(
             asia_assets, 'F:/FinancialData/HistoricalIntradayPrices/', today=date)
         logging.info('Asia intraday price import complete')
 
@@ -138,7 +138,7 @@ def refresh_emea(date):
         emea_assets.sort_values(by='ID_BB_SEC_NUM_DES', axis=0, ascending=True, inplace=True)
         emea_assets.drop_duplicates(inplace=True)
 
-        yahoo_intraday_import.retrieve_and_store_today_price_from_yahoo(
+        yahoo_intraday_cash_equity_prices_import.retrieve_and_store_today_price_from_yahoo(
             emea_assets, 'F:/FinancialData/HistoricalIntradayPrices/', today=date)
         logging.info('Emea intraday price import complete')
 

@@ -14,7 +14,7 @@ def _get_price_from_google(ticker, country):
 
     if std_index is None:
         common_intraday_tools.REINDEXES_CACHE[country][today.isoformat()] = \
-            common_intraday_tools.get_standardized_intraday_dtindex(country, today.isoformat())
+            common_intraday_tools.get_standardized_intraday_equity_dtindex(country, today.isoformat())
         std_index = common_intraday_tools.REINDEXES_CACHE[country][today.isoformat()]
 
     try:

@@ -7,70 +7,15 @@ import logging
 from tzlocal import get_localzone
 import common_intraday_tools
 import my_datetime_tools
-import yahoo_intraday_import
+import yahoo_intraday_cash_equity_prices_import
 import my_logging
 import my_assets
 import my_markets
 
 
-def refresh():
-
-    today = datetime.date(2015, 11, 3)  # datetime.date.today()
-
-    if today.isoweekday() >= 6:
-        return 0
-
-    local_tz = get_localzone()
-
-    # Initialization
-    log_file_path = \
-        os.path.join('F:/FinancialData/Logs/',
-                     today.isoformat(), "IntradayYahooEquityImport.txt")
-    my_logging.initialize_logging(log_file_path)
-
-    # Asian Equities import
-    asian_market_close = local_tz.normalize(
-        (my_markets.EQUITY_MARKETS_BY_COUNTRY_CONFIG['CH']['TimeZone']
-         .localize(datetime.datetime(today.year, today.month, today.day)) +
-         my_markets.EQUITY_MARKETS_BY_COUNTRY_CONFIG['CH']['MarketClose']).astimezone(local_tz))
-
-    time_to_sleep_until_asia = max(asian_market_close + datetime.timedelta(minutes=30) - local_tz.localize(datetime.datetime.now()),
-                                 datetime.timedelta(minutes=5))
-    logging.info('System to sleep until asian markets, for : %s minutes', time_to_sleep_until_asia.total_seconds()/60)
-    # my_datetime_tools.sleep_with_infinite_loop(time_to_sleep_until_asia)
-    # refresh_asia(today)
-
-    # European Equities
-    emea_market_close = local_tz.normalize(
-        (my_markets.EQUITY_MARKETS_BY_COUNTRY_CONFIG['GR']['TimeZone']
-         .localize(datetime.datetime(today.year, today.month, today.day)) +
-         my_markets.EQUITY_MARKETS_BY_COUNTRY_CONFIG['GR']['MarketClose']).astimezone(local_tz))
-
-    time_to_sleep_until_emea = max(emea_market_close + datetime.timedelta(minutes=30) - local_tz.localize(datetime.datetime.now()),
-                                 datetime.timedelta(minutes=5))
-    logging.info('System to sleep until emea markets, for : %s minutes', time_to_sleep_until_emea.total_seconds()/60)
-    # my_datetime_tools.sleep_with_infinite_loop(time_to_sleep_until_emea)
-    # refresh_emea(today)
-
-    # North American Equities import
-    us_market_close = local_tz.normalize(
-        (my_markets.EQUITY_MARKETS_BY_COUNTRY_CONFIG['US']['TimeZone']
-         .localize(datetime.datetime(today.year, today.month, today.day)) +
-         my_markets.EQUITY_MARKETS_BY_COUNTRY_CONFIG['US']['MarketClose']).astimezone(local_tz))
-
-    time_to_sleep_until_us = max(us_market_close + datetime.timedelta(minutes=30) - local_tz.localize(datetime.datetime.now()),
-                                 datetime.timedelta(minutes=5))
-    logging.info('System to sleep until us markets, for : %s minutes', time_to_sleep_until_us.total_seconds()/60)
-    # my_datetime_tools.sleep_with_infinite_loop(time_to_sleep_until_us)
-    refresh_amer(today)
-
-    my_logging.shutdown()
-    return 0
-
-
 def refresh_amer(date):
 
-    # my_assets.refresh_assets(date)
+    my_assets.refresh_assets(date)
     try:
         logging.info('Starting to import NA intraday asset prices')
 
@@ -96,7 +41,7 @@ def refresh_amer(date):
         na_assets.index = na_assets['ID_BB_GLOBAL']
         na_assets.sort_values(by='ID_BB_SEC_NUM_DES', axis=0, ascending=True, inplace=True)
 
-        yahoo_intraday_import.retrieve_and_store_today_price_from_yahoo\
+        yahoo_intraday_cash_equity_prices_import.retrieve_and_store_today_price_from_yahoo\
         (
             na_assets, 'F:/FinancialData/HistoricalIntradayPrices/', today=date
         )
@@ -124,7 +69,7 @@ def refresh_asia(date):
         asia_assets.sort_values(by='ID_BB_SEC_NUM_DES', axis=0, ascending=True, inplace=True)
         asia_assets.drop_duplicates(inplace=True)
 
-        yahoo_intraday_import.retrieve_and_store_today_price_from_yahoo\
+        yahoo_intraday_cash_equity_prices_import.retrieve_and_store_today_price_from_yahoo\
         (
             asia_assets, 'F:/FinancialData/HistoricalIntradayPrices/', today=date
         )
@@ -136,7 +81,7 @@ def refresh_asia(date):
 
 def refresh_emea(date):
 
-    # my_assets.refresh_assets(date)
+    my_assets.refresh_assets(date)
     try:
         logging.info('Starting to import Emea intraday asset prices')
 
@@ -159,7 +104,7 @@ def refresh_emea(date):
         emea_assets.sort_values(by='ID_BB_SEC_NUM_DES', axis=0, ascending=True, inplace=True)
         emea_assets.drop_duplicates(inplace=True)
 
-        yahoo_intraday_import.retrieve_and_store_today_price_from_yahoo\
+        yahoo_intraday_cash_equity_prices_import.retrieve_and_store_today_price_from_yahoo\
         (
             emea_assets, 'F:/FinancialData/HistoricalIntradayPrices/', today=date
         )
@@ -167,5 +112,3 @@ def refresh_emea(date):
 
     except Exception, err:
         logging.critical('Emea intraday price import failed with error: %s', err.message)
-
-refresh()
