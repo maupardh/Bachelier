@@ -20,15 +20,26 @@ __QUOTA_SAFE = __QUOTA_PER_INTERVAL - __QUOTA_SAFETY_MARGIN
 __INTERVAL_SAFE = __INTERVAL + __INTERVAL_SAFETY_MARGIN
 _MAP_BBG_FEED_SOURCE_TO_YAHOO_FEED_SOURCE = \
     {
-        'US': '', 'UA': '', 'UB': '', 'UD': '', 'UE': '', 'UF': '', 'UJ': '', 'UM': '', 'UN': '', 'UO': '', 'UP': '',
-        'UR': '', 'UT': '', 'UU': '', 'UV': '', 'UW': '', 'UX': '', 'VJ': '', 'VK': '', 'VY': '',
-        'HK': '.HK',
-        'CS': '.SZ', 'CG': '.SS',
-        'GF': '.F', 'GD': '.DU', 'GY': '.DE', 'GM': '.MU', 'GB': '.BE', 'GI': '.HA', 'GH': '.HM', 'GS': '.SG',
+        'AT': '.AX', 'AU': '.AX', 'AXG': '.AX',
+        'AV': '.VI',
+        'BS': '.SA',
+        'CG': '.SS', 'CS': '.SZ',
+        'CT': '.TSX', 'CV': '.TSXV',
+        'DC': '.CO',
         'FP': '.PA',
+        'GB': '.BE', 'GD': '.DU', 'GF': '.F', 'GH': '.HM', 'GI': '.HA', 'GM': '.MU', 'GS': '.SG', 'GY': '.DE',
+        'HK': '.HK',
+        'IM': '.MI',
+        'IT': '.TA',
         'LN': '.L',
+        'MM': '.MX',
+        'NA': '.AS',
+        'NO': '.OL',
         'SM': '.MC',
-        'IT': '.MI'
+        'SP': '.SI',
+        'SS': '.ST',
+        'SE': '.SW',
+        'US': ''
     }
 
 
@@ -122,9 +133,9 @@ def retrieve_and_store_today_price_from_yahoo(assets_df, root_directory_name, to
     assets_df['MNEMO_AND_FEED_SOURCE'] = zip(assets_df['ID_BB_SEC_NUM_DES'], assets_df['FEED_SOURCE'])
     assets_df = assets_df.groupby(['COMPOSITE_ID_BB_GLOBAL']).agg({'MNEMO_AND_FEED_SOURCE': set, 'FEED_SOURCE': set})
     assets_df = assets_df[assets_df['FEED_SOURCE']
-        .apply(lambda sources: any(source in _MAP_BBG_FEED_SOURCE_TO_YAHOO_FEED_SOURCE.keys() for source in sources))]
+        .apply(lambda sources: any(source in _MAP_BBG_FEED_SOURCE_TO_YAHOO_FEED_SOURCE for source in sources))]
     assets_df['COUNTRY'] = assets_df['MNEMO_AND_FEED_SOURCE']\
-        .apply(lambda x: list(set(zip(*x)[1]).intersection(my_markets.EQUITY_FEED_SOURCES_BY_COUNTRY.keys())))
+        .apply(lambda x: list(set(zip(*x)[1]).intersection(my_markets.COUNTRIES)))
     assets_df = assets_df[assets_df['COUNTRY'].apply(lambda c: len(c) == 1)]
     assets_df['COUNTRY'] = map(lambda c: c[0], assets_df['COUNTRY'])
 

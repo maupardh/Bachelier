@@ -62,13 +62,13 @@ def refresh():
                                  datetime.timedelta(minutes=5))
     logging.info('System to sleep until us markets, for : %s minutes', time_to_sleep_until_us.total_seconds()/60)
     # my_datetime_tools.sleep_with_infinite_loop(time_to_sleep_until_us)
-    refresh_na(today)
+    refresh_amer(today)
 
     my_logging.shutdown()
     return 0
 
 
-def refresh_na(date):
+def refresh_amer(date):
 
     my_assets.refresh_assets(date)
     try:
@@ -82,7 +82,7 @@ def refresh_na(date):
         equity_universe.drop_duplicates(inplace=True)
         us_assets = pd.merge(assets, equity_universe, left_on='ID_BB_SEC_NUM_DES', right_on='Symbol', how='inner')
         us_assets = us_assets[us_assets['MARKET_SECTOR_DES'] == 'Equity']
-        us_assets = us_assets[map(lambda country: country in my_markets.EQUITY_FEED_SOURCES_BY_CONTINENT['NA'],
+        us_assets = us_assets[map(lambda country: country in my_markets.EQUITY_FEED_SOURCES_BY_CONTINENT['AMER'],
                                   us_assets['FEED_SOURCE'])]
         us_assets.index = us_assets['ID_BB_GLOBAL']
         us_assets = us_assets[['ID_BB_GLOBAL', 'ID_BB_SEC_NUM_DES', 'FEED_SOURCE', 'COMPOSITE_ID_BB_GLOBAL']]
@@ -138,7 +138,7 @@ def refresh_emea(date):
         emea_assets = emea_assets[emea_assets['MARKET_SECTOR_DES'] == 'Equity']
         set_of_qualified_german_composites = set(emea_assets[emea_assets['FEED_SOURCE'] == 'GY']['COMPOSITE_ID_BB_GLOBAL'])
         set_of_qualified_feed_sources = set(my_markets.EQUITY_FEED_SOURCES_BY_CONTINENT['EMEA']) - \
-            my_markets.EQUITY_FEED_SOURCES_BY_COUNTRY['GR'] + ['GY']
+            my_markets.EQUITY_FEED_SOURCES_BY_CONTINENT['EMEA']['GR'] + ['GY']
 
         emea_assets = emea_assets[
             emea_assets.apply(lambda row: row['FEED_SOURCE'] in set_of_qualified_feed_sources or
