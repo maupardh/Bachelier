@@ -24,7 +24,7 @@ _MAP_BBG_FEED_SOURCE_TO_YAHOO_FEED_SOURCE = \
         'AV': '.VI',
         'BS': '.SA',
         'CG': '.SS', 'CS': '.SZ',
-        'CT': '.TSX', 'CV': '.TSXV',
+        'CT': '.TO', 'CV': '.V',
         'DC': '.CO',
         'FP': '.PA',
         'GB': '.BE', 'GD': '.DU', 'GF': '.F', 'GH': '.HM', 'GI': '.HA', 'GM': '.MU', 'GS': '.SG', 'GY': '.DE',
@@ -131,7 +131,8 @@ def retrieve_and_store_today_price_from_yahoo(assets_df, root_directory_name, to
     assets_df.sort_values('ID_BB_SEC_NUM_DES', inplace=True)
     assets_df.drop_duplicates(inplace=True)
     assets_df['MNEMO_AND_FEED_SOURCE'] = zip(assets_df['ID_BB_SEC_NUM_DES'], assets_df['FEED_SOURCE'])
-    assets_df = assets_df.groupby(['COMPOSITE_ID_BB_GLOBAL']).agg({'MNEMO_AND_FEED_SOURCE': set, 'FEED_SOURCE': set})
+    assets_df = assets_df.groupby(['COMPOSITE_ID_BB_GLOBAL']).agg({'MNEMO_AND_FEED_SOURCE': lambda x: set(x),
+                                                                   'FEED_SOURCE': lambda x: set(x)})
     assets_df = assets_df[assets_df['FEED_SOURCE']
         .apply(lambda sources: any(source in _MAP_BBG_FEED_SOURCE_TO_YAHOO_FEED_SOURCE for source in sources))]
     assets_df['COUNTRY'] = assets_df['MNEMO_AND_FEED_SOURCE']\

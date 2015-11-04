@@ -14,6 +14,7 @@ def get_assets():
         assets_path = os.path.join(__ASSETS_DIRECTORY, 'BBGSymbiologyAssets.csv.zip')
         logging.info('Reading assets at %s' % assets_path)
         content = my_general_tools.read_and_log_pandas_df(assets_path)
+        content = content.applymap(str)
         content.index = content['ID_BB_GLOBAL']
         content.drop('ID_BB_GLOBAL', axis=1, inplace=True)
     except Exception, err:

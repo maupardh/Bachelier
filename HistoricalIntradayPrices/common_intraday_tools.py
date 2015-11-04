@@ -6,6 +6,8 @@ import my_markets
 
 STANDARD_COL_NAMES = ['Close', 'High', 'Low', 'Open', 'Volume']
 STANDARD_INDEX_NAME = 'Time'
+_GAP_AFTER_MARKET_OPEN = datetime.timedelta(minutes=0)
+_GAP_AFTER_MARKET_CLOSE = datetime.timedelta(minutes=5)
 
 
 def get_standardized_intraday_dtindex(country, date):
@@ -13,9 +15,9 @@ def get_standardized_intraday_dtindex(country, date):
     try:
         local_market_time_zone = my_markets.EQUITY_MARKETS_BY_COUNTRY_CONFIG[country]['TimeZone']
         start_reg = local_market_time_zone.localize(datetime.datetime(date.year, date.month, date.day)) + \
-                    my_markets.EQUITY_MARKETS_BY_COUNTRY_CONFIG[country]['MarketOpen']
+                    my_markets.EQUITY_MARKETS_BY_COUNTRY_CONFIG[country]['MarketOpen'] + _GAP_AFTER_MARKET_OPEN
         end_reg = local_market_time_zone.localize(datetime.datetime(date.year, date.month, date.day)) + \
-                  my_markets.EQUITY_MARKETS_BY_COUNTRY_CONFIG[country]['MarketClose']
+                  my_markets.EQUITY_MARKETS_BY_COUNTRY_CONFIG[country]['MarketClose'] + _GAP_AFTER_MARKET_CLOSE
         reg_idx = pd.date_range(start_reg, end_reg, freq='1T')
         reg_idx.name = STANDARD_INDEX_NAME
         return reg_idx
@@ -23,18 +25,11 @@ def get_standardized_intraday_dtindex(country, date):
         return get_standardized_intraday_dtindex('US', date)
 
 
-REINDEXES_CACHE = \
-    {
-        'US': {datetime.date.today().isoformat(): get_standardized_intraday_dtindex('US', datetime.date.today())},
-        'HK': {datetime.date.today().isoformat(): get_standardized_intraday_dtindex('HK', datetime.date.today())},
-        'CH': {datetime.date.today().isoformat(): get_standardized_intraday_dtindex('CH', datetime.date.today())},
-        'GR': {datetime.date.today().isoformat(): get_standardized_intraday_dtindex('GR', datetime.date.today())},
-        'FP': {datetime.date.today().isoformat(): get_standardized_intraday_dtindex('FP', datetime.date.today())},
-        'LN': {datetime.date.today().isoformat(): get_standardized_intraday_dtindex('LN', datetime.date.today())},
-        'IT': {datetime.date.today().isoformat(): get_standardized_intraday_dtindex('IT', datetime.date.today())},
-        'SM': {datetime.date.today().isoformat(): get_standardized_intraday_dtindex('SM', datetime.date.today())},
-        'PL': {datetime.date.today().isoformat(): get_standardized_intraday_dtindex('PL', datetime.date.today())}
-    }
+REINDEXES_CACHE = {}
+
+for country in my_markets.COUNTRIES:
+    REINDEXES_CACHE[country] = {
+        datetime.date.today().isoformat(): get_standardized_intraday_dtindex(country, datetime.date.today())}
 
 
 def get_equity_import_universe_from_nasdaq_trader():
