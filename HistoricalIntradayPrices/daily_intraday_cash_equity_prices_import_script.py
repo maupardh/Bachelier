@@ -1,5 +1,6 @@
 import sys
 sys.path.append('F:/pythonCode/Utilities')
+sys.path.append('F:/pythonCode/HistoricalAssets')
 import os.path
 import datetime
 import pandas as pd
@@ -38,7 +39,7 @@ def refresh():
     time_to_sleep_until_asia = max(asian_market_close + datetime.timedelta(minutes=30) - local_tz.localize(datetime.datetime.now()),
                                  datetime.timedelta(minutes=5))
     logging.info('System to sleep until asian markets, for : %s minutes', time_to_sleep_until_asia.total_seconds()/60)
-    my_datetime_tools.sleep_with_infinite_loop(time_to_sleep_until_asia)
+    my_datetime_tools.sleep_with_infinite_loop(time_to_sleep_until_asia.total_seconds())
     zone_intraday_cash_equity_prices_import.refresh_asia(today)
 
     # European Equities import
@@ -50,7 +51,7 @@ def refresh():
     time_to_sleep_until_emea = max(emea_market_close + datetime.timedelta(minutes=30) - local_tz.localize(datetime.datetime.now()),
                                  datetime.timedelta(minutes=5))
     logging.info('System to sleep until emea markets, for : %s minutes', time_to_sleep_until_emea.total_seconds()/60)
-    my_datetime_tools.sleep_with_infinite_loop(time_to_sleep_until_emea)
+    my_datetime_tools.sleep_with_infinite_loop(time_to_sleep_until_emea.total_seconds())
     zone_intraday_cash_equity_prices_import.refresh_emea(today)
 
     # Americas Equities import
@@ -62,7 +63,7 @@ def refresh():
     time_to_sleep_until_us = max(us_market_close + datetime.timedelta(minutes=30) - local_tz.localize(datetime.datetime.now()),
                                  datetime.timedelta(minutes=5))
     logging.info('System to sleep until us markets, for : %s minutes', time_to_sleep_until_us.total_seconds()/60)
-    my_datetime_tools.sleep_with_infinite_loop(time_to_sleep_until_us)
+    my_datetime_tools.sleep_with_infinite_loop(time_to_sleep_until_us.total_seconds())
     zone_intraday_cash_equity_prices_import.refresh_amer(today)
 
     my_logging.shutdown()
