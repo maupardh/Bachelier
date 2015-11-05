@@ -62,7 +62,7 @@ def refresh_asia(date):
 
         asia_feed_sources = [feed_source for key in my_markets.EQUITY_FEED_SOURCES_BY_CONTINENT['ASIA'].keys()
                              for feed_source in my_markets.EQUITY_FEED_SOURCES_BY_CONTINENT['ASIA'][key]]
-        asia_assets = assets[assets['FEED_SOURCE'].apply(lambda x: x in asia_feed_sources, axis=1)]
+        asia_assets = assets[assets['FEED_SOURCE'].apply(lambda x: x in asia_feed_sources)]
         asia_assets = asia_assets[asia_assets['MARKET_SECTOR_DES'] == 'Equity']
         asia_assets.index = asia_assets['ID_BB_GLOBAL']
         asia_assets = asia_assets[['ID_BB_GLOBAL', 'ID_BB_SEC_NUM_DES', 'FEED_SOURCE', 'COMPOSITE_ID_BB_GLOBAL']]
