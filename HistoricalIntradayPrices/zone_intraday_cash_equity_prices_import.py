@@ -90,11 +90,12 @@ def refresh_emea(date):
 
         emea_feed_sources = [feed_source for key in my_markets.EQUITY_FEED_SOURCES_BY_CONTINENT['EMEA'].keys()
                              for feed_source in my_markets.EQUITY_FEED_SOURCES_BY_CONTINENT['EMEA'][key]]
-        emea_assets = assets[assets['FEED_SOURCE'].apply(lambda x: x in emea_feed_sources, axis=1)]
+        emea_assets = assets[assets['FEED_SOURCE'].apply(lambda x: x in emea_feed_sources)]
         emea_assets = emea_assets[emea_assets['MARKET_SECTOR_DES'] == 'Equity']
         set_of_qualified_german_composites = set(emea_assets[emea_assets['FEED_SOURCE'] == 'GY']['COMPOSITE_ID_BB_GLOBAL'])
-        set_of_qualified_feed_sources = set(my_markets.EQUITY_FEED_SOURCES_BY_CONTINENT['EMEA']) - \
-            my_markets.EQUITY_FEED_SOURCES_BY_CONTINENT['EMEA']['GR'] + ['GY']
+        set_of_qualified_feed_sources = set(my_markets.EQUITY_FEED_SOURCES_BY_CONTINENT['EMEA'].keys())\
+            .difference(my_markets.EQUITY_FEED_SOURCES_BY_CONTINENT['EMEA']['GR'])
+        set_of_qualified_feed_sources = set_of_qualified_feed_sources.union({'GY'})
 
         emea_assets = emea_assets[
             emea_assets.apply(lambda row: row['FEED_SOURCE'] in set_of_qualified_feed_sources or

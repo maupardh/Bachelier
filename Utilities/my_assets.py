@@ -37,7 +37,8 @@ def refresh_assets(date):
         {'market_sector': 'Equity', 'security_type': 'Tracking_Stk', 'date': date},
         {'market_sector': 'Equity', 'security_type': 'UIT', 'date': date},
         {'market_sector': 'Equity', 'security_type': 'Unit', 'date': date},
-        {'market_sector': 'Curncy', 'security_type': 'SPOT', 'date': date}
+        {'market_sector': 'Curncy', 'security_type': 'SPOT', 'date': date},
+        {'market_sector': 'Curncy', 'security_type': 'CROSS', 'date': date}
     ]
 
     path_to_zip = os.path.join(__ASSETS_DIRECTORY, 'BBGSymbiologyAssets.csv.zip')

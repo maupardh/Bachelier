@@ -117,8 +117,7 @@ def get_price_from_yahoo(yahoo_tickers, country, today=None):
     except Exception, err:
         logging.warning('Yahoo price import and pandas enrich failed for: %s with message %s' %
                         (yahoo_tickers, err.message))
-        price_dat = pd.DataFrame(data=0, index=std_index, columns=common_intraday_tools.STANDARD_COL_NAMES, dtype=float)
-        return price_dat
+        return pd.DataFrame(None)
 
 
 def retrieve_and_store_today_price_from_yahoo(assets_df, root_directory_name, today=None):

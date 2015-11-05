@@ -54,8 +54,8 @@ def get_price_from_yahoo(yahoo_fx_ticker, today=None):
         price_dat['Time'] = map(my_datetime_tools.truncate_to_next_minute, price_dat['Time'])
 
         price_dat = price_dat[common_intraday_tools.STANDARD_COL_NAMES+[common_intraday_tools.STANDARD_INDEX_NAME]]
-        price_dat = price_dat.groupby(price_dat['Time'], sort=True).agg(
-             {'Open': lambda l: l[0], 'Close': lambda l: l[-1], 'Low': min, 'High': max, 'Volume': sum})
+        price_dat = price_dat.groupby('Time').agg(
+             {'Open': lambda l: l.iloc[0], 'Close': lambda l: l.iloc[-1], 'Low': min, 'High': max, 'Volume': sum})
 
         price_dat = price_dat[common_intraday_tools.STANDARD_COL_NAMES]
         price_dat = price_dat.reindex(index=std_index)
@@ -92,8 +92,9 @@ def retrieve_and_store_today_price_from_yahoo(fx_assets_df, root_directory_name,
     fx_assets_df = fx_assets_df[['ID_BB_GLOBAL', 'ID_BB_SEC_NUM_DES']]
     fx_assets_df.sort_values('ID_BB_SEC_NUM_DES', inplace=True)
     fx_assets_df.drop_duplicates(inplace=True)
-    fx_assets_df['YAHOO_FX_TICKER'] = fx_assets_df['ID_BB_SEC_NUM_DES'].apply(lambda t: t+'=X', axis=1)
-    fx_assets_df = fx_assets_df.groupby('YAHOO_FX_TICKER').agg({'ID_BB_GLOBAL': lambda x: set(x)})
+    fx_assets_df['YAHOO_FX_TICKER'] = fx_assets_df['ID_BB_SEC_NUM_DES'].apply(lambda t: t+'=X')
+    fx_assets_df = fx_assets_df.groupby('YAHOO_FX_TICKER').agg({'ID_BB_GLOBAL': lambda x: list(set(x))})
+    fx_assets_df.reset_index(drop=False, inplace=True)
     fx_assets_df = fx_assets_df[fx_assets_df['ID_BB_GLOBAL'].apply(lambda x: len(x) == 1)]
     fx_assets_df['ID_BB_GLOBAL'] = fx_assets_df['ID_BB_GLOBAL'].apply(lambda x: x[0])
 

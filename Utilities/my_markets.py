@@ -136,39 +136,39 @@ EQUITY_FEED_SOURCES_BY_CONTINENT = \
     {
         'AMER':
             {
-                'BZ': ['BZ', 'BS', 'BN'],  # Brazil
-                'CN': ['CN', 'CT', 'CJ', 'TR', 'TX', 'TA', 'TG', 'TK', 'TW', 'DT', 'DG', 'QF', 'QH'],  # Canada
-                'MM': ['MM'],  # Mexico
-                'US': ['UA', 'UB', 'UD', 'UE', 'UF', 'UJ', 'UM', 'UN', 'UO', 'UP', 'UR', 'US', 'UT', 'UU', 'UV',
-                       'UW', 'UX', 'VJ', 'VK', 'VY']
+                'BZ': {'BZ', 'BS', 'BN'},  # Brazil
+                'CN':  {'CN', 'CT', 'CJ', 'TR', 'TX', 'TA', 'TG', 'TK', 'TW', 'DT', 'DG', 'QF', 'QH'},  # Canada
+                'MM':  {'MM'},  # Mexico
+                'US':  {'UA', 'UB', 'UD', 'UE', 'UF', 'UJ', 'UM', 'UN', 'UO', 'UP', 'UR', 'US', 'UT', 'UU', 'UV',
+                       'UW', 'UX', 'VJ', 'VK', 'VY'}
             },
         'EMEA':
             {
-                'AV': ['AV'],  # Austria
-                'DC': ['DC', 'DF'],  # Denmark
-                'FP': ['FP'],  # France
-                'GR': ['GF', 'GD', 'GY', 'GM', 'GB', 'GI', 'GH', 'GS', 'GR', 'TH'],  # Germany
-                'IM': ['IM', 'IF'],  # Italy
-                'IT': ['IT'],  # Israel
-                'LN': ['LN'],  # UK
-                'NA': ['NA', 'MT'],   # Netherlands
-                'NO': ['NO'],  # Norway
-                'PL': ['PL'],  # Portugal
-                'SM': ['SM'],  # Spain
-                'SS': ['SF', 'SS'],  # Sweden
-                'SW': ['SR', 'SE', 'VX', 'SW'],  # Switzerland
+                'AV':  {'AV'},  # Austria
+                'DC':  {'DC', 'DF'},  # Denmark
+                'FP':  {'FP'},  # France
+                'GR':  {'GF', 'GD', 'GY', 'GM', 'GB', 'GI', 'GH', 'GS', 'GR', 'TH'},  # Germany
+                'IM':  {'IM', 'IF'},  # Italy
+                'IT':  {'IT'},  # Israel
+                'LN':  {'LN'},  # UK
+                'NA':  {'NA', 'MT'},   # Netherlands
+                'NO':  {'NO'},  # Norway
+                'PL':  {'PL'},  # Portugal
+                'SM':  {'SM'},  # Spain
+                'SS':  {'SF', 'SS'},  # Sweden
+                'SW':  {'SR', 'SE', 'VX', 'SW'},  # Switzerland
 
             },
         'ASIA':
             {
-                'CH': ['CG', 'CH', 'CS'],  # China
-                'HK': ['HK'],  # Hong Kong
-                'AU': ['AH', 'AO', 'AT', 'AU', 'AXG'],  # Australia
-                'SP': ['SP']  # Singapore
+                'CH':  {'CG', 'CH', 'CS'},  # China
+                'HK':  {'HK'},  # Hong Kong
+                'AU':  {'AH', 'AO', 'AT', 'AU', 'AXG'},  # Australia
+                'SP':  {'SP'}  # Singapore
             }
     }
 
 COUNTRIES = [k for d in EQUITY_FEED_SOURCES_BY_CONTINENT.values() for k in d.keys()]
 
-HISTORIZED_FX_SPOTS = ['BRL', 'CAD', 'MXN', 'EUR', 'CHF', 'GBP',
-                       'SEK', 'NOK', 'DKK', 'ILS', 'CNY', 'CNH', 'HKD', 'AUD', 'SGD']
+HISTORIZED_FX_SPOTS = {'BRL', 'CAD', 'MXN', 'EUR', 'CHF', 'GBP',
+                       'SEK', 'NOK', 'DKK', 'ILS', 'CNY', 'CNH', 'HKD', 'AUD', 'SGD'}
