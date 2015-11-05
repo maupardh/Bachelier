@@ -42,7 +42,7 @@ def refresh_fx(date):
     # my_assets.refresh_assets(date)
 
     try:
-        logging.info('Starting to import NA intraday asset prices')
+        logging.info('Starting to import FX intraday asset prices')
 
         fx_assets = my_assets.get_assets()
         fx_assets['ID_BB_GLOBAL'] = fx_assets.index
