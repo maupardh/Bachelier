@@ -2,8 +2,10 @@ import os.path
 import datetime
 import logging
 from tzlocal import get_localzone
-import Utilities.my_datetime_tools
+import sys
+sys.path.append('F:/pythonCode')
 import zone_intraday_cash_equity_prices_import
+import Utilities.my_datetime_tools
 import Utilities.my_logging
 import Utilities.my_assets
 import Utilities.my_markets
