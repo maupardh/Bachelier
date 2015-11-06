@@ -1,1 +1,0 @@
-python.exe .\daily_intraday_fx_spot_prices_import_script.py
