@@ -1,7 +1,3 @@
-#!/usr/bin/env python
-
-__author__ = 'hmaupard'
-
 import urllib2
 import os.path
 import logging
@@ -11,7 +7,7 @@ import datetime
 import pandas as pd
 import common_extraday_tools
 from StringIO import StringIO
-import my_general_tools
+import Utilities.my_general_tools
 
 __API_KEY = 'hszzExszkLyULRzUyGzP'
 __QUOTA_PER_INTERVAL = 2000
@@ -87,10 +83,10 @@ def _get_price_from_quandl(ticker, start_date, end_date, country):
 def retrieve_and_store_historical_prices(list_of_tickers, root_directory_name, start_date, end_date, country):
 
     csv_directory = os.path.join(root_directory_name, 'csv')
-    my_general_tools.mkdir_and_log(csv_directory)
+    Utilities.my_general_tools.mkdir_and_log(csv_directory)
 
     cpickle_directory = os.path.join(root_directory_name, 'cpickle')
-    my_general_tools.mkdir_and_log(cpickle_directory)
+    Utilities.my_general_tools.mkdir_and_log(cpickle_directory)
 
     number_of_batches = int(len(list_of_tickers)/__QUOTA_SAFE) + 1
     logging.info('Retrieving Extraday Prices for %s tickers in %s batches' % (len(list_of_tickers), number_of_batches))
@@ -132,8 +128,8 @@ def retrieve_and_store_historical_prices(list_of_tickers, root_directory_name, s
         group.index.name = common_extraday_tools.STANDARD_INDEX_NAME
         csv_output_path = os.path.join(csv_directory, date.isoformat() + '.csv')
         cpickle_output_path = os.path.join(cpickle_directory, date.isoformat() + '.pk2')
-        my_general_tools.store_and_log_pandas_df(csv_output_path, group)
-        my_general_tools.store_and_log_pandas_df(cpickle_output_path, group)
+        Utilities.my_general_tools.store_and_log_pandas_df(csv_output_path, group)
+        Utilities.my_general_tools.store_and_log_pandas_df(cpickle_output_path, group)
         logging.info('Printing prices of %s tickers for %s successful' % (len(list_of_tickers), date.isoformat()))
 
     logging.info('Output completed')

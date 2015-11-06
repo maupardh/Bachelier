@@ -1,12 +1,10 @@
-import sys
-sys.path.append('/home/maupardh/Documents/PythonCode/Utilities')
 import datetime
 import os.path
 import yahoo_extraday_import
-import my_datetime_tools
-import my_holidays
-import my_logging
-import my_assets
+import Utilities.my_datetime_tools
+import Utilities.my_holidays
+import Utilities.my_logging
+import Utilities.my_assets
 
 
 def run():
@@ -19,9 +17,9 @@ def run():
     log_file_path = \
         os.path.join('F:/FinancialData/Logs/',
                      today.isoformat(), "ExtradayYahooEquityImport.txt")
-    my_logging.initialize_logging(log_file_path)
+    Utilities.my_logging.initialize_logging(log_file_path)
 
-    assets = my_assets.get_assets()
+    assets = Utilities.my_assets.get_assets()
     assets = assets[assets['FEED_SOURCE'] == 'US']
     assets = assets[assets['MARKET_SECTOR_DES'] == 'Equity']
     assets = assets[map(str.isalpha, assets['ID_BB_SEC_NUM_DES'])]
@@ -29,11 +27,12 @@ def run():
     assets.drop_duplicates(inplace=True)
     assets.sort_values(by='ID_BB_SEC_NUM_DES', inplace=True)
 
-    end_date = my_datetime_tools.nearest_past_or_now_workday(datetime.date.today())
-    start_date = my_datetime_tools.add_business_days(end_date, -252 * 5, my_holidays.HOLIDAYS_BY_COUNTRY_CONFIG['US'])
+    end_date = Utilities.my_datetime_tools.nearest_past_or_now_workday(datetime.date.today())
+    start_date = Utilities.my_datetime_tools.add_business_days(end_date, -252 * 5,
+                                                               Utilities.my_holidays.HOLIDAYS_BY_COUNTRY_CONFIG['US'])
 
     yahoo_extraday_import.retrieve_and_store_historical_prices(assets, start_date, end_date)
-    my_logging.shutdown()
+    Utilities.my_logging.shutdown()
 
     return 0
 

@@ -5,7 +5,7 @@ import datetime
 import pandas as pd
 import common_extraday_tools
 from StringIO import StringIO
-import my_datetime_tools
+import Utilities.my_datetime_tools
 
 __QUOTA_PER_INTERVAL = 2000
 __INTERVAL = datetime.timedelta(minutes=60)
@@ -93,7 +93,7 @@ def retrieve_and_store_historical_prices(assets_df, start_date, end_date):
     for i in range(1, number_of_batches + 1):
 
         logging.info('Thread to sleep for %s before next batch - as per quota' % str(time_delta_to_sleep))
-        my_datetime_tools.sleep_with_infinite_loop(time_delta_to_sleep.total_seconds())
+        Utilities.my_datetime_tools.sleep_with_infinite_loop(time_delta_to_sleep.total_seconds())
 
         cur_batch = assets_df[__QUOTA_SAFE * (i - 1):min(__QUOTA_SAFE * i, number_of_assets)]
         logging.info('Starting batch %s' % i)
@@ -136,4 +136,4 @@ def retrieve_and_store_historical_prices(assets_df, start_date, end_date):
 
     logging.info('Output completed')
     logging.info('Thread to sleep for %s after last batch - as per quota' % str(time_delta_to_sleep))
-    my_datetime_tools.sleep_with_infinite_loop(time_delta_to_sleep.total_seconds())
+    Utilities.my_datetime_tools.sleep_with_infinite_loop(time_delta_to_sleep.total_seconds())

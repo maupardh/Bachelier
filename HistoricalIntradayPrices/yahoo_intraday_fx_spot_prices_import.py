@@ -7,8 +7,8 @@ import os.path
 import pytz
 import chrono
 import common_intraday_tools
-import my_general_tools
-import my_datetime_tools
+import Utilities.my_general_tools
+import Utilities.my_datetime_tools
 
 __QUOTA_PER_INTERVAL = 1000
 __INTERVAL = datetime.timedelta(minutes=60)
@@ -51,7 +51,7 @@ def get_price_from_yahoo(yahoo_fx_ticker, today=None):
         price_dat.rename(columns={'Timestamp': 'Time'}, inplace=True)
 
         price_dat['Time'] = map(lambda t: pytz.utc.localize(datetime.datetime.utcfromtimestamp(t)), price_dat['Time'])
-        price_dat['Time'] = map(my_datetime_tools.truncate_to_next_minute, price_dat['Time'])
+        price_dat['Time'] = map(Utilities.my_datetime_tools.truncate_to_next_minute, price_dat['Time'])
 
         price_dat = price_dat[common_intraday_tools.STANDARD_COL_NAMES+[common_intraday_tools.STANDARD_INDEX_NAME]]
         price_dat = price_dat.groupby('Time').agg(
@@ -102,7 +102,7 @@ def retrieve_and_store_today_price_from_yahoo(fx_assets_df, root_directory_name,
         today = datetime.date.today()
 
     csv_directory = os.path.join(root_directory_name, 'zip', today.isoformat())
-    my_general_tools.mkdir_and_log(csv_directory)
+    Utilities.my_general_tools.mkdir_and_log(csv_directory)
     number_of_assets = fx_assets_df.shape[0]
 
     if number_of_assets > 25000:
@@ -116,7 +116,7 @@ def retrieve_and_store_today_price_from_yahoo(fx_assets_df, root_directory_name,
     for i in range(1, number_of_batches + 1):
 
         logging.info('Thread to sleep for %s before next batch - as per quota' % str(time_delta_to_sleep))
-        my_datetime_tools.sleep_with_infinite_loop(time_delta_to_sleep.total_seconds())
+        Utilities.my_datetime_tools.sleep_with_infinite_loop(time_delta_to_sleep.total_seconds())
 
         cur_batch = fx_assets_df[__QUOTA_SAFE * (i - 1):min(__QUOTA_SAFE * i, number_of_assets)]
         logging.info('Starting batch %s' % i)
@@ -127,7 +127,7 @@ def retrieve_and_store_today_price_from_yahoo(fx_assets_df, root_directory_name,
                              % (",".join(asset['YAHOO_FX_TICKER']), asset['ID_BB_GLOBAL']))
                 pandas_content = get_price_from_yahoo(asset['YAHOO_FX_TICKER'], today=today)
                 csv_output_path = os.path.join(csv_directory, asset['ID_BB_GLOBAL'] + '.csv.zip')
-                my_general_tools.store_and_log_pandas_df(csv_output_path, pandas_content)
+                Utilities.my_general_tools.store_and_log_pandas_df(csv_output_path, pandas_content)
             cur_batch.apply(historize_asset, axis=1)
         time_delta_to_sleep = datetime.timedelta(minutes=5)  # max\
             # (

@@ -1,6 +1,4 @@
-import sys
-sys.path.append('F:/pythonCode/Utilities')
-import my_assets
+import Utilities.my_assets
 
 
 def refresh(date):
@@ -8,4 +6,4 @@ def refresh(date):
     if date.isoweekday() >= 6:
         return 0
 
-    my_assets.refresh_assets(date)
+    Utilities.my_assets.refresh_assets(date)

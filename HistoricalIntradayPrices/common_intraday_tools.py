@@ -2,7 +2,7 @@ import pandas as pd
 import datetime
 import logging
 import pytz
-import my_markets
+import Utilities.my_markets
 
 STANDARD_COL_NAMES = ['Close', 'High', 'Low', 'Open', 'Volume']
 STANDARD_INDEX_NAME = 'Time'
@@ -13,11 +13,13 @@ _EQUITY_GAP_AFTER_MARKET_CLOSE = datetime.timedelta(minutes=5)
 def get_standardized_intraday_equity_dtindex(country, date):
 
     try:
-        local_market_time_zone = my_markets.EQUITY_MARKETS_BY_COUNTRY_CONFIG[country]['TimeZone']
+        local_market_time_zone = Utilities.my_markets.EQUITY_MARKETS_BY_COUNTRY_CONFIG[country]['TimeZone']
         start_reg = local_market_time_zone.localize(datetime.datetime(date.year, date.month, date.day)) + \
-                    my_markets.EQUITY_MARKETS_BY_COUNTRY_CONFIG[country]['MarketOpen'] + _EQUITY_GAP_AFTER_MARKET_OPEN
+                    Utilities.my_markets.EQUITY_MARKETS_BY_COUNTRY_CONFIG[country]['MarketOpen'] \
+                    + _EQUITY_GAP_AFTER_MARKET_OPEN
         end_reg = local_market_time_zone.localize(datetime.datetime(date.year, date.month, date.day)) + \
-                  my_markets.EQUITY_MARKETS_BY_COUNTRY_CONFIG[country]['MarketClose'] + _EQUITY_GAP_AFTER_MARKET_CLOSE
+                  Utilities.my_markets.EQUITY_MARKETS_BY_COUNTRY_CONFIG[country]['MarketClose'] \
+                  + _EQUITY_GAP_AFTER_MARKET_CLOSE
         reg_idx = pd.date_range(start_reg, end_reg, freq='1T')
         reg_idx.name = STANDARD_INDEX_NAME
         return reg_idx
@@ -40,7 +42,7 @@ def get_standardized_intraday_fx_dtindex(date):
 
 REINDEXES_CACHE = {}
 
-for country in my_markets.COUNTRIES:
+for country in Utilities.my_markets.COUNTRIES:
     REINDEXES_CACHE[country] = {
         datetime.date.today().isoformat(): get_standardized_intraday_equity_dtindex(country, datetime.date.today())}
 

@@ -2,10 +2,12 @@
 <module type="PYTHON_MODULE" version="4">
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$" />
-    <orderEntry type="jdk" jdkName="Python 2.7.10 (/usr/bin/pythonw)" jdkType="Python SDK" />
+    <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="Utilities" />
-    <orderEntry type="module" module-name="HistoricalIntradayPrices" />
     <orderEntry type="module" module-name="HistoricalExtradayPrices" />
+    <orderEntry type="module" module-name="HistoricalIntradayPrices" />
+  </component>
+  <component name="TestRunnerService">
+    <option name="PROJECT_TEST_RUNNER" value="Unittests" />
   </component>
 </module>

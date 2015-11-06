@@ -7,9 +7,9 @@ import os.path
 import chrono
 import pytz
 import common_intraday_tools
-import my_general_tools
-import my_datetime_tools
-import my_markets
+import Utilities.my_general_tools
+import Utilities.my_datetime_tools
+import Utilities.my_markets
 
 
 __QUOTA_PER_INTERVAL = 1000
@@ -87,7 +87,7 @@ def get_price_from_yahoo(yahoo_tickers, country, today=None):
         price_dat.rename(columns={'Timestamp': 'Time'}, inplace=True)
 
         price_dat['Time'] = map(lambda t: pytz.utc.localize(datetime.datetime.utcfromtimestamp(t)), price_dat['Time'])
-        price_dat['Time'] = map(my_datetime_tools.truncate_to_next_minute, price_dat['Time'])
+        price_dat['Time'] = map(Utilities.my_datetime_tools.truncate_to_next_minute, price_dat['Time'])
 
         price_dat = price_dat[common_intraday_tools.STANDARD_COL_NAMES+[common_intraday_tools.STANDARD_INDEX_NAME]]
         price_dat = price_dat[price_dat['Volume'] > 0]
@@ -138,7 +138,7 @@ def retrieve_and_store_today_price_from_yahoo(assets_df, root_directory_name, to
     assets_df = assets_df[assets_df['FEED_SOURCE']
         .apply(lambda sources: any(source in _MAP_BBG_FEED_SOURCE_TO_YAHOO_FEED_SOURCE for source in sources))]
     assets_df['COUNTRY'] = assets_df['MNEMO_AND_FEED_SOURCE']\
-        .apply(lambda x: list(set(zip(*x)[1]).intersection(my_markets.COUNTRIES)))
+        .apply(lambda x: list(set(zip(*x)[1]).intersection(Utilities.my_markets.COUNTRIES)))
     assets_df = assets_df[assets_df['COUNTRY'].apply(lambda c: len(c) == 1)]
     assets_df['COUNTRY'] = map(lambda c: c[0], assets_df['COUNTRY'])
 
@@ -155,7 +155,7 @@ def retrieve_and_store_today_price_from_yahoo(assets_df, root_directory_name, to
         today = datetime.date.today()
 
     csv_directory = os.path.join(root_directory_name, 'zip', today.isoformat())
-    my_general_tools.mkdir_and_log(csv_directory)
+    Utilities.my_general_tools.mkdir_and_log(csv_directory)
     number_of_assets = assets_df.shape[0]
 
     if number_of_assets > 25000:
@@ -169,7 +169,7 @@ def retrieve_and_store_today_price_from_yahoo(assets_df, root_directory_name, to
     for i in range(1, number_of_batches + 1):
 
         logging.info('Thread to sleep for %s before next batch - as per quota' % str(time_delta_to_sleep))
-        my_datetime_tools.sleep_with_infinite_loop(time_delta_to_sleep.total_seconds())
+        Utilities.my_datetime_tools.sleep_with_infinite_loop(time_delta_to_sleep.total_seconds())
 
         cur_batch = assets_df[__QUOTA_SAFE * (i - 1):min(__QUOTA_SAFE * i, number_of_assets)]
         logging.info('Starting batch %s' % i)
@@ -180,7 +180,7 @@ def retrieve_and_store_today_price_from_yahoo(assets_df, root_directory_name, to
                              % (",".join(asset['YAHOO_TICKERS']), asset['COMPOSITE_ID_BB_GLOBAL']))
                 pandas_content = get_price_from_yahoo(asset['YAHOO_TICKERS'], asset['COUNTRY'], today=today)
                 csv_output_path = os.path.join(csv_directory, asset['COMPOSITE_ID_BB_GLOBAL'] + '.csv.zip')
-                my_general_tools.store_and_log_pandas_df(csv_output_path, pandas_content)
+                Utilities.my_general_tools.store_and_log_pandas_df(csv_output_path, pandas_content)
             cur_batch.apply(historize_asset, axis=1)
         time_delta_to_sleep = datetime.timedelta(minutes=5)  # max\
             # (
