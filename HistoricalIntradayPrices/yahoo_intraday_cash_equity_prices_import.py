@@ -22,6 +22,7 @@ _MAP_BBG_FEED_SOURCE_TO_YAHOO_FEED_SOURCE = \
     {
         'AT': '.AX', 'AU': '.AX', 'AXG': '.AX',
         'AV': '.VI',
+        'BB': '.BR',
         'BS': '.SA',
         'CG': '.SS', 'CS': '.SZ',
         'CT': '.TO', 'CV': '.V',

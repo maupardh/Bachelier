@@ -16,6 +16,12 @@ EQUITY_MARKETS_BY_COUNTRY_CONFIG = \
                 'MarketClose': datetime.timedelta(hours=17, minutes=0),
                 'TimeZone': pytz.timezone('Europe/Vienna')
             },
+        'BB':
+            {
+                'MarketOpen': datetime.timedelta(hours=9, minutes=0),
+                'MarketClose': datetime.timedelta(hours=17, minutes=30),
+                'TimeZone': pytz.timezone('Europe/Brussels')
+            },
         'BZ':
             {
                 'MarketOpen': datetime.timedelta(hours=9, minutes=0),
@@ -145,6 +151,7 @@ EQUITY_FEED_SOURCES_BY_CONTINENT = \
         'EMEA':
             {
                 'AV':  {'AV'},  # Austria
+                'BB': {'BB'},  # Belgium
                 'DC':  {'DC', 'DF'},  # Denmark
                 'FP':  {'FP'},  # France
                 'GR':  {'GF', 'GD', 'GY', 'GM', 'GB', 'GI', 'GH', 'GS', 'GR', 'TH'},  # Germany
