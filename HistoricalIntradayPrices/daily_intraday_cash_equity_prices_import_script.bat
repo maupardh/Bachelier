@@ -1,0 +1,1 @@
+python.exe .\daily_intraday_cash_equity_prices_import_script.py

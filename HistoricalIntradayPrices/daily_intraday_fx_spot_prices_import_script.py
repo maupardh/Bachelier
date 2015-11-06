@@ -1,6 +1,5 @@
 import os.path
 import datetime
-import pandas as pd
 import logging
 import pytz
 from tzlocal import get_localzone

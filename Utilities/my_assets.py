@@ -2,7 +2,7 @@ import pandas as pd
 import logging
 import os.path
 import my_general_tools
-import asset_import_tools
+import HistoricalAssets.asset_import_tools
 
 __ASSETS_DIRECTORY = os.path.join('F:/', 'financialData', 'Assets')
 
@@ -43,7 +43,7 @@ def refresh_assets(date):
 
     path_to_zip = os.path.join(__ASSETS_DIRECTORY, 'BBGSymbiologyAssets.csv.zip')
 
-    asset_import_tools.historize_assets(bbg_open_symbiology_configs, [path_to_zip])
+    HistoricalAssets.asset_import_tools.historize_assets(bbg_open_symbiology_configs, [path_to_zip])
 
 
 def get_equity_import_universe_from_nasdaq_trader():
