@@ -6,6 +6,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="HistoricalExtradayPrices" />
     <orderEntry type="module" module-name="HistoricalIntradayPrices" />
+    <orderEntry type="module" module-name="pythonCode" />
   </component>
   <component name="TestRunnerService">
     <option name="PROJECT_TEST_RUNNER" value="Unittests" />

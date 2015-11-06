@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/HistoricalAssets.iml" filepath="$PROJECT_DIR$/.idea/HistoricalAssets.iml" />
       <module fileurl="file://$PROJECT_DIR$/../HistoricalExtradayPrices/.idea/HistoricalExtradayPrices.iml" filepath="$PROJECT_DIR$/../HistoricalExtradayPrices/.idea/HistoricalExtradayPrices.iml" />
       <module fileurl="file://$PROJECT_DIR$/../HistoricalIntradayPrices/.idea/HistoricalIntradayPrices.iml" filepath="$PROJECT_DIR$/../HistoricalIntradayPrices/.idea/HistoricalIntradayPrices.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../.idea/pythonCode.iml" filepath="$PROJECT_DIR$/../.idea/pythonCode.iml" />
     </modules>
   </component>
 </project>
