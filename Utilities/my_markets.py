@@ -88,6 +88,12 @@ EQUITY_MARKETS_BY_COUNTRY_CONFIG = \
                 'MarketClose': datetime.timedelta(hours=17, minutes=35),
                 'TimeZone': pytz.timezone('Israel')
             },
+        'IR':
+            {
+                'MarketOpen': datetime.timedelta(hours=6, minutes=30),
+                'MarketClose': datetime.timedelta(hours=17, minutes=15),
+                'TimeZone': pytz.timezone('Europe/Dublin')
+            },
         'LN':
             {
                 'MarketOpen': datetime.timedelta(hours=7, minutes=15),
@@ -146,7 +152,7 @@ EQUITY_FEED_SOURCES_BY_CONTINENT = \
                 'CN':  {'CN', 'CT', 'CJ', 'TR', 'TX', 'TA', 'TG', 'TK', 'TW', 'DT', 'DG', 'QF', 'QH'},  # Canada
                 'MM':  {'MM'},  # Mexico
                 'US':  {'UA', 'UB', 'UD', 'UE', 'UF', 'UJ', 'UM', 'UN', 'UO', 'UP', 'UR', 'US', 'UT', 'UU', 'UV',
-                       'UW', 'UX', 'VJ', 'VK', 'VY'}
+                        'UW', 'UX', 'VJ', 'VK', 'VY'}
             },
         'EMEA':
             {
@@ -156,6 +162,7 @@ EQUITY_FEED_SOURCES_BY_CONTINENT = \
                 'FP':  {'FP'},  # France
                 'GR':  {'GF', 'GD', 'GY', 'GM', 'GB', 'GI', 'GH', 'GS', 'GR', 'TH'},  # Germany
                 'IM':  {'IM', 'IF'},  # Italy
+                'IR': {'IR'},  # Ireland
                 'IT':  {'IT'},  # Israel
                 'LN':  {'LN'},  # UK
                 'NA':  {'NA', 'MT'},   # Netherlands
