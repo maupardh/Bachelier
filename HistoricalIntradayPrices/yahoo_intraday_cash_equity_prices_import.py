@@ -12,12 +12,8 @@ import Utilities.my_datetime_tools
 import Utilities.my_markets
 
 
-__QUOTA_PER_INTERVAL = 1000
-__INTERVAL = datetime.timedelta(minutes=60)
-__INTERVAL_SAFETY_MARGIN = datetime.timedelta(minutes=5)
-__QUOTA_SAFETY_MARGIN = 50
-__QUOTA_SAFE = __QUOTA_PER_INTERVAL - __QUOTA_SAFETY_MARGIN
-__INTERVAL_SAFE = __INTERVAL + __INTERVAL_SAFETY_MARGIN
+__QUOTA_PER_INTERVAL = 500
+__INTERVAL = datetime.timedelta(minutes=15)
 _MAP_BBG_FEED_SOURCE_TO_YAHOO_FEED_SOURCE = \
     {
         'AT': '.AX', 'AU': '.AX', 'AXG': '.AX',
@@ -162,7 +158,7 @@ def retrieve_and_store_today_price_from_yahoo(assets_df, root_directory_name, to
         logging.critical('Called yahoo import on %s assets - that is more than the 25, 000 limit' % number_of_assets)
         return
 
-    number_of_batches = int(number_of_assets/__QUOTA_SAFE) + 1
+    number_of_batches = int(number_of_assets/__QUOTA_PER_INTERVAL) + 1
     logging.info('Retrieving Intraday Prices for %s tickers in %s batches' % (number_of_assets, number_of_batches))
     time_delta_to_sleep = datetime.timedelta(0)
 
@@ -171,7 +167,7 @@ def retrieve_and_store_today_price_from_yahoo(assets_df, root_directory_name, to
         logging.info('Thread to sleep for %s before next batch - as per quota' % str(time_delta_to_sleep))
         Utilities.my_datetime_tools.sleep_with_infinite_loop(time_delta_to_sleep.total_seconds())
 
-        cur_batch = assets_df[__QUOTA_SAFE * (i - 1):min(__QUOTA_SAFE * i, number_of_assets)]
+        cur_batch = assets_df[__QUOTA_PER_INTERVAL * (i - 1):min(__QUOTA_PER_INTERVAL * i, number_of_assets)]
         logging.info('Starting batch %s' % i)
 
         with chrono.Timer() as timed:
@@ -182,14 +178,10 @@ def retrieve_and_store_today_price_from_yahoo(assets_df, root_directory_name, to
                 csv_output_path = os.path.join(csv_directory, asset['COMPOSITE_ID_BB_GLOBAL'] + '.csv.zip')
                 Utilities.my_general_tools.store_and_log_pandas_df(csv_output_path, pandas_content)
             cur_batch.apply(historize_asset, axis=1)
-        time_delta_to_sleep = datetime.timedelta(minutes=5)  # max\
-            # (
-            #     __INTERVAL_SAFE -
-            #     datetime.timedelta(seconds=timed.elapsed % __INTERVAL_SAFE.total_seconds()),
-            #     datetime.timedelta(seconds=0)
-            # )
+        time_delta_to_sleep = __INTERVAL - datetime.timedelta(seconds=timed.elapsed) \
+            if __INTERVAL > datetime.timedelta(seconds=timed.elapsed) else __INTERVAL
         logging.info('Batch %s completed: %s tickers imported' % (i, len(cur_batch)))
 
     logging.info('Output completed')
-    # logging.info('Thread to sleep for %s before next task - as per quota' % str(time_delta_to_sleep))
-    # my_datetime_tools.sleep_with_infinite_loop(time_delta_to_sleep.total_seconds())
+    logging.info('Thread to sleep for %s before next task - as per quota' % str(time_delta_to_sleep))
+    Utilities.my_datetime_tools.sleep_with_infinite_loop(time_delta_to_sleep.total_seconds())

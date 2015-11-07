@@ -6,5 +6,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="HistoricalAssets" />
     <orderEntry type="module" module-name="Utilities" />
+    <orderEntry type="module" module-name="HistoricalExtradayPrices" />
   </component>
 </module>
