@@ -42,20 +42,20 @@ _MAP_BBG_FEED_SOURCE_TO_YAHOO_FEED_SOURCE = \
     }
 
 
-def get_price_from_yahoo(yahoo_tickers, country, today=None):
+def get_price_from_yahoo(yahoo_tickers, country, date=None):
 
-    if today is None:
-        today = datetime.date.today()
+    if date is None:
+        date = datetime.date.today()
 
     try:
-        std_index = common_intraday_tools.REINDEXES_CACHE[country][today.isoformat()]
+        std_index = common_intraday_tools.REINDEXES_CACHE[country][date.isoformat()]
     except:
         std_index = None
 
     if std_index is None:
-        common_intraday_tools.REINDEXES_CACHE[country][today.isoformat()] = \
-            common_intraday_tools.get_standardized_intraday_equity_dtindex(country, today)
-        std_index = common_intraday_tools.REINDEXES_CACHE[country][today.isoformat()]
+        common_intraday_tools.REINDEXES_CACHE[country][date.isoformat()] = \
+            common_intraday_tools.get_standardized_intraday_equity_dtindex(country, date)
+        std_index = common_intraday_tools.REINDEXES_CACHE[country][date.isoformat()]
 
     try:
 
@@ -119,7 +119,7 @@ def get_price_from_yahoo(yahoo_tickers, country, today=None):
         return pd.DataFrame(None)
 
 
-def retrieve_and_store_today_price_from_yahoo(assets_df, root_directory_name, today=None):
+def retrieve_and_store_today_price_from_yahoo(assets_df, root_directory_name, date=None):
 
     if assets_df is None or assets_df.shape[0] == 0:
         logging.warning('Called yahoo import on an empty asset dataFrame')
@@ -147,10 +147,10 @@ def retrieve_and_store_today_price_from_yahoo(assets_df, root_directory_name, to
     assets_df.reset_index(drop=False, inplace=True)
     assets_df = assets_df[['COMPOSITE_ID_BB_GLOBAL', 'YAHOO_TICKERS', 'COUNTRY']]
 
-    if today is None:
-        today = datetime.date.today()
+    if date is None:
+        date = datetime.date.today()
 
-    csv_directory = os.path.join(root_directory_name, 'zip', today.isoformat())
+    csv_directory = os.path.join(root_directory_name, 'zip', date.isoformat())
     Utilities.my_general_tools.mkdir_and_log(csv_directory)
     number_of_assets = assets_df.shape[0]
 
@@ -174,7 +174,7 @@ def retrieve_and_store_today_price_from_yahoo(assets_df, root_directory_name, to
             def historize_asset(asset):
                 logging.info('   Retrieving Prices for: %s , BBG_COMPOSITE: %s'
                              % (",".join(asset['YAHOO_TICKERS']), asset['COMPOSITE_ID_BB_GLOBAL']))
-                pandas_content = get_price_from_yahoo(asset['YAHOO_TICKERS'], asset['COUNTRY'], today=today)
+                pandas_content = get_price_from_yahoo(asset['YAHOO_TICKERS'], asset['COUNTRY'], date=date)
                 csv_output_path = os.path.join(csv_directory, asset['COMPOSITE_ID_BB_GLOBAL'] + '.csv.zip')
                 Utilities.my_general_tools.store_and_log_pandas_df(csv_output_path, pandas_content)
             cur_batch.apply(historize_asset, axis=1)

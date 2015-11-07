@@ -1,6 +1,5 @@
 import pandas as pd
 import logging
-import common_intraday_tools
 import Utilities.my_datetime_tools
 import yahoo_intraday_cash_equity_prices_import
 import Utilities.my_logging
@@ -17,13 +16,14 @@ def refresh_amer(date):
         assets = Utilities.my_assets.get_assets()
         assets['ID_BB_GLOBAL'] = assets.index
         assets = assets[assets['MARKET_SECTOR_DES'] == 'Equity']
-        non_us_feed_sources = [feed_source for key in Utilities.my_markets.EQUITY_FEED_SOURCES_BY_CONTINENT['AMER'].keys()
+        non_us_feed_sources = [feed_source for key in
+                               Utilities.my_markets.EQUITY_FEED_SOURCES_BY_CONTINENT['AMER'].keys()
                                if key != 'US'
                                for feed_source in Utilities.my_markets.EQUITY_FEED_SOURCES_BY_CONTINENT['AMER'][key]]
         non_us_assets = assets[assets['FEED_SOURCE']
             .apply(lambda feed_source: feed_source in non_us_feed_sources)]\
             [['ID_BB_GLOBAL', 'ID_BB_SEC_NUM_DES', 'FEED_SOURCE', 'COMPOSITE_ID_BB_GLOBAL']]
-        us_equity_universe = common_intraday_tools.get_equity_import_universe_from_oats()
+        us_equity_universe = Utilities.my_assets.get_equity_import_universe_from_oats()
         us_equity_universe = us_equity_universe.loc[us_equity_universe['Primary_Listing_Mkt'] != 'U'][['Symbol']]
         us_equity_universe.drop_duplicates(inplace=True)
         us_assets = pd.merge(assets, us_equity_universe, left_on='ID_BB_SEC_NUM_DES', right_on='Symbol', how='inner')\
@@ -38,7 +38,7 @@ def refresh_amer(date):
 
         yahoo_intraday_cash_equity_prices_import.retrieve_and_store_today_price_from_yahoo\
         (
-            na_assets, 'F:/FinancialData/HistoricalIntradayPrices/', today=date
+            na_assets, 'F:/FinancialData/HistoricalIntradayPrices/', date=date
         )
         logging.info('NA intraday price import complete')
 
@@ -66,7 +66,7 @@ def refresh_asia(date):
 
         yahoo_intraday_cash_equity_prices_import.retrieve_and_store_today_price_from_yahoo\
         (
-            asia_assets, 'F:/FinancialData/HistoricalIntradayPrices/', today=date
+            asia_assets, 'F:/FinancialData/HistoricalIntradayPrices/', date=date
         )
         logging.info('Asia intraday price import complete')
 
@@ -102,7 +102,7 @@ def refresh_emea(date):
 
         yahoo_intraday_cash_equity_prices_import.retrieve_and_store_today_price_from_yahoo\
         (
-            emea_assets, 'F:/FinancialData/HistoricalIntradayPrices/', today=date
+            emea_assets, 'F:/FinancialData/HistoricalIntradayPrices/', date=date
         )
         logging.info('Emea intraday price import complete')
 

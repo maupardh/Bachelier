@@ -59,7 +59,7 @@ def refresh_fx(date):
 
         yahoo_intraday_fx_spot_prices_import.retrieve_and_store_today_price_from_yahoo\
         (
-            fx_assets, 'F:/FinancialData/HistoricalIntradayPrices/', today=date
+            fx_assets, 'F:/FinancialData/HistoricalIntradayPrices/', date=date
         )
         logging.info('FX intraday price import complete')
 

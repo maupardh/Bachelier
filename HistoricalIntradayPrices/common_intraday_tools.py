@@ -1,6 +1,5 @@
 import pandas as pd
 import datetime
-import logging
 import pytz
 import Utilities.my_markets
 
@@ -32,7 +31,7 @@ def get_standardized_intraday_fx_dtindex(date):
     try:
         start_reg = pytz.utc.localize(datetime.datetime(date.year, date.month, date.day))
         end_reg = pytz.utc.localize(datetime.datetime(date.year, date.month, date.day) +
-                                    datetime.timedelta(hours=23, minutes=59))
+                                    datetime.timedelta(days=1) - datetime.timedelta(minutes=1))
         reg_idx = pd.date_range(start_reg, end_reg, freq='1T')
         reg_idx.name = STANDARD_INDEX_NAME
         return reg_idx
@@ -46,34 +45,3 @@ for country in Utilities.my_markets.COUNTRIES:
     REINDEXES_CACHE[country] = {
         datetime.date.today().isoformat(): get_standardized_intraday_equity_dtindex(country, datetime.date.today())}
 
-
-def get_equity_import_universe_from_nasdaq_trader():
-
-    logging.info('Retrieving symbols from Nasdaq Trader')
-    try:
-        query = 'ftp://ftp.nasdaqtrader.com/symboldirectory/nasdaqlisted.txt'
-        content_first_piece = set(pd.read_csv(query, sep='|')['Symbol'][:-1])
-
-        query = 'ftp://ftp.nasdaqtrader.com/symboldirectory/otherlisted.txt'
-        content_second_piece = set(pd.read_csv(query, sep='|')['CQS Symbol'][:-1])
-        logging.info('Successful')
-        return content_first_piece.union(content_second_piece)
-
-    except Exception, err:
-        logging.critical('Nasdaq Trader import failed with error message: %s' % err.message)
-        return None
-
-
-def get_equity_import_universe_from_oats(file_type='SOD'):
-
-    logging.info('Retrieving symbols from oats')
-    try:
-        query = 'http://oatsreportable.finra.org/OATSReportableSecurities-' + file_type + '.txt'
-        content = pd.read_csv(query, sep='|')
-        content['Symbol'] = content.apply(lambda x: str.replace(x['Symbol'], ' ', '/'), axis=1)
-        logging.info('Successful')
-        return content
-
-    except Exception, err:
-        logging.critical('Oats symbols import failed with error message: %s' % err.message)
-        return pd.DataFrame(None)
