@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../HistoricalAssets/.idea/HistoricalAssets.iml" filepath="$PROJECT_DIR$/../HistoricalAssets/.idea/HistoricalAssets.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/HistoricalIntradayPrices.iml" filepath="$PROJECT_DIR$/.idea/HistoricalIntradayPrices.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../Utilities/.idea/Utilities.iml" filepath="$PROJECT_DIR$/../Utilities/.idea/Utilities.iml" />
     </modules>
   </component>
 </project>
