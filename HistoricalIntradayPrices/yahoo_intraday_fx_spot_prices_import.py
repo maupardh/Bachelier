@@ -105,7 +105,7 @@ def retrieve_and_store_today_price_from_yahoo(fx_assets_df, root_directory_name,
 
     def historize_asset(asset):
         logging.info('   Retrieving Prices for: %s , BBG_COMPOSITE: %s'
-                % (",".join(asset['YAHOO_FX_TICKER']), asset['ID_BB_GLOBAL']))
+                     % (asset['YAHOO_FX_TICKER'], asset['ID_BB_GLOBAL']))
         pandas_content = get_price_from_yahoo(asset['YAHOO_FX_TICKER'], date=date)
         csv_output_path = os.path.join(csv_directory, asset['ID_BB_GLOBAL'] + '.csv.zip')
         Utilities.my_general_tools.store_and_log_pandas_df(csv_output_path, pandas_content)

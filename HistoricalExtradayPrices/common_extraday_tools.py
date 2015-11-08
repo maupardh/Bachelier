@@ -1,22 +1,31 @@
 import pandas as pd
 import os.path
 import logging
+import datetime
 import Utilities.my_general_tools
 import Utilities.my_holidays
-
+import Utilities.my_markets
 
 STANDARD_COL_NAMES = ['Open', 'Close', 'AdjClose', 'Volume']
 STANDARD_INDEX_NAME = 'ID_BB_GLOBAL'
 __EXTRADAY_PRICES_DIRECTORY = os.path.join('F:/', 'financialData', 'HistoricalExtradayPrices')
 
 
-def get_standardized_extraday_dtindex(country, start_date, end_date):
+def get_standardized_extraday_equity_dtindex(country, start_date, end_date):
 
     reg_idx = pd.bdate_range(start_date, end_date)
     reg_idx.name = STANDARD_INDEX_NAME
-    holidays_idx = Utilities.my_holidays.HOLIDAYS_BY_COUNTRY_CONFIG[country]
+    holidays_idx = Utilities.my_holidays.HOLIDAYS_BY_COUNTRY_CONFIG.get(country, {})
     reg_idx = reg_idx.difference(holidays_idx)
     return reg_idx
+
+
+def get_standardized_extraday_fx_dtindex(start_date, end_date):
+
+    reg_idx = pd.bdate_range(start_date, end_date)
+    reg_idx.name = STANDARD_INDEX_NAME
+    return reg_idx
+
 
 REINDEXES_CACHE = {}
 

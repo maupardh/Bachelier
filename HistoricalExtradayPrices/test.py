@@ -1,6 +1,6 @@
 import datetime
 import os.path
-import yahoo_extraday_import
+import yahoo_extraday_cash_equity_prices_import
 import Utilities.my_datetime_tools
 import Utilities.my_holidays
 import Utilities.my_logging
@@ -31,7 +31,7 @@ def run():
     start_date = Utilities.my_datetime_tools.add_business_days(end_date, -252 * 5,
                                                                Utilities.my_holidays.HOLIDAYS_BY_COUNTRY_CONFIG['US'])
 
-    yahoo_extraday_import.retrieve_and_store_historical_prices(assets, start_date, end_date)
+    yahoo_extraday_cash_equity_prices_import.retrieve_and_store_historical_prices(assets, start_date, end_date)
     Utilities.my_logging.shutdown()
 
     return 0

@@ -17,7 +17,6 @@ def get_assets():
         content = my_general_tools.read_and_log_pandas_df(assets_path)
         content = content.applymap(str)
         content.index = content['ID_BB_GLOBAL']
-        content.drop('ID_BB_GLOBAL', axis=1, inplace=True)
     except Exception, err:
         logging.critical('Reading assets failed with error message: %s' % err.message)
 

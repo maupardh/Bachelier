@@ -35,9 +35,7 @@ def _get_price_from_quandl(ticker, start_date, end_date, country):
                 + '&end_date=' + end_date.isoformat() + '&api_key=' + __API_KEY
         else:
             query = 'https://www.quandl.com/api/v3/datasets/WIKI/' + ticker + '.csv?api_key=' + __API_KEY
-        f = urllib2.urlopen(query)
-        s = f.read()
-        f.close()
+        s = urllib2.urlopen(query).read()
 
         content = StringIO(s)
         price_dat = pd.read_csv(content, sep=',')

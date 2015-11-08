@@ -14,7 +14,7 @@ import Utilities.my_markets
 
 __QUOTA_PER_INTERVAL = 500
 __INTERVAL = datetime.timedelta(minutes=15)
-_MAP_BBG_FEED_SOURCE_TO_YAHOO_FEED_SOURCE = \
+__MAP_BBG_FEED_SOURCE_TO_YAHOO_FEED_SOURCE = \
     {
         'AT': '.AX', 'AU': '.AX', 'AXG': '.AX',
         'AV': '.VI',
@@ -79,7 +79,7 @@ def get_price_from_yahoo(yahoo_tickers, country, date=None):
                 return pd.DataFrame(None)
 
         price_dat = pd.concat(map(get_price_data_of_single_ticker, yahoo_tickers), ignore_index=True)
-        price_dat = price_dat.convert_objects(convert_numeric=True, convert_dates=False, convert_timedeltas=False)
+        price_dat = price_dat.applymap(float)
         price_dat.rename(columns={'Timestamp': 'Time'}, inplace=True)
 
         price_dat['Time'] = map(lambda t: pytz.utc.localize(datetime.datetime.utcfromtimestamp(t)), price_dat['Time'])
@@ -89,7 +89,7 @@ def get_price_from_yahoo(yahoo_tickers, country, date=None):
         price_dat = price_dat[price_dat['Volume'] > 0]
         price_dat.loc[:, 'Open'] = price_dat['Open'] * price_dat['Volume']
         price_dat.loc[:, 'Close'] = price_dat['Close'] * price_dat['Volume']
-        price_dat = price_dat.groupby(price_dat['Time'], sort=False).agg(
+        price_dat = price_dat.groupby('Time', sort=False).agg(
              {'Open': sum, 'Close': sum, 'Low': min, 'High': max, 'Volume': sum})
         price_dat.loc[:, 'Open'] = map(lambda x: round(x, 6), price_dat['Open']/price_dat['Volume'])
         price_dat.loc[:, 'Close'] = map(lambda x: round(x, 6), price_dat['Close']/price_dat['Volume'])
@@ -132,15 +132,15 @@ def retrieve_and_store_today_price_from_yahoo(assets_df, root_directory_name, da
     assets_df = assets_df.groupby(['COMPOSITE_ID_BB_GLOBAL']).agg({'MNEMO_AND_FEED_SOURCE': lambda x: set(x),
                                                                    'FEED_SOURCE': lambda x: set(x)})
     assets_df = assets_df[assets_df['FEED_SOURCE']
-        .apply(lambda sources: any(source in _MAP_BBG_FEED_SOURCE_TO_YAHOO_FEED_SOURCE for source in sources))]
+        .apply(lambda sources: any(source in __MAP_BBG_FEED_SOURCE_TO_YAHOO_FEED_SOURCE for source in sources))]
     assets_df['COUNTRY'] = assets_df['MNEMO_AND_FEED_SOURCE']\
         .apply(lambda x: list(set(zip(*x)[1]).intersection(Utilities.my_markets.COUNTRIES)))
     assets_df = assets_df[assets_df['COUNTRY'].apply(lambda c: len(c) == 1)]
     assets_df['COUNTRY'] = map(lambda c: c[0], assets_df['COUNTRY'])
 
     def concat_mnemo_and_feed_source(list_of_tuples):
-        return list(set([str.replace(t[0], '/', '-')+_MAP_BBG_FEED_SOURCE_TO_YAHOO_FEED_SOURCE[t[1]]
-                    for t in list_of_tuples if t[1] in _MAP_BBG_FEED_SOURCE_TO_YAHOO_FEED_SOURCE]))
+        return list(set([str.replace(t[0], '/', '-') + __MAP_BBG_FEED_SOURCE_TO_YAHOO_FEED_SOURCE[t[1]]
+                         for t in list_of_tuples if t[1] in __MAP_BBG_FEED_SOURCE_TO_YAHOO_FEED_SOURCE]))
 
     assets_df['YAHOO_TICKERS'] = assets_df['MNEMO_AND_FEED_SOURCE'].apply(concat_mnemo_and_feed_source)
     assets_df = assets_df[assets_df['YAHOO_TICKERS'].apply(lambda l: len(l) > 0)]
@@ -168,7 +168,7 @@ def retrieve_and_store_today_price_from_yahoo(assets_df, root_directory_name, da
         Utilities.my_datetime_tools.sleep_with_infinite_loop(time_delta_to_sleep.total_seconds())
 
         cur_batch = assets_df[__QUOTA_PER_INTERVAL * (i - 1):min(__QUOTA_PER_INTERVAL * i, number_of_assets)]
-        logging.info('Starting batch %s' % i)
+        logging.info('Starting batch %s / %s' % (i, number_of_batches))
 
         with chrono.Timer() as timed:
             def historize_asset(asset):
@@ -180,7 +180,7 @@ def retrieve_and_store_today_price_from_yahoo(assets_df, root_directory_name, da
             cur_batch.apply(historize_asset, axis=1)
         time_delta_to_sleep = __INTERVAL - datetime.timedelta(seconds=timed.elapsed) \
             if __INTERVAL > datetime.timedelta(seconds=timed.elapsed) else __INTERVAL
-        logging.info('Batch %s completed: %s tickers imported' % (i, len(cur_batch)))
+        logging.info('Batch %s / %s completed: %s tickers imported' % (i, number_of_batches, len(cur_batch)))
 
     logging.info('Output completed')
     logging.info('Thread to sleep for %s before next task - as per quota' % str(time_delta_to_sleep))

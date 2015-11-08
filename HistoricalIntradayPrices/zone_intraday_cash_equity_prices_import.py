@@ -29,7 +29,8 @@ def refresh_amer(date):
         us_assets = pd.merge(assets, us_equity_universe, left_on='ID_BB_SEC_NUM_DES', right_on='Symbol', how='inner')\
             [['ID_BB_GLOBAL', 'ID_BB_SEC_NUM_DES', 'FEED_SOURCE', 'COMPOSITE_ID_BB_GLOBAL']]
         us_assets = us_assets[us_assets['FEED_SOURCE']
-            .apply(lambda feed_source: feed_source in Utilities.my_markets.EQUITY_FEED_SOURCES_BY_CONTINENT['AMER']['US'])]
+            .apply(lambda feed_source: feed_source in
+                                       Utilities.my_markets.EQUITY_FEED_SOURCES_BY_CONTINENT['AMER']['US'])]
         na_assets = pd.concat([us_assets, non_us_assets], ignore_index=True)
         na_assets = na_assets[['ID_BB_GLOBAL', 'ID_BB_SEC_NUM_DES', 'FEED_SOURCE', 'COMPOSITE_ID_BB_GLOBAL']]
         na_assets.drop_duplicates(inplace=True)
