@@ -45,4 +45,4 @@ for country in Utilities.my_markets.COUNTRIES:
     REINDEXES_CACHE[country] = {
         datetime.date.today().isoformat(): get_standardized_intraday_equity_dtindex(country, datetime.date.today())}
 
-# local master branch
+# this is the local master branch
