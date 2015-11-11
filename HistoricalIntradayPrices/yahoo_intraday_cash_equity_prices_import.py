@@ -100,53 +100,34 @@ def get_price_from_yahoo(yahoo_tickers, country, date=None):
         return pd.DataFrame(None)
 
 
-def retrieve_and_store_today_price_from_yahoo(assets_df, root_directory_name, date=None):
+def retrieve_and_store_today_price_from_yahoo(assets_df, root_directory_name, date):
 
-    if assets_df is None or assets_df.shape[0] == 0:
-        logging.warning('Called yahoo import on an empty asset dataFrame')
-        return
+    try:
+        assert (isinstance(assets_df, pd.DataFrame) and isinstance(root_directory_name, basestring)
+                and isinstance(date, datetime.date))
 
-    assets_df = assets_df[['ID_BB_GLOBAL', 'ID_BB_SEC_NUM_DES', 'FEED_SOURCE', 'COMPOSITE_ID_BB_GLOBAL']]
-    assets_df.sort_values('ID_BB_SEC_NUM_DES', inplace=True)
-    assets_df.drop_duplicates(inplace=True)
-    assets_df['MNEMO_AND_FEED_SOURCE'] = zip(assets_df['ID_BB_SEC_NUM_DES'], assets_df['FEED_SOURCE'])
-    assets_df = assets_df.groupby(['COMPOSITE_ID_BB_GLOBAL']).agg({'MNEMO_AND_FEED_SOURCE': lambda x: set(x),
-                                                                   'FEED_SOURCE': lambda x: set(x)})
-    assets_df = assets_df[assets_df['FEED_SOURCE']
-        .apply(lambda sources: any(source in __MAP_BBG_FEED_SOURCE_TO_YAHOO_FEED_SOURCE for source in sources))]
-    assets_df['COUNTRY'] = assets_df['MNEMO_AND_FEED_SOURCE']\
-        .apply(lambda x: list(set(zip(*x)[1]).intersection(Utilities.my_markets.COUNTRIES)))
-    assets_df = assets_df[assets_df['COUNTRY'].apply(lambda c: len(c) == 1)]
-    assets_df['COUNTRY'] = map(lambda c: c[0], assets_df['COUNTRY'])
+        csv_directory = os.path.join(root_directory_name, 'zip', date.isoformat())
+        Utilities.my_general_tools.mkdir_and_log(csv_directory)
 
-    def concat_mnemo_and_feed_source(list_of_tuples):
-        return list(set([str.replace(t[0], '/', '-') + __MAP_BBG_FEED_SOURCE_TO_YAHOO_FEED_SOURCE[t[1]]
-                         for t in list_of_tuples if t[1] in __MAP_BBG_FEED_SOURCE_TO_YAHOO_FEED_SOURCE]))
+        if number_of_assets > 25000:
+            logging.critical('Called yahoo import on %s assets - that is more than the 25, 000 limit' % number_of_assets)
+            return
 
-    assets_df['YAHOO_TICKERS'] = assets_df['MNEMO_AND_FEED_SOURCE'].apply(concat_mnemo_and_feed_source)
-    assets_df = assets_df[assets_df['YAHOO_TICKERS'].apply(lambda l: len(l) > 0)]
-    assets_df.reset_index(drop=False, inplace=True)
-    assets_df = assets_df[['COMPOSITE_ID_BB_GLOBAL', 'YAHOO_TICKERS', 'COUNTRY']]
+        def historize_asset(asset):
+                        logging.info('   Retrieving Prices for: %s , BBG_COMPOSITE: %s'
+                                     % (",".join(asset['YAHOO_TICKERS']), asset['COMPOSITE_ID_BB_GLOBAL']))
+                        pandas_content = get_price_from_yahoo(asset['YAHOO_TICKERS'], asset['COUNTRY'], date=date)
+                        csv_output_path = os.path.join(csv_directory, asset['COMPOSITE_ID_BB_GLOBAL'] + '.csv.zip')
+                        Utilities.my_general_tools.store_and_log_pandas_df(csv_output_path, pandas_content)
 
-    if date is None:
-        date = datetime.date.today()
+        def historize_batch(batch):
+            batch.apply(historize_asset, axis=1)
+        Utilities.my_general_tools.break_action_into_batches(historize_batch, assets_df,
+                                                             __QUOTA_PER_INTERVAL, __INTERVAL)
+    except AssertionError:
+        logging.warning('Calling break_action_into_batches with wrong argument types')
+    except Exception as err:
+        logging.warning('break_action_into_batches failed with message: %s' % err.message)
 
-    csv_directory = os.path.join(root_directory_name, 'zip', date.isoformat())
-    Utilities.my_general_tools.mkdir_and_log(csv_directory)
-
-    if number_of_assets > 25000:
-        logging.critical('Called yahoo import on %s assets - that is more than the 25, 000 limit' % number_of_assets)
-        return
-
-    def historize_asset(asset):
-                    logging.info('   Retrieving Prices for: %s , BBG_COMPOSITE: %s'
-                                 % (",".join(asset['YAHOO_TICKERS']), asset['COMPOSITE_ID_BB_GLOBAL']))
-                    pandas_content = get_price_from_yahoo(asset['YAHOO_TICKERS'], asset['COUNTRY'], date=date)
-                    csv_output_path = os.path.join(csv_directory, asset['COMPOSITE_ID_BB_GLOBAL'] + '.csv.zip')
-                    Utilities.my_general_tools.store_and_log_pandas_df(csv_output_path, pandas_content)
-
-    def historize_batch(batch):
-        batch.apply(historize_asset, axis=1)
-    Utilities.my_general_tools.break_action_into_batches(historize_batch, assets_df, __QUOTA_PER_INTERVAL, __INTERVAL)
 
 # this is the local dev branch

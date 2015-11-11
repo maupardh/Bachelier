@@ -1,5 +1,7 @@
 import os.path
+import inspect
 import logging
+import sys
 import pandas as pd
 import my_zipping
 from StringIO import StringIO
@@ -88,6 +90,8 @@ def break_action_into_batches(action, table, interval, size_per_interval):
             logging.info('Batch %s / %s completed: %s tickers imported' % (i, number_of_batches, len(cur_batch)))
         logging.info('Action completed')
     except AssertionError:
-        logging.warning('Calling break_action_into_batches with wrong argument types')
+        functionNameAsString = sys._getframe().f_code.co_name
+        logging.warning('Calling %s with wrong argument types' % functionNameAsString)
     except Exception as err:
-        logging.warning('break_action_into_batches failed with message: %s' % err.message)
+        functionNameAsString = sys._getframe().f_code.co_name
+        logging.warning('%s failed with message: %s' % (functionNameAsString, err.message))
