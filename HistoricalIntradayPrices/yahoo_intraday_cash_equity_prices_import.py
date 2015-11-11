@@ -14,6 +14,7 @@ import Utilities.my_markets
 
 __QUOTA_PER_INTERVAL = 500
 __INTERVAL = datetime.timedelta(minutes=15)
+__INTERVAL_BACKUP = datetime.timedelta(minutes=2)
 __MAP_BBG_FEED_SOURCE_TO_YAHOO_FEED_SOURCE = \
     {
         'AT': '.AX', 'AU': '.AX', 'AXG': '.AX',
@@ -179,7 +180,7 @@ def retrieve_and_store_today_price_from_yahoo(assets_df, root_directory_name, da
                 Utilities.my_general_tools.store_and_log_pandas_df(csv_output_path, pandas_content)
             cur_batch.apply(historize_asset, axis=1)
         time_delta_to_sleep = __INTERVAL - datetime.timedelta(seconds=timed.elapsed) \
-            if __INTERVAL > datetime.timedelta(seconds=timed.elapsed) else __INTERVAL
+            if __INTERVAL > datetime.timedelta(seconds=timed.elapsed) else __INTERVAL_BACKUP
         logging.info('Batch %s / %s completed: %s tickers imported' % (i, number_of_batches, len(cur_batch)))
 
     logging.info('Output completed')
