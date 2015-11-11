@@ -44,3 +44,23 @@ REINDEXES_CACHE = {}
 for country in Utilities.my_markets.COUNTRIES:
     REINDEXES_CACHE[country] = {
         datetime.date.today().isoformat(): get_standardized_intraday_equity_dtindex(country, datetime.date.today())}
+
+
+def get_price_data_of_single_ticker(yahoo_ticker):
+            try:
+
+                query = 'http://chartapi.finance.yahoo.com/instrument/2.0/' + \
+                        yahoo_ticker + '/chartdata;type=quote;range=1d/csv'
+                s = urllib2.urlopen(query).read()
+                lines = s.split('\n')
+                number_of_info_lines = min([i for i in range(0, len(lines)) if lines[i][:1].isdigit()])
+
+                content = StringIO(s)
+                stock_dat = pd.read_csv(content, sep=':', names=['Value'], index_col=0, nrows=number_of_info_lines)
+
+                content = StringIO(s)
+                col_names = map(lambda title: str.capitalize(title.strip()), str.split(stock_dat.at['values', 'Value'], ','))
+                small_price_dat = pd.read_csv(content, skiprows=number_of_info_lines, names=col_names)
+                return small_price_dat
+            except:
+                return pd.DataFrame(None)

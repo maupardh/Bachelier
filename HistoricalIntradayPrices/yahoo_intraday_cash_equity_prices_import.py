@@ -59,25 +59,6 @@ def get_price_from_yahoo(yahoo_tickers, country, date=None):
 
     try:
 
-        def get_price_data_of_single_ticker(yahoo_ticker):
-            try:
-
-                query = 'http://chartapi.finance.yahoo.com/instrument/2.0/' + \
-                        yahoo_ticker + '/chartdata;type=quote;range=1d/csv'
-                s = urllib2.urlopen(query).read()
-                lines = s.split('\n')
-                number_of_info_lines = min([i for i in range(0, len(lines)) if lines[i][:1].isdigit()])
-
-                content = StringIO(s)
-                stock_dat = pd.read_csv(content, sep=':', names=['Value'], index_col=0, nrows=number_of_info_lines)
-
-                content = StringIO(s)
-                col_names = map(lambda title: str.capitalize(title.strip()), str.split(stock_dat.at['values', 'Value'], ','))
-                small_price_dat = pd.read_csv(content, skiprows=number_of_info_lines, names=col_names)
-                return small_price_dat
-            except:
-                return pd.DataFrame(None)
-
         price_dat = pd.concat(map(get_price_data_of_single_ticker, yahoo_tickers), ignore_index=True)
         price_dat = price_dat.applymap(float)
         price_dat.rename(columns={'Timestamp': 'Time'}, inplace=True)
@@ -152,38 +133,20 @@ def retrieve_and_store_today_price_from_yahoo(assets_df, root_directory_name, da
 
     csv_directory = os.path.join(root_directory_name, 'zip', date.isoformat())
     Utilities.my_general_tools.mkdir_and_log(csv_directory)
-    number_of_assets = assets_df.shape[0]
 
     if number_of_assets > 25000:
         logging.critical('Called yahoo import on %s assets - that is more than the 25, 000 limit' % number_of_assets)
         return
 
-    number_of_batches = int(number_of_assets/__QUOTA_PER_INTERVAL) + 1
-    logging.info('Retrieving Intraday Prices for %s tickers in %s batches' % (number_of_assets, number_of_batches))
-    time_delta_to_sleep = datetime.timedelta(0)
+    def historize_asset(asset):
+                    logging.info('   Retrieving Prices for: %s , BBG_COMPOSITE: %s'
+                                 % (",".join(asset['YAHOO_TICKERS']), asset['COMPOSITE_ID_BB_GLOBAL']))
+                    pandas_content = get_price_from_yahoo(asset['YAHOO_TICKERS'], asset['COUNTRY'], date=date)
+                    csv_output_path = os.path.join(csv_directory, asset['COMPOSITE_ID_BB_GLOBAL'] + '.csv.zip')
+                    Utilities.my_general_tools.store_and_log_pandas_df(csv_output_path, pandas_content)
 
-    for i in range(1, number_of_batches + 1):
-
-        logging.info('Thread to sleep for %s before next batch - as per quota' % str(time_delta_to_sleep))
-        Utilities.my_datetime_tools.sleep_with_infinite_loop(time_delta_to_sleep.total_seconds())
-
-        cur_batch = assets_df[__QUOTA_PER_INTERVAL * (i - 1):min(__QUOTA_PER_INTERVAL * i, number_of_assets)]
-        logging.info('Starting batch %s / %s' % (i, number_of_batches))
-
-        with chrono.Timer() as timed:
-            def historize_asset(asset):
-                logging.info('   Retrieving Prices for: %s , BBG_COMPOSITE: %s'
-                             % (",".join(asset['YAHOO_TICKERS']), asset['COMPOSITE_ID_BB_GLOBAL']))
-                pandas_content = get_price_from_yahoo(asset['YAHOO_TICKERS'], asset['COUNTRY'], date=date)
-                csv_output_path = os.path.join(csv_directory, asset['COMPOSITE_ID_BB_GLOBAL'] + '.csv.zip')
-                Utilities.my_general_tools.store_and_log_pandas_df(csv_output_path, pandas_content)
-            cur_batch.apply(historize_asset, axis=1)
-        time_delta_to_sleep = __INTERVAL - datetime.timedelta(seconds=timed.elapsed) \
-            if __INTERVAL > datetime.timedelta(seconds=timed.elapsed) else __INTERVAL
-        logging.info('Batch %s / %s completed: %s tickers imported' % (i, number_of_batches, len(cur_batch)))
-
-    logging.info('Output completed')
-    logging.info('Thread to sleep for %s before next task - as per quota' % str(time_delta_to_sleep))
-    Utilities.my_datetime_tools.sleep_with_infinite_loop(time_delta_to_sleep.total_seconds())
+    def historize_batch(batch):
+        batch.apply(historize_asset, axis=1)
+    Utilities.my_general_tools.break_action_into_batches(historize_batch, assets_df, __QUOTA_PER_INTERVAL, __INTERVAL)
 
 # this is the local dev branch

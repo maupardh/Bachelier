@@ -67,3 +67,27 @@ def read_and_log_pandas_df(file_path):
         logging.critical('      Reading path %s failed, with error: %s' % (file_path, err.message))
         content = pd.DataFrame(None)
     return content
+
+
+def break_action_into_batches(action, table, interval, size_per_interval):
+
+    try:
+        assert (isinstance(action, types.FunctionType) and isinstance(table, pd.DataFrame)
+                and isinstance(interval, datetime.timedelta) and isinstance(size_per_interval, int))
+        size_of_table = table.shape[0]
+        number_of_batches = int(size_of_table/size_per_interval) + 1
+        time_delta_to_sleep = datetime.timedelta(0)
+        for i in range(1, number_of_batches + 1):
+            logging.info('Thread to sleep for %s before next batch - as per quota' % str(time_delta_to_sleep))
+            Utilities.my_datetime_tools.sleep_with_infinite_loop(time_delta_to_sleep.total_seconds())
+            cur_batch = assets_df[__QUOTA_PER_INTERVAL * (i - 1):min(__QUOTA_PER_INTERVAL * i, number_of_assets)]
+            logging.info('Starting batch %s / %s' % (i, number_of_batches))
+            with chrono.Timer() as timed:
+                action(table)
+            time_delta_to_sleep = max(interval - datetime.timedelta(seconds=timed.elapsed), datetime.timedelta(0))
+            logging.info('Batch %s / %s completed: %s tickers imported' % (i, number_of_batches, len(cur_batch)))
+        logging.info('Action completed')
+    except AssertionError:
+        logging.warning('Calling break_action_into_batches with wrong argument types')
+    except Exception as err:
+        logging.warning('break_action_into_batches failed with message: %s' % err.message)
