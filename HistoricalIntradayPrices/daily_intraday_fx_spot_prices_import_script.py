@@ -18,9 +18,7 @@ def refresh():
     local_tz = get_localzone()
 
     # Initialization
-    log_file_path = \
-        os.path.join('F:/FinancialData/Logs/',
-                     today.isoformat(), "IntradayYahooFXImport.txt")
+    log_file_path = os.path.join('F:/FinancialData/Logs/', today.isoformat(), "IntradayYahooFXImport.txt")
     Utilities.my_logging.initialize_logging(log_file_path)
 
     # FX Import
@@ -38,9 +36,8 @@ def refresh():
 
 def refresh_fx(date):
 
-    # my_assets.refresh_assets(date)
-
     try:
+        assert(date, isinstance(datetime.date))
         logging.info('Starting to import FX intraday asset prices')
 
         fx_assets = Utilities.my_assets.get_assets()
@@ -49,21 +46,19 @@ def refresh_fx(date):
         fx_assets = fx_assets[fx_assets['SECURITY_TYP'] == 'CROSS']
         fx_assets = fx_assets[['ID_BB_GLOBAL', 'ID_BB_SEC_NUM_DES']]
         fx_assets = fx_assets[fx_assets['ID_BB_SEC_NUM_DES'].apply(lambda ccy_pair: len(ccy_pair) == 6)]
-        fx_assets = fx_assets[fx_assets['ID_BB_SEC_NUM_DES']
-            .apply(lambda ccy_pair: (ccy_pair[0:3] in Utilities.my_markets.HISTORIZED_FX_SPOTS or
-                                     ccy_pair[0:3] == 'USD') and
-                                    (ccy_pair[3:] in Utilities.my_markets.HISTORIZED_FX_SPOTS or
-                                     ccy_pair[3:] == 'USD'))]
+        fx_assets = fx_assets[fx_assets['ID_BB_SEC_NUM_DES'].apply(
+            lambda ccy_pair: (ccy_pair[0:3] in Utilities.my_markets.HISTORIZED_FX_SPOTS or ccy_pair[0:3] == 'USD') and
+                             (ccy_pair[3:] in Utilities.my_markets.HISTORIZED_FX_SPOTS or ccy_pair[3:] == 'USD'))]
         fx_assets.drop_duplicates(inplace=True)
         fx_assets.sort_values(by='ID_BB_SEC_NUM_DES', axis=0, ascending=True, inplace=True)
 
-        yahoo_intraday_fx_spot_prices_import.retrieve_and_store_today_price_from_yahoo\
-        (
-            fx_assets, 'F:/FinancialData/HistoricalIntradayPrices/', date=date
-        )
+        yahoo_intraday_fx_spot_prices_import.retrieve_and_store_today_price_from_yahoo(
+            fx_assets, 'F:/FinancialData/HistoricalIntradayPrices/', date=date)
         logging.info('FX intraday price import complete')
 
-    except Exception, err:
-        logging.critical('FX intraday price import failed with error: %s', err.message)
+    except AssertionError:
+        logging.warning('Calling refresh_fx with wrong argument types')
+    except Exception as err:
+        logging.warning('FX intraday price import failed with error: %s', err.message)
 
 refresh()

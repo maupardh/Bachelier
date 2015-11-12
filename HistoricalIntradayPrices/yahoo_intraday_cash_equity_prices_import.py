@@ -13,15 +13,9 @@ import Utilities.my_datetime_tools
 import Utilities.my_markets
 
 
-def get_price_from_yahoo(yahoo_tickers, country, date=None):
+def get_price_from_yahoo(yahoo_tickers, country, date):
 
-    if date is None:
-        date = datetime.date.today()
-
-    try:
-        std_index = common_intraday_tools.REINDEXES_CACHE[country][date.isoformat()]
-    except:
-        std_index = None
+    std_index = common_intraday_tools.REINDEXES_CACHE.get(country, {}).get(date.isoformat(), None)
 
     if std_index is None:
         common_intraday_tools.REINDEXES_CACHE[country][date.isoformat()] = \
@@ -29,7 +23,7 @@ def get_price_from_yahoo(yahoo_tickers, country, date=None):
         std_index = common_intraday_tools.REINDEXES_CACHE[country][date.isoformat()]
 
     try:
-
+        assert(isinstance(yahoo_tickers, list) and isinstance(country, basestring) and isinstance(date, datetime.date))
         price_dat = pd.concat(map(yahoo_tools.get_price_data_of_single_ticker, yahoo_tickers), ignore_index=True)
         price_dat = price_dat.applymap(float)
         price_dat.rename(columns={'Timestamp': 'Time'}, inplace=True)
@@ -65,7 +59,10 @@ def get_price_from_yahoo(yahoo_tickers, country, date=None):
             return pd.DataFrame(None)
         return price_dat
 
-    except Exception, err:
+    except AssertionError:
+        logging.warning('Calling get_price_from_yahoo with wrong argument types')
+        return pd.DataFrame(None)
+    except Exception as err:
         logging.warning('Yahoo price import and pandas enrich failed for: %s with message %s' %
                         (yahoo_tickers, err.message))
         return pd.DataFrame(None)
@@ -96,9 +93,6 @@ def retrieve_and_store_today_price_from_yahoo(assets_df, root_directory_name, da
         Utilities.my_general_tools.break_action_into_batches(historize_batch, assets_df,
                                                              yahoo_tools.QUOTA_PER_INTERVAL, yahoo_tools.INTERVAL)
     except AssertionError:
-        logging.warning('Calling break_action_into_batches with wrong argument types')
+        logging.warning('Calling retrieve_and_store_today_price_from_yahoo with wrong argument types')
     except Exception as err:
         logging.warning('break_action_into_batches failed with message: %s' % err.message)
-
-
-# this is the local dev branch

@@ -11,17 +11,13 @@ import Utilities.my_general_tools
 import Utilities.my_datetime_tools
 
 
-def get_price_from_yahoo(yahoo_fx_ticker, date=None):
-
-    if date is None:
-        date = datetime.date.today()
-
-    std_index = common_intraday_tools.get_standardized_intraday_fx_dtindex(date)
+def get_price_from_yahoo(yahoo_fx_ticker, date):
 
     try:
-
+        assert (isinstance(yahoo_fx_ticker, basestring) and isinstance(date, datetime.date))
+        std_index = common_intraday_tools.get_standardized_intraday_fx_dtindex(date)
         price_dat = yahoo_tools.get_price_data_of_single_ticker(yahoo_fx_ticker)
-        price_dat = price_dat.convert_objects(convert_numeric=True, convert_dates=False, convert_timedeltas=False)
+        price_dat = price_dat.applymap(float)
         price_dat.rename(columns={'Timestamp': 'Time'}, inplace=True)
 
         price_dat['Time'] = map(lambda t: pytz.utc.localize(datetime.datetime.utcfromtimestamp(t)), price_dat['Time'])
@@ -51,7 +47,9 @@ def get_price_from_yahoo(yahoo_fx_ticker, date=None):
             return pd.DataFrame(None)
         return price_dat
 
-    except Exception, err:
+    except AssertionError:
+        logging.warning('Calling get_price_from_yahoo with wrong argument types')
+    except Exception as err:
         logging.warning('Yahoo price import and pandas enrich failed for: %s with message %s' %
                         (yahoo_fx_ticker, err.message))
         return pd.DataFrame(None)
