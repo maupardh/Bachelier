@@ -45,5 +45,3 @@ def run():
     return 0
 
 run()
-
-#CHECK ADJCLOSE BEFORE/AFTER SPLIT ON : ACST, BBG001NMDXS6 2015-10-15

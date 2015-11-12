@@ -28,7 +28,7 @@ def _get_price_from_yahoo(yahoo_tickers, start_date, end_date, country):
         price_dat = pd.concat(map(Utilities.yahoo_import.get_extraday_price_data_of_single_ticker,
                                   yahoo_tickers), ignore_index=True)
         price_dat.loc[:, 'Date'] = price_dat['Date'].apply(
-                    lambda d: datetime.datetime.strptime(d, "%Y-%m-%d").date())
+            lambda d: datetime.datetime.strptime(d, "%Y-%m-%d").date())
         price_dat[common_extraday_tools.STANDARD_COL_NAMES] = price_dat[common_extraday_tools.STANDARD_COL_NAMES]\
             .astype(float)
         price_dat['Volume'] = price_dat['Volume'].fillna(0)
@@ -105,8 +105,8 @@ def retrieve_and_store_historical_price_from_yahoo(assets_df, start_date, end_da
                 common_extraday_tools.write_extraday_prices_table_for_single_day(group, date)
                 logging.info('Printing prices of %s tickers for %s successful' % (len(batch), date.isoformat()))
 
-        Utilities.general_tools.break_action_into_batches(import_and_write_per_batch, assets_df,
-                                                             yahoo_import.QUOTA_PER_INTERVAL, yahoo_import.INTERVAL)
+        Utilities.general_tools.break_action_into_batches(
+            import_and_write_per_batch, assets_df, yahoo_import.QUOTA_PER_INTERVAL, yahoo_import.INTERVAL)
     except AssertionError:
         logging.warning('Calling retrieve_and_store_historical_price_from_yahoo with wrong argument types')
     except Exception as err:

@@ -57,8 +57,7 @@ def get_equity_import_universe_from_oats(file_type='SOD'):
 
 def refresh_assets(date):
 
-    bbg_open_symbiology_configs = \
-    [
+    bbg_open_symbiology_configs = [
         {'market_sector': 'Equity', 'security_type': 'ADR', 'date': date},
         {'market_sector': 'Equity', 'security_type': 'BDR', 'date': date},
         {'market_sector': 'Equity', 'security_type': 'Common_Stock', 'date': date},
@@ -76,4 +75,3 @@ def refresh_assets(date):
     path_to_zip = os.path.join(__ASSETS_DIRECTORY, 'BBGSymbiologyAssets.csv.zip')
 
     HistoricalAssets.asset_import_tools.historize_assets(bbg_open_symbiology_configs, [path_to_zip])
-

@@ -136,7 +136,8 @@ def get_extraday_price_data_of_single_ticker(yahoo_ticker):
 
         content = StringIO(s)
         small_price_dat = pd.read_csv(content, sep=',')
-        small_price_dat.columns = map(lambda col: str.replace(str.replace(col, ' ', ''), '.', ''), small_price_dat.columns)
+        small_price_dat.columns = map(
+            lambda col: str.replace(str.replace(col, ' ', ''), '.', ''), small_price_dat.columns)
         small_price_dat['YAHOO_TICKER'] = [yahoo_ticker] * small_price_dat.shape[0]
         return small_price_dat
     except:

@@ -35,8 +35,8 @@ def get_price_from_yahoo(yahoo_tickers, country, date):
         price_dat = price_dat[price_dat['Volume'] > 0]
         price_dat.loc[:, 'Open'] = price_dat['Open'] * price_dat['Volume']
         price_dat.loc[:, 'Close'] = price_dat['Close'] * price_dat['Volume']
-        price_dat = price_dat.groupby('Time', sort=False).agg(
-             {'Open': sum, 'Close': sum, 'Low': min, 'High': max, 'Volume': sum})
+        price_dat = price_dat.groupby('Time', sort=False).agg({
+            'Open': sum, 'Close': sum, 'Low': min, 'High': max, 'Volume': sum})
         price_dat.loc[:, 'Open'] = map(lambda x: round(x, 6), price_dat['Open']/price_dat['Volume'])
         price_dat.loc[:, 'Close'] = map(lambda x: round(x, 6), price_dat['Close']/price_dat['Volume'])
 
@@ -90,8 +90,8 @@ def retrieve_and_store_today_price_from_yahoo(assets_df, root_directory_name, da
 
         def historize_batch(batch):
             batch.apply(historize_asset, axis=1)
-        Utilities.general_tools.break_action_into_batches(historize_batch, assets_df,
-                                                             yahoo_import.QUOTA_PER_INTERVAL, yahoo_import.INTERVAL)
+        Utilities.general_tools.break_action_into_batches(
+            historize_batch, assets_df, yahoo_import.QUOTA_PER_INTERVAL, yahoo_import.INTERVAL)
     except AssertionError:
         logging.warning('Calling retrieve_and_store_today_price_from_yahoo with wrong argument types')
     except Exception as err:
