@@ -7,6 +7,15 @@ import Utilities.my_zipping
 import Utilities.my_general_tools
 
 
+def _validate_bbg_id(x):
+    return len(x) == 12 and x[:3] == 'BBG' and str.isalnum(x[3:11]) and sum(map(
+        lambda u: u in ['A', 'E', 'I', 'O', 'U'], x[3:11])) == 0 and str.isdigit(x[11])
+
+
+def _validate_bbg_composite_id(x):
+    return x == 'nan' or x == '' or _validate_bbg_id(x)
+
+
 def get_assets_from_open_bbg_symbiology(market_sector, security_type, date):
 
     content = None
@@ -22,14 +31,8 @@ def get_assets_from_open_bbg_symbiology(market_sector, security_type, date):
         s.close()
 
         content = content.applymap(str)
-        content = content[content['ID_BB_GLOBAL']
-            .apply(lambda x:  len(x) == 12 and x[:3] == 'BBG' and str.isalnum(x[3:11]) and
-                              sum(map(lambda u: u in ['A', 'E', 'I', 'O', 'U'], x[3:11])) == 0 and str.isdigit(x[11]))]
-        content = content[content['COMPOSITE_ID_BB_GLOBAL']
-            .apply(lambda x:  x == 'nan' or x == '' or
-                              (len(x) == 12 and x[:3] == 'BBG' and str.isalnum(x[3:11]) and
-                               sum(map(lambda u: u in ['A', 'E', 'I', 'O', 'U'], x[3:11])) == 0 and
-                               str.isdigit(x[11])))]
+        content = content[content['ID_BB_GLOBAL'].apply(_validate_bbg_id)]
+        content = content[content['COMPOSITE_ID_BB_GLOBAL'].apply(_validate_bbg_composite_id)]
         logging.info('Import successful')
 
     except Exception, err:
