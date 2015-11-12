@@ -65,7 +65,8 @@ def _get_extraday_prices(date):
 
 def get_extraday_prices(start_date, end_date):
     try:
-        content = pd.concat(map(lambda d: _get_extraday_prices(d.date()), pd.date_range(start_date, end_date, freq='D')))
+        content = pd.concat(map(
+            lambda d: _get_extraday_prices(d.date()), pd.date_range(start_date, end_date, freq='D')))
         return content
     except Exception as err:
         logging.warning('get_extraday_prices failed with error: %s' % err.message)
