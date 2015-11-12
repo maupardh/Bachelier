@@ -8,18 +8,6 @@ from StringIO import StringIO
 import time
 
 
-def read_csv_all_lines(file_path, sep='\n'):
-    try:
-        with open(file_path, 'r') as f:
-                output = str.split(f.read(), sep)
-        logging.info('CSV %s read successfully' % file_path)
-        output.remove('')
-        return output
-    except Exception, err:
-        logging.critical('CSV %s read failed with error: %s' % (file_path, err.message))
-        return []
-
-
 def mkdir_and_log(directory_name):
 
     if not os.path.exists(directory_name):
