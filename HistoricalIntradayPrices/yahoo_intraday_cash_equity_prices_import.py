@@ -7,39 +7,10 @@ import os.path
 import chrono
 import pytz
 import common_intraday_tools
+import yahoo_tools
 import Utilities.my_general_tools
 import Utilities.my_datetime_tools
 import Utilities.my_markets
-
-
-__QUOTA_PER_INTERVAL = 500
-__INTERVAL = datetime.timedelta(minutes=15)
-__MAP_BBG_FEED_SOURCE_TO_YAHOO_FEED_SOURCE = \
-    {
-        'AT': '.AX', 'AU': '.AX', 'AXG': '.AX',
-        'AV': '.VI',
-        'BB': '.BR',
-        'BS': '.SA',
-        'CG': '.SS', 'CS': '.SZ',
-        'CT': '.TO', 'CV': '.V',
-        'DC': '.CO',
-        'FP': '.PA',
-        'GB': '.BE', 'GD': '.DU', 'GF': '.F', 'GH': '.HM', 'GI': '.HA', 'GM': '.MU', 'GS': '.SG', 'GY': '.DE',
-        'HK': '.HK',
-        'IM': '.MI',
-        'IR': '.IR',
-        'IT': '.TA',
-        'LN': '.L',
-        'MM': '.MX',
-        'NA': '.AS',
-        'NO': '.OL',
-        'PL': '.LS',
-        'SM': '.MC',
-        'SP': '.SI',
-        'SS': '.ST',
-        'SE': '.SW',
-        'US': ''
-    }
 
 
 def get_price_from_yahoo(yahoo_tickers, country, date=None):
@@ -59,7 +30,7 @@ def get_price_from_yahoo(yahoo_tickers, country, date=None):
 
     try:
 
-        price_dat = pd.concat(map(get_price_data_of_single_ticker, yahoo_tickers), ignore_index=True)
+        price_dat = pd.concat(map(yahoo_tools.get_price_data_of_single_ticker, yahoo_tickers), ignore_index=True)
         price_dat = price_dat.applymap(float)
         price_dat.rename(columns={'Timestamp': 'Time'}, inplace=True)
 
@@ -105,13 +76,13 @@ def retrieve_and_store_today_price_from_yahoo(assets_df, root_directory_name, da
     try:
         assert (isinstance(assets_df, pd.DataFrame) and isinstance(root_directory_name, basestring)
                 and isinstance(date, datetime.date))
-
         csv_directory = os.path.join(root_directory_name, 'zip', date.isoformat())
         Utilities.my_general_tools.mkdir_and_log(csv_directory)
-
-        if number_of_assets > 25000:
-            logging.critical('Called yahoo import on %s assets - that is more than the 25, 000 limit' % number_of_assets)
+        if assets_df.shape[0] > 25000:
+            logging.critical('Called yahoo import on %s assets - that is more than the 25, 000 limit' %
+                             assets_df.shape[0])
             return
+        assets_df = yahoo_tools.prepare_assets_for_yahoo_import(assets_df)
 
         def historize_asset(asset):
                         logging.info('   Retrieving Prices for: %s , BBG_COMPOSITE: %s'
@@ -123,7 +94,7 @@ def retrieve_and_store_today_price_from_yahoo(assets_df, root_directory_name, da
         def historize_batch(batch):
             batch.apply(historize_asset, axis=1)
         Utilities.my_general_tools.break_action_into_batches(historize_batch, assets_df,
-                                                             __QUOTA_PER_INTERVAL, __INTERVAL)
+                                                             yahoo_tools.QUOTA_PER_INTERVAL, yahoo_tools.INTERVAL)
     except AssertionError:
         logging.warning('Calling break_action_into_batches with wrong argument types')
     except Exception as err:
