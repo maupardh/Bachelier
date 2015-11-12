@@ -6,7 +6,7 @@ import logging
 import os.path
 import pytz
 import common_intraday_tools
-import yahoo_tools
+import Utilities.yahoo_import
 import Utilities.my_general_tools
 import Utilities.my_datetime_tools
 

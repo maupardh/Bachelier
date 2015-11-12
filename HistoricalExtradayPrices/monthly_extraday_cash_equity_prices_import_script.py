@@ -32,7 +32,8 @@ def run():
         end_date = Utilities.my_datetime_tools.nearest_past_or_now_workday(datetime.date.today())
         start_date = datetime.date(2005, 01, 01)
 
-        yahoo_extraday_cash_equity_prices_import.retrieve_and_store_historical_prices(assets, start_date, end_date)
+        yahoo_extraday_cash_equity_prices_import.retrieve_and_store_historical_price_from_yahoo(
+            assets, start_date, end_date)
         logging.info('Extraday cash equity prices refresh for zone: %s completed' % zone)
 
     refresh_zone('AMER')

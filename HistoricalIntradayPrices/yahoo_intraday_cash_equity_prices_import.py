@@ -7,7 +7,7 @@ import os.path
 import chrono
 import pytz
 import common_intraday_tools
-import yahoo_tools
+import Utilities.yahoo_import
 import Utilities.my_general_tools
 import Utilities.my_datetime_tools
 import Utilities.my_markets
@@ -91,8 +91,8 @@ def retrieve_and_store_today_price_from_yahoo(assets_df, root_directory_name, da
         def historize_batch(batch):
             batch.apply(historize_asset, axis=1)
         Utilities.my_general_tools.break_action_into_batches(historize_batch, assets_df,
-                                                             yahoo_tools.QUOTA_PER_INTERVAL, yahoo_tools.INTERVAL)
+                                                             yahoo_import.QUOTA_PER_INTERVAL, yahoo_import.INTERVAL)
     except AssertionError:
         logging.warning('Calling retrieve_and_store_today_price_from_yahoo with wrong argument types')
     except Exception as err:
-        logging.warning('break_action_into_batches failed with message: %s' % err.message)
+        logging.warning('retrieve_and_store_today_price_from_yahoo failed with message: %s' % err.message)
