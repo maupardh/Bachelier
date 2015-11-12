@@ -1,38 +1,38 @@
 import pandas as pd
 import logging
 import datetime
-import Utilities.my_datetime_tools
+import Utilities.datetime_tools
 import yahoo_intraday_cash_equity_prices_import
-import Utilities.my_logging
-import Utilities.my_assets
-import Utilities.my_markets
+import Utilities.logging
+import Utilities.assets
+import Utilities.markets
 
 
 def refresh_amer(date):
 
     try:
         assert(isinstance(date, datetime.date))
-        Utilities.my_assets.refresh_assets(date)
+        Utilities.assets.refresh_assets(date)
         logging.info('Starting to import NA intraday asset prices')
 
-        assets = Utilities.my_assets.get_assets()
+        assets = Utilities.assets.get_assets()
         assets['ID_BB_GLOBAL'] = assets.index
         assets = assets[assets['MARKET_SECTOR_DES'] == 'Equity']
         non_us_feed_sources = [feed_source for key in
-                               Utilities.my_markets.EQUITY_FEED_SOURCES_BY_CONTINENT['AMER'].keys()
+                               Utilities.markets.EQUITY_FEED_SOURCES_BY_CONTINENT['AMER'].keys()
                                if key != 'US'
-                               for feed_source in Utilities.my_markets.EQUITY_FEED_SOURCES_BY_CONTINENT['AMER'][key]]
+                               for feed_source in Utilities.markets.EQUITY_FEED_SOURCES_BY_CONTINENT['AMER'][key]]
         non_us_assets = assets[assets['FEED_SOURCE'].apply(
             lambda feed_source: feed_source in non_us_feed_sources)][
             ['ID_BB_GLOBAL', 'ID_BB_SEC_NUM_DES', 'FEED_SOURCE', 'COMPOSITE_ID_BB_GLOBAL']]
-        us_equity_universe = Utilities.my_assets.get_equity_import_universe_from_oats()
+        us_equity_universe = Utilities.assets.get_equity_import_universe_from_oats()
         us_equity_universe = us_equity_universe.loc[us_equity_universe['Primary_Listing_Mkt'] != 'U'][['Symbol']]
         us_equity_universe.drop_duplicates(inplace=True)
         us_assets = pd.merge(
             assets, us_equity_universe, left_on='ID_BB_SEC_NUM_DES', right_on='Symbol', how='inner')[
             ['ID_BB_GLOBAL', 'ID_BB_SEC_NUM_DES', 'FEED_SOURCE', 'COMPOSITE_ID_BB_GLOBAL']]
         us_assets = us_assets[us_assets['FEED_SOURCE'].apply(
-            lambda feed_source: feed_source in Utilities.my_markets.EQUITY_FEED_SOURCES_BY_CONTINENT['AMER']['US'])]
+            lambda feed_source: feed_source in Utilities.markets.EQUITY_FEED_SOURCES_BY_CONTINENT['AMER']['US'])]
         na_assets = pd.concat([us_assets, non_us_assets], ignore_index=True)
         na_assets = na_assets[['ID_BB_GLOBAL', 'ID_BB_SEC_NUM_DES', 'FEED_SOURCE', 'COMPOSITE_ID_BB_GLOBAL']]
         na_assets.drop_duplicates(inplace=True)
@@ -53,14 +53,14 @@ def refresh_asia(date):
 
     try:
         assert(isinstance(date, datetime.date))
-        Utilities.my_assets.refresh_assets(date)
+        Utilities.assets.refresh_assets(date)
         logging.info('Starting to import Asia intraday asset prices')
 
-        assets = Utilities.my_assets.get_assets()
+        assets = Utilities.assets.get_assets()
         assets['ID_BB_GLOBAL'] = assets.index
 
-        asia_feed_sources = [feed_source for key in Utilities.my_markets.EQUITY_FEED_SOURCES_BY_CONTINENT['ASIA'].keys()
-                             for feed_source in Utilities.my_markets.EQUITY_FEED_SOURCES_BY_CONTINENT['ASIA'][key]]
+        asia_feed_sources = [feed_source for key in Utilities.markets.EQUITY_FEED_SOURCES_BY_CONTINENT['ASIA'].keys()
+                             for feed_source in Utilities.markets.EQUITY_FEED_SOURCES_BY_CONTINENT['ASIA'][key]]
         asia_assets = assets[assets['FEED_SOURCE'].apply(lambda x: x in asia_feed_sources)]
         asia_assets = asia_assets[asia_assets['MARKET_SECTOR_DES'] == 'Equity']
         asia_assets.index = asia_assets['ID_BB_GLOBAL']
@@ -82,19 +82,19 @@ def refresh_emea(date):
 
     try:
         assert(isinstance(date, datetime.date))
-        Utilities.my_assets.refresh_assets(date)
+        Utilities.assets.refresh_assets(date)
         logging.info('Starting to import Emea intraday asset prices')
 
-        assets = Utilities.my_assets.get_assets()
+        assets = Utilities.assets.get_assets()
         assets['ID_BB_GLOBAL'] = assets.index
-        emea_feed_sources = [feed_source for key in Utilities.my_markets.EQUITY_FEED_SOURCES_BY_CONTINENT['EMEA'].keys()
-                             for feed_source in Utilities.my_markets.EQUITY_FEED_SOURCES_BY_CONTINENT['EMEA'][key]]
+        emea_feed_sources = [feed_source for key in Utilities.markets.EQUITY_FEED_SOURCES_BY_CONTINENT['EMEA'].keys()
+                             for feed_source in Utilities.markets.EQUITY_FEED_SOURCES_BY_CONTINENT['EMEA'][key]]
         emea_assets = assets[assets['FEED_SOURCE'].apply(lambda x: x in emea_feed_sources)]
         emea_assets = emea_assets[emea_assets['MARKET_SECTOR_DES'] == 'Equity']
         set_of_qualified_german_composites = set(emea_assets[emea_assets['FEED_SOURCE'] == 'GY']
                                                  ['COMPOSITE_ID_BB_GLOBAL'])
-        set_of_qualified_feed_sources = set(Utilities.my_markets.EQUITY_FEED_SOURCES_BY_CONTINENT['EMEA'].keys())\
-            .difference(Utilities.my_markets.EQUITY_FEED_SOURCES_BY_CONTINENT['EMEA']['GR'])
+        set_of_qualified_feed_sources = set(Utilities.markets.EQUITY_FEED_SOURCES_BY_CONTINENT['EMEA'].keys())\
+            .difference(Utilities.markets.EQUITY_FEED_SOURCES_BY_CONTINENT['EMEA']['GR'])
         set_of_qualified_feed_sources = set_of_qualified_feed_sources.union({'GY'})
 
         emea_assets = emea_assets[

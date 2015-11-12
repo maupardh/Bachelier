@@ -1,7 +1,7 @@
 import os.path
 import logging
 import pandas as pd
-import my_zipping
+import zipping
 from StringIO import StringIO
 import time
 
@@ -24,7 +24,7 @@ def store_and_log_pandas_df(file_path, pandas_content):
             logging.warning(' Storing pandas d.f. failed to path: %s, because pandas table is empty' % file_path)
             return
         if file_path.endswith('zip'):
-            my_zipping.zip_string_with_zipfile(pandas_content.to_csv(), file_path, file_name='pd_df.csv')
+            zipping.zip_string_with_zipfile(pandas_content.to_csv(), file_path, file_name='pd_df.csv')
             logging.info('Storing pandas as zip successful for path: %s' % file_path)
         elif file_path.endswith('csv'):
             pandas_content.to_csv(file_path, mode='w+')
@@ -40,7 +40,7 @@ def read_and_log_pandas_df(file_path):
 
     try:
         if file_path.endswith('csv.zip'):
-            content = pd.read_csv(StringIO(my_zipping.unzip_file_to_string_with_zipfile(file_path)))
+            content = pd.read_csv(StringIO(zipping.unzip_file_to_string_with_zipfile(file_path)))
             logging.info('Reading zip successful for path: %s' % file_path)
         elif file_path.endswith('csv'):
             content = pd.read_csv(file_path)
@@ -64,7 +64,7 @@ def break_action_into_batches(action, table, interval, size_per_interval):
         time_delta_to_sleep = datetime.timedelta(0)
         for i in range(1, number_of_batches + 1):
             logging.info('Thread to sleep for %s before next batch - as per quota' % str(time_delta_to_sleep))
-            Utilities.my_datetime_tools.sleep_with_infinite_loop(time_delta_to_sleep.total_seconds())
+            Utilities.datetime_tools.sleep_with_infinite_loop(time_delta_to_sleep.total_seconds())
             cur_batch = assets_df[__QUOTA_PER_INTERVAL * (i - 1):min(__QUOTA_PER_INTERVAL * i, number_of_assets)]
             logging.info('Starting batch %s / %s' % (i, number_of_batches))
             with chrono.Timer() as timed:

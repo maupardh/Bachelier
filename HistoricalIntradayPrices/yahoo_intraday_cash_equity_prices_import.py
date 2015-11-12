@@ -8,9 +8,9 @@ import chrono
 import pytz
 import common_intraday_tools
 import Utilities.yahoo_import
-import Utilities.my_general_tools
-import Utilities.my_datetime_tools
-import Utilities.my_markets
+import Utilities.general_tools
+import Utilities.datetime_tools
+import Utilities.markets
 
 
 def get_price_from_yahoo(yahoo_tickers, country, date):
@@ -29,7 +29,7 @@ def get_price_from_yahoo(yahoo_tickers, country, date):
         price_dat.rename(columns={'Timestamp': 'Time'}, inplace=True)
 
         price_dat['Time'] = map(lambda t: pytz.utc.localize(datetime.datetime.utcfromtimestamp(t)), price_dat['Time'])
-        price_dat['Time'] = map(Utilities.my_datetime_tools.truncate_to_next_minute, price_dat['Time'])
+        price_dat['Time'] = map(Utilities.datetime_tools.truncate_to_next_minute, price_dat['Time'])
 
         price_dat = price_dat[common_intraday_tools.STANDARD_COL_NAMES+[common_intraday_tools.STANDARD_INDEX_NAME]]
         price_dat = price_dat[price_dat['Volume'] > 0]
@@ -74,7 +74,7 @@ def retrieve_and_store_today_price_from_yahoo(assets_df, root_directory_name, da
         assert (isinstance(assets_df, pd.DataFrame) and isinstance(root_directory_name, basestring)
                 and isinstance(date, datetime.date))
         csv_directory = os.path.join(root_directory_name, 'zip', date.isoformat())
-        Utilities.my_general_tools.mkdir_and_log(csv_directory)
+        Utilities.general_tools.mkdir_and_log(csv_directory)
         if assets_df.shape[0] > 25000:
             logging.critical('Called yahoo import on %s assets - that is more than the 25, 000 limit' %
                              assets_df.shape[0])
@@ -86,11 +86,11 @@ def retrieve_and_store_today_price_from_yahoo(assets_df, root_directory_name, da
                                      % (",".join(asset['YAHOO_TICKERS']), asset['COMPOSITE_ID_BB_GLOBAL']))
                         pandas_content = get_price_from_yahoo(asset['YAHOO_TICKERS'], asset['COUNTRY'], date=date)
                         csv_output_path = os.path.join(csv_directory, asset['COMPOSITE_ID_BB_GLOBAL'] + '.csv.zip')
-                        Utilities.my_general_tools.store_and_log_pandas_df(csv_output_path, pandas_content)
+                        Utilities.general_tools.store_and_log_pandas_df(csv_output_path, pandas_content)
 
         def historize_batch(batch):
             batch.apply(historize_asset, axis=1)
-        Utilities.my_general_tools.break_action_into_batches(historize_batch, assets_df,
+        Utilities.general_tools.break_action_into_batches(historize_batch, assets_df,
                                                              yahoo_import.QUOTA_PER_INTERVAL, yahoo_import.INTERVAL)
     except AssertionError:
         logging.warning('Calling retrieve_and_store_today_price_from_yahoo with wrong argument types')

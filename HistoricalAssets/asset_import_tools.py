@@ -3,8 +3,8 @@ import pandas as pd
 import logging
 import StringIO
 import os.path
-import Utilities.my_zipping
-import Utilities.my_general_tools
+import Utilities.zipping
+import Utilities.general_tools
 
 
 def _validate_bbg_id(x):
@@ -24,7 +24,7 @@ def get_assets_from_open_bbg_symbiology(market_sector, security_type, date):
         query = 'http://bdn-ak.bloomberg.com/precanned/' + market_sector + '_' + security_type + \
                 '_' + date.strftime('%Y%m%d') + '.txt.zip'
         f = urllib2.urlopen(query)
-        content = Utilities.my_zipping.unzip_string_with_zipfile(f.read())
+        content = Utilities.zipping.unzip_string_with_zipfile(f.read())
         f.close()
         s = StringIO.StringIO(content)
         content = pd.read_csv(s, sep='|', comment='#')
@@ -54,8 +54,8 @@ def historize_assets(list_of_symbiology_confs, paths):
         content.sort(inplace=True)
         content.drop('ID_BB_GLOBAL', axis=1, inplace=True)
         for p in paths:
-            Utilities.my_general_tools.mkdir_and_log(os.path.dirname(p))
-            Utilities.my_general_tools.store_and_log_pandas_df(p, content)
+            Utilities.general_tools.mkdir_and_log(os.path.dirname(p))
+            Utilities.general_tools.store_and_log_pandas_df(p, content)
         logging.info('Importing from Open BBG Symbiology successful')
     except:
         logging.critical('Historization of assets failed for some of the paths')

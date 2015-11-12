@@ -59,7 +59,7 @@ def _prepare_equity_assets(equity_assets_df):
     equity_assets_df = equity_assets_df[equity_assets_df['FEED_SOURCE'].apply(
         lambda sources: any(source in MAP_BBG_FEED_SOURCE_TO_YAHOO_FEED_SOURCE for source in sources))]
     equity_assets_df['COUNTRY'] = equity_assets_df['MNEMO_AND_FEED_SOURCE'].apply(
-        lambda x: list(set(zip(*x)[1]).intersection(Utilities.my_markets.COUNTRIES)))
+        lambda x: list(set(zip(*x)[1]).intersection(Utilities.markets.COUNTRIES)))
     equity_assets_df = equity_assets_df[equity_assets_df['COUNTRY'].apply(lambda c: len(c) == 1)]
     equity_assets_df['COUNTRY'] = map(lambda c: c[0], equity_assets_df['COUNTRY'])
 

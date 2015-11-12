@@ -4,10 +4,10 @@ import datetime
 import pandas as pd
 from StringIO import StringIO
 import common_extraday_tools
-import Utilities.my_datetime_tools
-import Utilities.my_markets
+import Utilities.datetime_tools
+import Utilities.markets
 import Utilities.yahoo_import
-import Utilities.my_general_tools
+import Utilities.general_tools
 
 
 def _get_price_from_yahoo(yahoo_tickers, start_date, end_date, country):
@@ -105,7 +105,7 @@ def retrieve_and_store_historical_price_from_yahoo(assets_df, start_date, end_da
                 common_extraday_tools.write_extraday_prices_table_for_single_day(group, date)
                 logging.info('Printing prices of %s tickers for %s successful' % (len(batch), date.isoformat()))
 
-        Utilities.my_general_tools.break_action_into_batches(import_and_write_per_batch, assets_df,
+        Utilities.general_tools.break_action_into_batches(import_and_write_per_batch, assets_df,
                                                              yahoo_import.QUOTA_PER_INTERVAL, yahoo_import.INTERVAL)
     except AssertionError:
         logging.warning('Calling retrieve_and_store_historical_price_from_yahoo with wrong argument types')

@@ -7,8 +7,8 @@ import os.path
 import pytz
 import common_intraday_tools
 import Utilities.yahoo_import
-import Utilities.my_general_tools
-import Utilities.my_datetime_tools
+import Utilities.general_tools
+import Utilities.datetime_tools
 
 
 def get_price_from_yahoo(yahoo_fx_ticker, date):
@@ -21,7 +21,7 @@ def get_price_from_yahoo(yahoo_fx_ticker, date):
         price_dat.rename(columns={'Timestamp': 'Time'}, inplace=True)
 
         price_dat['Time'] = map(lambda t: pytz.utc.localize(datetime.datetime.utcfromtimestamp(t)), price_dat['Time'])
-        price_dat['Time'] = map(Utilities.my_datetime_tools.truncate_to_next_minute, price_dat['Time'])
+        price_dat['Time'] = map(Utilities.datetime_tools.truncate_to_next_minute, price_dat['Time'])
 
         price_dat = price_dat[common_intraday_tools.STANDARD_COL_NAMES+[common_intraday_tools.STANDARD_INDEX_NAME]]
         price_dat = price_dat.groupby('Time').agg({
@@ -62,7 +62,7 @@ def retrieve_and_store_today_price_from_yahoo(fx_assets_df, root_directory_name,
         fx_assets_df = yahoo_tools.prepare_assets_for_yahoo_import(fx_assets_df)
 
         csv_directory = os.path.join(root_directory_name, 'zip', date.isoformat())
-        Utilities.my_general_tools.mkdir_and_log(csv_directory)
+        Utilities.general_tools.mkdir_and_log(csv_directory)
         if assets_df.shape[0] > 25000:
             logging.critical('Called yahoo import on %s assets - that is more than the 25, 000 limit' %
                              assets_df.shape[0])
@@ -73,7 +73,7 @@ def retrieve_and_store_today_price_from_yahoo(fx_assets_df, root_directory_name,
                          % (asset['YAHOO_FX_TICKER'], asset['ID_BB_GLOBAL']))
             pandas_content = get_price_from_yahoo(asset['YAHOO_FX_TICKER'], date=date)
             csv_output_path = os.path.join(csv_directory, asset['ID_BB_GLOBAL'] + '.csv.zip')
-            Utilities.my_general_tools.store_and_log_pandas_df(csv_output_path, pandas_content)
+            Utilities.general_tools.store_and_log_pandas_df(csv_output_path, pandas_content)
 
         fx_assets_df.apply(historize_asset, axis=1)
         logging.info('Output completed')

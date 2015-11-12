@@ -1,9 +1,9 @@
 import pandas as pd
 import logging
 import os.path
-import my_general_tools
+import general_tools
 import HistoricalAssets.asset_import_tools
-import Utilities.my_markets
+import Utilities.markets
 
 __ASSETS_DIRECTORY = os.path.join('F:/', 'financialData', 'Assets')
 
@@ -14,7 +14,7 @@ def get_assets():
     try:
         assets_path = os.path.join(__ASSETS_DIRECTORY, 'BBGSymbiologyAssets.csv.zip')
         logging.info('Reading assets at %s' % assets_path)
-        content = my_general_tools.read_and_log_pandas_df(assets_path)
+        content = general_tools.read_and_log_pandas_df(assets_path)
         content = content.applymap(str)
         content.index = content['ID_BB_GLOBAL']
     except Exception, err:

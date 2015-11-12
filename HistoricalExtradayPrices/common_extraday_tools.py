@@ -2,9 +2,9 @@ import pandas as pd
 import os.path
 import logging
 import datetime
-import Utilities.my_general_tools
-import Utilities.my_holidays
-import Utilities.my_markets
+import Utilities.general_tools
+import Utilities.holidays
+import Utilities.markets
 
 STANDARD_COL_NAMES = ['Open', 'Close', 'AdjClose', 'Volume']
 STANDARD_INDEX_NAME = 'ID_BB_GLOBAL'
@@ -17,7 +17,7 @@ def get_standardized_extraday_equity_dtindex(country, start_date, end_date):
                and isinstance(end_date, datetime.date))
         reg_idx = pd.bdate_range(start_date, end_date)
         reg_idx.name = STANDARD_INDEX_NAME
-        holidays_idx = Utilities.my_holidays.HOLIDAYS_BY_COUNTRY_CONFIG.get(country, {})
+        holidays_idx = Utilities.holidays.HOLIDAYS_BY_COUNTRY_CONFIG.get(country, {})
         reg_idx = reg_idx.difference(holidays_idx)
         return reg_idx
     except AssertionError:
@@ -50,7 +50,7 @@ def _get_extraday_prices(date):
     zip_file = _get_extraday_csv_zip_path(date)
     logging.info('Reading extraday prices for %s at %s' % (date.isoformat(), zip_file))
     try:
-        content = Utilities.my_general_tools.read_and_log_pandas_df(zip_file)
+        content = Utilities.general_tools.read_and_log_pandas_df(zip_file)
         content['Date'] = date
         content[STANDARD_COL_NAMES] = content[STANDARD_COL_NAMES].astype(float)
         content.index = [content['Date'], content[STANDARD_INDEX_NAME]]
@@ -100,7 +100,7 @@ def write_extraday_prices_table_for_single_day(new_content, date, resolve_method
         merged_content_resolved.reset_index(inplace=True, drop=False)
         merged_content_resolved.index = merged_content_resolved[STANDARD_INDEX_NAME]
         merged_content_resolved = merged_content_resolved[STANDARD_COL_NAMES]
-        Utilities.my_general_tools.store_and_log_pandas_df(_get_extraday_csv_zip_path(date), merged_content_resolved)
+        Utilities.general_tools.store_and_log_pandas_df(_get_extraday_csv_zip_path(date), merged_content_resolved)
     except AssertionError:
         logging.warning('Calling write_extraday_prices_table_for_single_day with wrong argument types')
     except Exception as err:
