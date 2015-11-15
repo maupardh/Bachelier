@@ -1,8 +1,6 @@
-import urllib2
 import logging
 import datetime
 import pandas as pd
-from StringIO import StringIO
 import common_extraday_tools
 import Utilities.datetime_tools
 import Utilities.markets
@@ -67,8 +65,8 @@ def _get_price_from_yahoo(yahoo_tickers, start_date, end_date, country):
 def retrieve_and_store_historical_price_from_yahoo(assets_df, start_date, end_date):
 
     try:
-        assert (isinstance(assets_df, pd.DataFrame) and isinstance(root_directory_name, basestring)
-                and isinstance(date, datetime.date))
+        assert (isinstance(assets_df, pd.DataFrame) and isinstance(start_date, datetime.date) and
+                isinstance(end_date, datetime.date))
         assets_df = Utilities.yahoo_import.prepare_assets_for_yahoo_import(assets_df)
 
         if assets_df.shape[0] > 100000:
@@ -106,7 +104,8 @@ def retrieve_and_store_historical_price_from_yahoo(assets_df, start_date, end_da
                 logging.info('Printing prices of %s tickers for %s successful' % (len(batch), date.isoformat()))
 
         Utilities.general_tools.break_action_into_batches(
-            import_and_write_per_batch, assets_df, yahoo_import.QUOTA_PER_INTERVAL, yahoo_import.INTERVAL)
+            import_and_write_per_batch, assets_df, Utilities.yahoo_import.QUOTA_PER_INTERVAL,
+            Utilities.yahoo_import.INTERVAL)
     except AssertionError:
         logging.warning('Calling retrieve_and_store_historical_price_from_yahoo with wrong argument types')
     except Exception as err:

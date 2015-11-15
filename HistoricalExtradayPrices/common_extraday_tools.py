@@ -28,8 +28,7 @@ def get_standardized_extraday_equity_dtindex(country, start_date, end_date):
 
 def get_standardized_extraday_fx_dtindex(start_date, end_date):
     try:
-        assert(isinstance(country, basestring) and isinstance(start_date, datetime.date)
-               and isinstance(end_date, datetime.date))
+        assert(isinstance(start_date, datetime.date) and isinstance(end_date, datetime.date))
         reg_idx = pd.bdate_range(start_date, end_date)
         reg_idx.name = STANDARD_INDEX_NAME
         return reg_idx
