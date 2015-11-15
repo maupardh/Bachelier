@@ -3,7 +3,6 @@ import logging
 import os.path
 import general_tools
 import HistoricalAssets.asset_import_tools
-import Utilities.markets
 
 __ASSETS_DIRECTORY = os.path.join('F:/', 'financialData', 'Assets')
 

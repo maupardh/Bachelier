@@ -1,5 +1,9 @@
 import pandas as pd
 import logging
+import datetime
+from StringIO import StringIO
+import urllib2
+import Utilities.markets
 
 QUOTA_PER_INTERVAL = 500
 INTERVAL = datetime.timedelta(minutes=15)
@@ -79,7 +83,7 @@ def _prepare_equity_assets(equity_assets_df):
 def prepare_assets_for_yahoo_import(assets_df):
 
     try:
-        assert(isinstance(assets_df, pd.DateFrame))
+        assert(isinstance(assets_df, pd.DataFrame))
 
         equity_assets_df = assets_df[assets_df['MARKET_SECTOR_DES'] == 'Equity']
         fx_assets_df = assets_df[assets_df['MARKET_SECTOR_DES'] == 'Curncy']
@@ -120,7 +124,7 @@ def get_intraday_price_data_of_single_ticker(yahoo_ticker):
         return pd.DataFrame(None)
 
 
-def get_extraday_price_data_of_single_ticker(yahoo_ticker):
+def get_extraday_price_data_of_single_ticker(yahoo_ticker, start_date, end_date):
     try:
         query = 'http://ichart.finance.yahoo.com/table.csv?' + \
                 'a=' + str(start_date.month - 1) + \

@@ -1,13 +1,13 @@
 import os.path
 import datetime
-import logging
+import my_logs
 import pytz
 from tzlocal import get_localzone
 import sys
 sys.path.append('F:/pythonCode')
 import yahoo_intraday_fx_spot_prices_import
 import Utilities.datetime_tools
-import Utilities.logging
+import Utilities.my_logs
 import Utilities.assets
 import Utilities.markets
 
@@ -19,7 +19,7 @@ def refresh():
 
     # Initialization
     log_file_path = os.path.join('F:/FinancialData/Logs/', today.isoformat(), "IntradayYahooFXImport.txt")
-    Utilities.logging.initialize_logging(log_file_path)
+    Utilities.my_logs.initialize_logging(log_file_path)
 
     # FX Import
     fx_market_close = local_tz.normalize(pytz.utc.localize(
@@ -27,18 +27,18 @@ def refresh():
 
     time_to_sleep_until_fx = max(fx_market_close - local_tz.localize(datetime.datetime.now()) -
                                  datetime.timedelta(minutes=3), datetime.timedelta(minutes=0))
-    logging.info('System to sleep until fx import, for : %s minutes', time_to_sleep_until_fx.total_seconds()/60)
+    my_logs.info('System to sleep until fx import, for : %s minutes', time_to_sleep_until_fx.total_seconds() / 60)
     Utilities.datetime_tools.sleep_with_infinite_loop(time_to_sleep_until_fx.total_seconds())
     refresh_fx(today)
 
-    Utilities.logging.shutdown()
+    Utilities.my_logs.shutdown()
 
 
 def refresh_fx(date):
 
     try:
         assert(date, isinstance(datetime.date))
-        logging.info('Starting to import FX intraday asset prices')
+        my_logs.info('Starting to import FX intraday asset prices')
 
         fx_assets = Utilities.assets.get_assets()
         fx_assets['ID_BB_GLOBAL'] = fx_assets.index
@@ -54,11 +54,11 @@ def refresh_fx(date):
 
         yahoo_intraday_fx_spot_prices_import.retrieve_and_store_today_price_from_yahoo(
             fx_assets, 'F:/FinancialData/HistoricalIntradayPrices/', date=date)
-        logging.info('FX intraday price import complete')
+        my_logs.info('FX intraday price import complete')
 
     except AssertionError:
-        logging.warning('Calling refresh_fx with wrong argument types')
+        my_logs.warning('Calling refresh_fx with wrong argument types')
     except Exception as err:
-        logging.warning('FX intraday price import failed with error: %s', err.message)
+        my_logs.warning('FX intraday price import failed with error: %s', err.message)
 
 refresh()

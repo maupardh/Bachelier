@@ -1,9 +1,9 @@
 import pandas as pd
-import logging
+import my_logs
 import datetime
 import Utilities.datetime_tools
 import yahoo_intraday_cash_equity_prices_import
-import Utilities.logging
+import Utilities.my_logs
 import Utilities.assets
 import Utilities.markets
 
@@ -13,7 +13,7 @@ def refresh_amer(date):
     try:
         assert(isinstance(date, datetime.date))
         Utilities.assets.refresh_assets(date)
-        logging.info('Starting to import NA intraday asset prices')
+        my_logs.info('Starting to import NA intraday asset prices')
 
         assets = Utilities.assets.get_assets()
         assets['ID_BB_GLOBAL'] = assets.index
@@ -41,12 +41,12 @@ def refresh_amer(date):
 
         yahoo_intraday_cash_equity_prices_import.retrieve_and_store_today_price_from_yahoo(
             na_assets, 'F:/FinancialData/HistoricalIntradayPrices/', date=date)
-        logging.info('NA intraday price import complete')
+        my_logs.info('NA intraday price import complete')
 
     except AssertionError:
-        logging.warning('Calling refresh_amer with wrong argument types')
+        my_logs.warning('Calling refresh_amer with wrong argument types')
     except Exception as err:
-        logging.warning('refresh_amer failed with message: %s' % err.message)
+        my_logs.warning('refresh_amer failed with message: %s' % err.message)
 
 
 def refresh_asia(date):
@@ -54,7 +54,7 @@ def refresh_asia(date):
     try:
         assert(isinstance(date, datetime.date))
         Utilities.assets.refresh_assets(date)
-        logging.info('Starting to import Asia intraday asset prices')
+        my_logs.info('Starting to import Asia intraday asset prices')
 
         assets = Utilities.assets.get_assets()
         assets['ID_BB_GLOBAL'] = assets.index
@@ -70,12 +70,12 @@ def refresh_asia(date):
 
         yahoo_intraday_cash_equity_prices_import.retrieve_and_store_today_price_from_yahoo(
             asia_assets, 'F:/FinancialData/HistoricalIntradayPrices/', date=date)
-        logging.info('Asia intraday price import complete')
+        my_logs.info('Asia intraday price import complete')
 
     except AssertionError:
-        logging.warning('Calling refresh_asia with wrong argument types')
+        my_logs.warning('Calling refresh_asia with wrong argument types')
     except Exception as err:
-        logging.warning('refresh_asia failed with message: %s' % err.message)
+        my_logs.warning('refresh_asia failed with message: %s' % err.message)
 
 
 def refresh_emea(date):
@@ -83,7 +83,7 @@ def refresh_emea(date):
     try:
         assert(isinstance(date, datetime.date))
         Utilities.assets.refresh_assets(date)
-        logging.info('Starting to import Emea intraday asset prices')
+        my_logs.info('Starting to import Emea intraday asset prices')
 
         assets = Utilities.assets.get_assets()
         assets['ID_BB_GLOBAL'] = assets.index
@@ -107,9 +107,9 @@ def refresh_emea(date):
 
         yahoo_intraday_cash_equity_prices_import.retrieve_and_store_today_price_from_yahoo(
             emea_assets, 'F:/FinancialData/HistoricalIntradayPrices/', date=date)
-        logging.info('Emea intraday price import complete')
+        my_logs.info('Emea intraday price import complete')
 
     except AssertionError:
-        logging.warning('Calling refresh_emea with wrong argument types')
+        my_logs.warning('Calling refresh_emea with wrong argument types')
     except Exception as err:
-        logging.warning('refresh_emea failed with message: %s' % err.message)
+        my_logs.warning('refresh_emea failed with message: %s' % err.message)
