@@ -1,8 +1,6 @@
-import urllib2
 import pandas as pd
-from StringIO import StringIO
 import datetime
-import my_logs
+import logging
 import os.path
 import pytz
 import common_intraday_tools
@@ -16,7 +14,7 @@ def get_price_from_yahoo(yahoo_fx_ticker, date):
     try:
         assert (isinstance(yahoo_fx_ticker, basestring) and isinstance(date, datetime.date))
         std_index = common_intraday_tools.get_standardized_intraday_fx_dtindex(date)
-        price_dat = yahoo_tools.get_price_data_of_single_ticker(yahoo_fx_ticker)
+        price_dat = Utilities.yahoo_import.get_intraday_price_data_of_single_ticker(yahoo_fx_ticker)
         price_dat = price_dat.applymap(float)
         price_dat.rename(columns={'Timestamp': 'Time'}, inplace=True)
 
@@ -42,42 +40,42 @@ def get_price_from_yahoo(yahoo_fx_ticker, date):
         price_dat = price_dat.apply(lambda t: propagate_on_zero_open(t, 'Close'), axis=1)
         price_dat = price_dat.fillna(0)
 
-        my_logs.info('Yahoo price import and pandas enrich successful for: %s' % yahoo_fx_ticker)
+        logging.info('Yahoo price import and pandas enrich successful for: %s' % yahoo_fx_ticker)
         if price_dat['Close'].sum() == 0:
             return pd.DataFrame(None)
         return price_dat
 
     except AssertionError:
-        my_logs.warning('Calling get_price_from_yahoo with wrong argument types')
+        logging.warning('Calling get_price_from_yahoo with wrong argument types')
     except Exception as err:
-        my_logs.warning('Yahoo price import and pandas enrich failed for: %s with message %s' %
+        logging.warning('Yahoo price import and pandas enrich failed for: %s with message %s' %
                         (yahoo_fx_ticker, err.message))
         return pd.DataFrame(None)
 
 
-def retrieve_and_store_today_price_from_yahoo(fx_assets_df, root_directory_name, date):
+def retrieve_and_store_today_price_from_yahoo(assets_df, root_directory_name, date):
     try:
         assert (isinstance(assets_df, pd.DataFrame) and isinstance(root_directory_name, basestring)
                 and isinstance(date, datetime.date))
-        fx_assets_df = yahoo_tools.prepare_assets_for_yahoo_import(fx_assets_df)
+        fx_assets_df = Utilities.yahoo_import.prepare_assets_for_yahoo_import(assets_df)
 
         csv_directory = os.path.join(root_directory_name, 'zip', date.isoformat())
         Utilities.general_tools.mkdir_and_log(csv_directory)
         if assets_df.shape[0] > 25000:
-            my_logs.critical('Called yahoo import on %s assets - that is more than the 25, 000 limit' %
+            logging.critical('Called yahoo import on %s assets - that is more than the 25, 000 limit' %
                              assets_df.shape[0])
             return
 
         def historize_asset(asset):
-            my_logs.info('   Retrieving Prices for: %s , BBG_COMPOSITE: %s'
+            logging.info('   Retrieving Prices for: %s , BBG_COMPOSITE: %s'
                          % (asset['YAHOO_FX_TICKER'], asset['ID_BB_GLOBAL']))
             pandas_content = get_price_from_yahoo(asset['YAHOO_FX_TICKER'], date=date)
             csv_output_path = os.path.join(csv_directory, asset['ID_BB_GLOBAL'] + '.csv.zip')
             Utilities.general_tools.store_and_log_pandas_df(csv_output_path, pandas_content)
 
         fx_assets_df.apply(historize_asset, axis=1)
-        my_logs.info('Output completed')
+        logging.info('Output completed')
     except AssertionError:
-        my_logs.warning('Calling retrieve_and_store_today_price_from_yahoo with wrong argument types')
+        logging.warning('Calling retrieve_and_store_today_price_from_yahoo with wrong argument types')
     except Exception as err:
-        my_logs.warning('retrieve_and_store_today_price_from_yahoo failed with message: %s' % err.message)
+        logging.warning('retrieve_and_store_today_price_from_yahoo failed with message: %s' % err.message)
