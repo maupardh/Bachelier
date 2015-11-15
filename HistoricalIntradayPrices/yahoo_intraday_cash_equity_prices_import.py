@@ -13,7 +13,7 @@ import Utilities.my_markets
 
 
 __QUOTA_PER_INTERVAL = 500
-__INTERVAL = datetime.timedelta(minutes=15)
+__INTERVAL = datetime.timedelta(minutes=30)
 __INTERVAL_BACKUP = datetime.timedelta(minutes=2)
 __MAP_BBG_FEED_SOURCE_TO_YAHOO_FEED_SOURCE = \
     {
