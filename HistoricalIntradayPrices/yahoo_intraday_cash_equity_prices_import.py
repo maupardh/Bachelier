@@ -1,6 +1,6 @@
 import pandas as pd
 import datetime
-import my_logs
+import logging
 import os.path
 import pytz
 import common_intraday_tools
@@ -21,7 +21,8 @@ def get_price_from_yahoo(yahoo_tickers, country, date):
 
     try:
         assert(isinstance(yahoo_tickers, list) and isinstance(country, basestring) and isinstance(date, datetime.date))
-        price_dat = pd.concat(map(yahoo_tools.get_price_data_of_single_ticker, yahoo_tickers), ignore_index=True)
+        price_dat = pd.concat(map(Utilities.yahoo_import.get_intraday_price_data_of_single_ticker, yahoo_tickers),
+                              ignore_index=True)
         price_dat = price_dat.applymap(float)
         price_dat.rename(columns={'Timestamp': 'Time'}, inplace=True)
 
@@ -51,16 +52,16 @@ def get_price_from_yahoo(yahoo_tickers, country, date):
         price_dat = price_dat.apply(lambda t: propagate_on_zero_volume(t, 'Close'), axis=1)
         price_dat = price_dat.fillna(0)
 
-        my_logs.info('Yahoo price import and pandas enrich successful for: %s' % yahoo_tickers)
+        logging.info('Yahoo price import and pandas enrich successful for: %s' % yahoo_tickers)
         if price_dat['Volume'].sum() == 0:
             return pd.DataFrame(None)
         return price_dat
 
     except AssertionError:
-        my_logs.warning('Calling get_price_from_yahoo with wrong argument types')
+        logging.warning('Calling get_price_from_yahoo with wrong argument types')
         return pd.DataFrame(None)
     except Exception as err:
-        my_logs.warning('Yahoo price import and pandas enrich failed for: %s with message %s' %
+        logging.warning('Yahoo price import and pandas enrich failed for: %s with message %s' %
                         (yahoo_tickers, err.message))
         return pd.DataFrame(None)
 
@@ -73,13 +74,13 @@ def retrieve_and_store_today_price_from_yahoo(assets_df, root_directory_name, da
         csv_directory = os.path.join(root_directory_name, 'zip', date.isoformat())
         Utilities.general_tools.mkdir_and_log(csv_directory)
         if assets_df.shape[0] > 25000:
-            my_logs.critical('Called yahoo import on %s assets - that is more than the 25, 000 limit' %
+            logging.critical('Called yahoo import on %s assets - that is more than the 25, 000 limit' %
                              assets_df.shape[0])
             return
-        assets_df = yahoo_tools.prepare_assets_for_yahoo_import(assets_df)
+        assets_df = Utilities.yahoo_import.prepare_assets_for_yahoo_import(assets_df)
 
         def historize_asset(asset):
-                        my_logs.info('   Retrieving Prices for: %s , BBG_COMPOSITE: %s'
+                        logging.info('   Retrieving Prices for: %s , BBG_COMPOSITE: %s'
                                      % (",".join(asset['YAHOO_TICKERS']), asset['COMPOSITE_ID_BB_GLOBAL']))
                         pandas_content = get_price_from_yahoo(asset['YAHOO_TICKERS'], asset['COUNTRY'], date=date)
                         csv_output_path = os.path.join(csv_directory, asset['COMPOSITE_ID_BB_GLOBAL'] + '.csv.zip')
@@ -88,8 +89,8 @@ def retrieve_and_store_today_price_from_yahoo(assets_df, root_directory_name, da
         def historize_batch(batch):
             batch.apply(historize_asset, axis=1)
         Utilities.general_tools.break_action_into_batches(
-            historize_batch, assets_df, yahoo_import.QUOTA_PER_INTERVAL, yahoo_import.INTERVAL)
+            historize_batch, assets_df, Utilities.yahoo_import.QUOTA_PER_INTERVAL, Utilities.yahoo_import.INTERVAL)
     except AssertionError:
-        my_logs.warning('Calling retrieve_and_store_today_price_from_yahoo with wrong argument types')
+        logging.warning('Calling retrieve_and_store_today_price_from_yahoo with wrong argument types')
     except Exception as err:
-        my_logs.warning('retrieve_and_store_today_price_from_yahoo failed with message: %s' % err.message)
+        logging.warning('retrieve_and_store_today_price_from_yahoo failed with message: %s' % err.message)

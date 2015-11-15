@@ -3,7 +3,7 @@ import pandas as pd
 from StringIO import StringIO
 import datetime
 import pytz
-import my_logs
+import logging
 import common_intraday_tools
 
 
@@ -53,10 +53,10 @@ def _get_price_from_google(ticker, country):
         price_dat['Open'] = price_dat['Open'].fillna(method='bfill')
         price_dat = price_dat.apply(lambda t: propagate_on_zero_volume(t, 'Open'), axis=1)
 
-        my_logs.info('Google price import and pandas enrich successful for: %s' % ticker)
+        logging.info('Google price import and pandas enrich successful for: %s' % ticker)
         return price_dat
 
     except:
-        my_logs.warning('Google price import and pandas enrich failed for: %s' % ticker)
+        logging.warning('Google price import and pandas enrich failed for: %s' % ticker)
         price_dat = pd.DataFrame(data=0, index=std_index, columns=common_intraday_tools.STANDARD_COL_NAMES, dtype=float)
         return price_dat
