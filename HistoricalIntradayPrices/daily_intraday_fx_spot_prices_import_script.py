@@ -44,7 +44,7 @@ def refresh_fx(date):
         fx_assets['ID_BB_GLOBAL'] = fx_assets.index
         fx_assets = fx_assets[fx_assets['MARKET_SECTOR_DES'] == 'Curncy']
         fx_assets = fx_assets[fx_assets['SECURITY_TYP'] == 'CROSS']
-        fx_assets = fx_assets[['ID_BB_GLOBAL', 'ID_BB_SEC_NUM_DES']]
+        fx_assets = fx_assets[['ID_BB_GLOBAL', 'ID_BB_SEC_NUM_DES', 'MARKET_SECTOR_DES']]
         fx_assets = fx_assets[fx_assets['ID_BB_SEC_NUM_DES'].apply(lambda ccy_pair: len(ccy_pair) == 6)]
         fx_assets = fx_assets[fx_assets['ID_BB_SEC_NUM_DES'].apply(
             lambda ccy_pair: (ccy_pair[0:3] in Utilities.markets.HISTORIZED_FX_SPOTS or ccy_pair[0:3] == 'USD') and

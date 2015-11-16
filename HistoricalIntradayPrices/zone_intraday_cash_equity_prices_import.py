@@ -25,17 +25,18 @@ def refresh_amer(date):
                                for feed_source in Utilities.markets.EQUITY_FEED_SOURCES_BY_CONTINENT['AMER'][key]]
         non_us_assets = assets[assets['FEED_SOURCE'].apply(
             lambda feed_source: feed_source in non_us_feed_sources)][
-            ['ID_BB_GLOBAL', 'ID_BB_SEC_NUM_DES', 'FEED_SOURCE', 'COMPOSITE_ID_BB_GLOBAL']]
+            ['ID_BB_GLOBAL', 'ID_BB_SEC_NUM_DES', 'FEED_SOURCE', 'COMPOSITE_ID_BB_GLOBAL', 'MARKET_SECTOR_DES']]
         us_equity_universe = Utilities.assets.get_equity_import_universe_from_oats()
         us_equity_universe = us_equity_universe.loc[us_equity_universe['Primary_Listing_Mkt'] != 'U'][['Symbol']]
         us_equity_universe.drop_duplicates(inplace=True)
         us_assets = pd.merge(
             assets, us_equity_universe, left_on='ID_BB_SEC_NUM_DES', right_on='Symbol', how='inner')[
-            ['ID_BB_GLOBAL', 'ID_BB_SEC_NUM_DES', 'FEED_SOURCE', 'COMPOSITE_ID_BB_GLOBAL']]
+            ['ID_BB_GLOBAL', 'ID_BB_SEC_NUM_DES', 'FEED_SOURCE', 'COMPOSITE_ID_BB_GLOBAL', 'MARKET_SECTOR_DES']]
         us_assets = us_assets[us_assets['FEED_SOURCE'].apply(
             lambda feed_source: feed_source in Utilities.markets.EQUITY_FEED_SOURCES_BY_CONTINENT['AMER']['US'])]
         na_assets = pd.concat([us_assets, non_us_assets], ignore_index=True)
-        na_assets = na_assets[['ID_BB_GLOBAL', 'ID_BB_SEC_NUM_DES', 'FEED_SOURCE', 'COMPOSITE_ID_BB_GLOBAL']]
+        na_assets = na_assets[['ID_BB_GLOBAL', 'ID_BB_SEC_NUM_DES', 'FEED_SOURCE', 'COMPOSITE_ID_BB_GLOBAL',
+                               'MARKET_SECTOR_DES']]
         na_assets.drop_duplicates(inplace=True)
         na_assets.index = na_assets['ID_BB_GLOBAL']
         na_assets.sort_values(by='ID_BB_SEC_NUM_DES', axis=0, ascending=True, inplace=True)

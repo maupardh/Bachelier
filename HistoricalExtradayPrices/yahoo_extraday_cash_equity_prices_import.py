@@ -76,12 +76,12 @@ def retrieve_and_store_historical_price_from_yahoo(assets_df, start_date, end_da
 
         def retrieve_prices(asset):
             logging.info('   Retrieving Prices for: %s , BBG_COMPOSITE: %s'
-                         % (",".join(asset['YAHOO_TICKERS']), asset['COMPOSITE_ID_BB_GLOBAL']))
+                         % (",".join(asset['YAHOO_TICKERS']), asset['ID_BB_GLOBAL']))
             new_pandas_content = _get_price_from_yahoo(asset['YAHOO_TICKERS'], start_date, end_date,
                                                        asset['COUNTRY'])
             if new_pandas_content.empty:
                 return pd.DataFrame(None)
-            new_pandas_content['ID_BB_GLOBAL'] = asset['COMPOSITE_ID_BB_GLOBAL']
+            new_pandas_content['ID_BB_GLOBAL'] = asset['ID_BB_GLOBAL']
             new_pandas_content['Date'] = new_pandas_content.index
             new_pandas_content.index = [new_pandas_content['ID_BB_GLOBAL'], new_pandas_content['Date']]
             new_pandas_content.index.name = ['ID_BB_GLOBAL', 'Date']

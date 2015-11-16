@@ -71,7 +71,7 @@ def break_action_into_batches(action, table, interval, size_per_interval):
             cur_batch = table[size_per_interval * (i - 1):min(size_per_interval * i, size_of_table)]
             logging.info('Starting batch %s / %s' % (i, number_of_batches))
             with chrono.Timer() as timed:
-                action(table)
+                action(cur_batch)
             time_delta_to_sleep = max(interval - datetime.timedelta(seconds=timed.elapsed), datetime.timedelta(0))
             logging.info('Batch %s / %s completed: %s tickers imported' % (i, number_of_batches, len(cur_batch)))
         logging.info('Action completed')

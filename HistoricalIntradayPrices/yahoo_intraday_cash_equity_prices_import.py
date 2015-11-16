@@ -71,25 +71,28 @@ def retrieve_and_store_today_price_from_yahoo(assets_df, root_directory_name, da
     try:
         assert (isinstance(assets_df, pd.DataFrame) and isinstance(root_directory_name, basestring)
                 and isinstance(date, datetime.date))
+
+        assets_df = Utilities.yahoo_import.prepare_assets_for_yahoo_import(assets_df)
+
         csv_directory = os.path.join(root_directory_name, 'zip', date.isoformat())
         Utilities.general_tools.mkdir_and_log(csv_directory)
+
         if assets_df.shape[0] > 25000:
             logging.critical('Called yahoo import on %s assets - that is more than the 25, 000 limit' %
                              assets_df.shape[0])
             return
-        assets_df = Utilities.yahoo_import.prepare_assets_for_yahoo_import(assets_df)
 
         def historize_asset(asset):
-                        logging.info('   Retrieving Prices for: %s , BBG_COMPOSITE: %s'
-                                     % (",".join(asset['YAHOO_TICKERS']), asset['COMPOSITE_ID_BB_GLOBAL']))
+                        logging.info('   Retrieving Prices for: %s , BBG_ID: %s'
+                                     % (",".join(asset['YAHOO_TICKERS']), asset['ID_BB_GLOBAL']))
                         pandas_content = get_price_from_yahoo(asset['YAHOO_TICKERS'], asset['COUNTRY'], date=date)
-                        csv_output_path = os.path.join(csv_directory, asset['COMPOSITE_ID_BB_GLOBAL'] + '.csv.zip')
+                        csv_output_path = os.path.join(csv_directory, asset['ID_BB_GLOBAL'] + '.csv.zip')
                         Utilities.general_tools.store_and_log_pandas_df(csv_output_path, pandas_content)
 
         def historize_batch(batch):
             batch.apply(historize_asset, axis=1)
         Utilities.general_tools.break_action_into_batches(
-            historize_batch, assets_df, Utilities.yahoo_import.QUOTA_PER_INTERVAL, Utilities.yahoo_import.INTERVAL)
+            historize_batch, assets_df, Utilities.yahoo_import.INTERVAL, Utilities.yahoo_import.QUOTA_PER_INTERVAL)
     except AssertionError:
         logging.warning('Calling retrieve_and_store_today_price_from_yahoo with wrong argument types')
     except Exception as err:

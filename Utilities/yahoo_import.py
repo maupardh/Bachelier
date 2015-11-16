@@ -45,7 +45,7 @@ def _prepare_fx_assets(fx_assets_df):
     fx_assets_df.reset_index(drop=False, inplace=True)
     fx_assets_df = fx_assets_df[fx_assets_df['ID_BB_GLOBAL'].apply(lambda x: len(x) == 1)]
     fx_assets_df['ID_BB_GLOBAL'] = fx_assets_df['ID_BB_GLOBAL'].apply(lambda x: x[0])
-    fx_assets_df['YAHOO_TICKERS'] = fx_assets_df['YAHOO_TICKERS'].apply(lambda t: set(t))
+    fx_assets_df['YAHOO_TICKERS'] = fx_assets_df['YAHOO_TICKERS'].apply(lambda t: [t])
     fx_assets_df['COUNTRY'] = ['WORLD'] * fx_assets_df.shape[0]
 
     return fx_assets_df

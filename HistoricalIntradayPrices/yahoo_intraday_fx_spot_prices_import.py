@@ -9,12 +9,13 @@ import Utilities.general_tools
 import Utilities.datetime_tools
 
 
-def get_price_from_yahoo(yahoo_fx_ticker, date):
+def get_price_from_yahoo(yahoo_fx_tickers, date):
 
     try:
-        assert (isinstance(yahoo_fx_ticker, basestring) and isinstance(date, datetime.date))
+        assert (isinstance(yahoo_fx_tickers, list) and isinstance(date, datetime.date))
         std_index = common_intraday_tools.get_standardized_intraday_fx_dtindex(date)
-        price_dat = Utilities.yahoo_import.get_intraday_price_data_of_single_ticker(yahoo_fx_ticker)
+        price_dat = pd.concat(map(Utilities.yahoo_import.get_intraday_price_data_of_single_ticker, yahoo_fx_tickers),
+                              ignore_index=True)
         price_dat = price_dat.applymap(float)
         price_dat.rename(columns={'Timestamp': 'Time'}, inplace=True)
 
@@ -40,7 +41,7 @@ def get_price_from_yahoo(yahoo_fx_ticker, date):
         price_dat = price_dat.apply(lambda t: propagate_on_zero_open(t, 'Close'), axis=1)
         price_dat = price_dat.fillna(0)
 
-        logging.info('Yahoo price import and pandas enrich successful for: %s' % yahoo_fx_ticker)
+        logging.info('Yahoo price import and pandas enrich successful for: %s' % yahoo_fx_tickers)
         if price_dat['Close'].sum() == 0:
             return pd.DataFrame(None)
         return price_dat
@@ -49,14 +50,14 @@ def get_price_from_yahoo(yahoo_fx_ticker, date):
         logging.warning('Calling get_price_from_yahoo with wrong argument types')
     except Exception as err:
         logging.warning('Yahoo price import and pandas enrich failed for: %s with message %s' %
-                        (yahoo_fx_ticker, err.message))
+                        (yahoo_fx_tickers, err.message))
         return pd.DataFrame(None)
 
 
 def retrieve_and_store_today_price_from_yahoo(assets_df, root_directory_name, date):
     try:
-        assert (isinstance(assets_df, pd.DataFrame) and isinstance(root_directory_name, basestring)
-                and isinstance(date, datetime.date))
+        assert (isinstance(assets_df, pd.DataFrame) and isinstance(root_directory_name, basestring) and
+                isinstance(date, datetime.date))
         fx_assets_df = Utilities.yahoo_import.prepare_assets_for_yahoo_import(assets_df)
 
         csv_directory = os.path.join(root_directory_name, 'zip', date.isoformat())
@@ -68,8 +69,8 @@ def retrieve_and_store_today_price_from_yahoo(assets_df, root_directory_name, da
 
         def historize_asset(asset):
             logging.info('   Retrieving Prices for: %s , BBG_COMPOSITE: %s'
-                         % (asset['YAHOO_FX_TICKER'], asset['ID_BB_GLOBAL']))
-            pandas_content = get_price_from_yahoo(asset['YAHOO_FX_TICKER'], date=date)
+                         % (asset['YAHOO_TICKERS'], asset['ID_BB_GLOBAL']))
+            pandas_content = get_price_from_yahoo(asset['YAHOO_TICKERS'], date=date)
             csv_output_path = os.path.join(csv_directory, asset['ID_BB_GLOBAL'] + '.csv.zip')
             Utilities.general_tools.store_and_log_pandas_df(csv_output_path, pandas_content)
 
