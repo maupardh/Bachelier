@@ -1,10 +1,10 @@
 import pandas as pd
-import Utilities.my_logs
+import Utilities.logging_tools
 import logging
 import datetime
 import Utilities.datetime_tools
 import yahoo_intraday_cash_equity_prices_import
-import Utilities.my_logs
+import Utilities.logging_tools
 import Utilities.assets
 import Utilities.markets
 
