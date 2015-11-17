@@ -66,7 +66,8 @@ def refresh_asia(date):
         asia_assets = assets[assets['FEED_SOURCE'].apply(lambda x: x in asia_feed_sources)]
         asia_assets = asia_assets[asia_assets['MARKET_SECTOR_DES'] == 'Equity']
         asia_assets.index = asia_assets['ID_BB_GLOBAL']
-        asia_assets = asia_assets[['ID_BB_GLOBAL', 'ID_BB_SEC_NUM_DES', 'FEED_SOURCE', 'COMPOSITE_ID_BB_GLOBAL']]
+        asia_assets = asia_assets[['ID_BB_GLOBAL', 'ID_BB_SEC_NUM_DES', 'FEED_SOURCE', 'COMPOSITE_ID_BB_GLOBAL',
+                                   'MARKET_SECTOR_DES']]
         asia_assets.sort_values(by='ID_BB_SEC_NUM_DES', axis=0, ascending=True, inplace=True)
         asia_assets.drop_duplicates(inplace=True)
 
@@ -103,7 +104,8 @@ def refresh_emea(date):
             emea_assets.apply(lambda row: row['FEED_SOURCE'] in set_of_qualified_feed_sources or
                                           row['COMPOSITE_ID_BB_GLOBAL'] in set_of_qualified_german_composites, axis=1)]
         emea_assets.index = emea_assets['ID_BB_GLOBAL']
-        emea_assets = emea_assets[['ID_BB_GLOBAL', 'ID_BB_SEC_NUM_DES', 'FEED_SOURCE', 'COMPOSITE_ID_BB_GLOBAL']]
+        emea_assets = emea_assets[['ID_BB_GLOBAL', 'ID_BB_SEC_NUM_DES', 'FEED_SOURCE', 'COMPOSITE_ID_BB_GLOBAL',
+                                   'MARKET_SECTOR_DES']]
         emea_assets.sort_values(by='ID_BB_SEC_NUM_DES', axis=0, ascending=True, inplace=True)
         emea_assets.drop_duplicates(inplace=True)
 
