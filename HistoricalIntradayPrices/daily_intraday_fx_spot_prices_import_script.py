@@ -4,7 +4,7 @@ import logging
 import pytz
 from tzlocal import get_localzone
 import sys
-sys.path.append('F:/prod/pythonCode')
+sys.path.append('F:/dev/pythonCode')
 import yahoo_intraday_fx_spot_prices_import
 import Utilities.datetime_tools
 import Utilities.logging_tools
