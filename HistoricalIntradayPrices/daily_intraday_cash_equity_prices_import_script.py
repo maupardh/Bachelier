@@ -6,7 +6,7 @@ import sys
 sys.path.append('F:/dev/pythonCode')
 import zone_intraday_cash_equity_prices_import
 import Utilities.datetime_tools
-import Utilities.my_logs
+import Utilities.logging_tools
 import Utilities.assets
 import Utilities.markets
 
@@ -24,7 +24,7 @@ def refresh():
     log_file_path = \
         os.path.join('F:/FinancialData/Logs/',
                      today.isoformat(), "IntradayYahooEquityImport.txt")
-    Utilities.my_logs.initialize_logging(log_file_path)
+    Utilities.logging_tools.initialize_logging(log_file_path)
 
     # Asian Equities import
     asian_market_close = local_tz.normalize(
@@ -62,7 +62,7 @@ def refresh():
     Utilities.datetime_tools.sleep_with_infinite_loop(time_to_sleep_until_us.total_seconds())
     zone_intraday_cash_equity_prices_import.refresh_amer(today)
 
-    Utilities.my_logs.shutdown()
+    Utilities.logging_tools.shutdown()
     return 0
 
 
