@@ -4,10 +4,10 @@ import logging
 import pytz
 from tzlocal import get_localzone
 import sys
-sys.path.append('F:/dev/pythonCode')
+sys.path.append('F:/prod/pythonCode')
 import yahoo_intraday_fx_spot_prices_import
 import Utilities.datetime_tools
-import Utilities.my_logs
+import Utilities.logging_tools
 import Utilities.assets
 import Utilities.markets
 
@@ -19,7 +19,7 @@ def refresh():
 
     # Initialization
     log_file_path = os.path.join('F:/FinancialData/Logs/', today.isoformat(), "IntradayYahooFXImport.txt")
-    Utilities.my_logs.initialize_logging(log_file_path)
+    Utilities.logging_tools.initialize_logging(log_file_path)
 
     # FX Import
     fx_market_close = local_tz.normalize(pytz.utc.localize(
@@ -31,7 +31,7 @@ def refresh():
     Utilities.datetime_tools.sleep_with_infinite_loop(time_to_sleep_until_fx.total_seconds())
     refresh_fx(today)
 
-    Utilities.my_logs.shutdown()
+    Utilities.logging_tools.shutdown()
 
 
 def refresh_fx(date):

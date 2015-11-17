@@ -6,7 +6,7 @@ import sys
 sys.path.append('F:/pythonCode')
 import Utilities.datetime_tools
 import Utilities.holidays
-import Utilities.my_logs
+import Utilities.logging_tools
 import Utilities.assets
 import Utilities.markets
 
@@ -18,7 +18,7 @@ def run():
     log_file_path = \
         os.path.join('F:/FinancialData/Logs/',
                      today.isoformat(), "ExtradayYahooEquityImport.txt")
-    Utilities.my_logs.initialize_logging(log_file_path)
+    Utilities.logging_tools.initialize_logging(log_file_path)
 
     def refresh_zone(zone):
         logging.info('Starting extraday cash equity prices refresh for zone: %s' % zone)
@@ -40,7 +40,7 @@ def run():
     refresh_zone('EMEA')
     refresh_zone('ASIA')
 
-    Utilities.my_logs.shutdown()
+    Utilities.logging_tools.shutdown()
 
     return 0
 
