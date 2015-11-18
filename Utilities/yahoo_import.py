@@ -5,6 +5,7 @@ from StringIO import StringIO
 import urllib2
 import Utilities.markets
 
+REQUEST_TIME_OUT = 10
 QUOTA_PER_INTERVAL = 500
 INTERVAL = datetime.timedelta(minutes=15)
 MAP_BBG_FEED_SOURCE_TO_YAHOO_FEED_SOURCE = \
@@ -104,7 +105,7 @@ def get_intraday_price_data_of_single_ticker(yahoo_ticker):
         assert(isinstance(yahoo_ticker, basestring))
         query = 'http://chartapi.finance.yahoo.com/instrument/2.0/' + \
                 yahoo_ticker + '/chartdata;type=quote;range=1d/csv'
-        s = urllib2.urlopen(query).read()
+        s = urllib2.urlopen(query, timeout=REQUEST_TIME_OUT).read()
         lines = s.split('\n')
         number_of_info_lines = min([i for i in range(0, len(lines)) if lines[i][:1].isdigit()])
 
@@ -136,7 +137,7 @@ def get_extraday_price_data_of_single_ticker(yahoo_ticker, start_date, end_date)
                 '&g=d' + \
                 '&s=' + yahoo_ticker + \
                 '&ignore=.csv'
-        s = urllib2.urlopen(query).read()
+        s = urllib2.urlopen(query, timeout=REQUEST_TIME_OUT).read()
 
         content = StringIO(s)
         small_price_dat = pd.read_csv(content, sep=',')
