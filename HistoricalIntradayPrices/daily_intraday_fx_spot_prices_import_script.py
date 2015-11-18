@@ -26,7 +26,7 @@ def refresh():
         datetime.datetime.combine(today + datetime.timedelta(days=1), datetime.time(0))))
 
     time_to_sleep_until_fx = max(fx_market_close - local_tz.localize(datetime.datetime.now()) -
-                                 datetime.timedelta(minutes=3), datetime.timedelta(minutes=0))
+                                 datetime.timedelta(minutes=4), datetime.timedelta(minutes=0))
     logging.info('System to sleep until fx import, for : %s minutes', time_to_sleep_until_fx.total_seconds() / 60)
     Utilities.datetime_tools.sleep_with_infinite_loop(time_to_sleep_until_fx.total_seconds())
     refresh_fx(today)
