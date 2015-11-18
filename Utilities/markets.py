@@ -184,5 +184,6 @@ EQUITY_FEED_SOURCES_BY_CONTINENT = \
 
 COUNTRIES = [k for d in EQUITY_FEED_SOURCES_BY_CONTINENT.values() for k in d.keys()]
 
-HISTORIZED_FX_SPOTS = {'BRL', 'CAD', 'MXN', 'EUR', 'CHF', 'GBP',
-                       'SEK', 'NOK', 'DKK', 'ILS', 'CNY', 'CNH', 'HKD', 'AUD', 'SGD'}
+HISTORIZED_FX_SPOTS = {
+    'AUD', 'BRL', 'CAD', 'CHF', 'CNY', 'DKK', 'EUR', 'GBP', 'HKD', 'ILS', 'INR', 'JPY',
+    'KRW', 'MYR', 'NOK', 'NZD', 'PLN', 'RUB', 'SAR', 'SEK', 'SGD', 'TRY', 'TWD', 'ZAR'}
