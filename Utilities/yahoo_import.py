@@ -121,7 +121,8 @@ def get_intraday_price_data_of_single_ticker(yahoo_ticker):
         logging.warning('Calling get_price_data_of_single_ticker with wrong argument types')
         return pd.DataFrame(None)
     except Exception as err:
-        logging.warning('get_price_data_of_single_ticker failed with message: %s' % err.message)
+        logging.warning('get_price_data_of_single_ticker failed for argument %s with message: %s' % (
+            yahoo_ticker, err.message))
         return pd.DataFrame(None)
 
 
