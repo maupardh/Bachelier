@@ -3,7 +3,7 @@ import os.path
 import yahoo_extraday_cash_equity_prices_import
 import Utilities.datetime_tools
 import Utilities.holidays
-import Utilities.logging
+import Utilities.logging_tools
 import Utilities.assets
 
 
@@ -17,7 +17,7 @@ def run():
     log_file_path = \
         os.path.join('F:/FinancialData/Logs/',
                      today.isoformat(), "ExtradayYahooEquityImport.txt")
-    Utilities.logging.initialize_logging(log_file_path)
+    Utilities.logging_tools.initialize_logging(log_file_path)
 
     assets = Utilities.assets.get_assets()
     assets = assets[assets['FEED_SOURCE'] == 'US']
@@ -31,10 +31,10 @@ def run():
     start_date = Utilities.datetime_tools.add_business_days(
         end_date, -252 * 5, Utilities.holidays.HOLIDAYS_BY_COUNTRY_CONFIG['US'])
 
-    yahoo_extraday_cash_equity_prices_import.retrieve_and_store_historical_prices(assets, start_date, end_date)
-    Utilities.logging.shutdown()
+    yahoo_extraday_cash_equity_prices_import.retrieve_and_store_historical_price_from_yahoo(
+        assets, start_date, end_date)
+    Utilities.logging_tools.shutdown()
 
     return 0
 
 run()
-

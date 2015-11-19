@@ -36,6 +36,10 @@ MAP_BBG_FEED_SOURCE_TO_YAHOO_FEED_SOURCE = \
     }
 
 
+def bb_sec_num_des_to_yahoo(bbg):
+    return str.replace(str.replace(bbg, '/', '-'), '*', '')
+
+
 def _prepare_fx_assets(fx_assets_df):
     if fx_assets_df.empty: return pd.DataFrame(None)
     fx_assets_df = fx_assets_df[['ID_BB_GLOBAL', 'ID_BB_SEC_NUM_DES']]
@@ -69,7 +73,7 @@ def _prepare_equity_assets(equity_assets_df):
     equity_assets_df['COUNTRY'] = map(lambda c: c[0], equity_assets_df['COUNTRY'])
 
     def concat_mnemo_and_feed_source(list_of_tuples):
-        return list(set([str.replace(t[0], '/', '-') + MAP_BBG_FEED_SOURCE_TO_YAHOO_FEED_SOURCE[t[1]]
+        return list(set([bb_sec_num_des_to_yahoo(t[0]) + MAP_BBG_FEED_SOURCE_TO_YAHOO_FEED_SOURCE[t[1]]
                          for t in list_of_tuples if t[1] in MAP_BBG_FEED_SOURCE_TO_YAHOO_FEED_SOURCE]))
 
     equity_assets_df['YAHOO_TICKERS'] = equity_assets_df['MNEMO_AND_FEED_SOURCE'].apply(concat_mnemo_and_feed_source)

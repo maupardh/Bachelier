@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 import datetime
 import Utilities.assets
 import Utilities.markets
@@ -46,20 +47,41 @@ def import_boe_london_fix_rates():
         'XUDLNDD': 'USDNZD'
     }
 
-    path_to_boe_csv = ''  # FILL
-    fx_prices = pd.read_csv(path_to_boe_csv)
+    path_to_boe_csv = 'F:/financialData/Other/boe_fx_spot_rate.csv'  # FILL
+    fx_prices = pd.read_csv(path_to_boe_csv, skiprows=len(boe_code_to_ccy_pair.keys())+3)
     fx_prices.index = fx_prices['DATE'].apply(
-        lambda d: datetime.datetime.strptime(d, "%Y-%m-%d").date())
+        lambda d: datetime.datetime.strptime(d, '%d %b %Y').date())
     fx_prices.drop('DATE', axis=1, inplace=True)
+    fx_prices.fillna(0, inplace=True)
     fx_prices = fx_prices.applymap(float)
     fx_prices.rename(columns=boe_code_to_ccy_pair, inplace=True)
+    fx_prices = fx_prices[boe_code_to_ccy_pair.values()]
     fx_prices_flipped = fx_prices.rename(columns=lambda t: t[3:6]+t[0:3])
     fx_prices_flipped = fx_prices_flipped.applymap(lambda x: 1/x if x > 0 else 0)
 
-    merged_fx_prices = pd.concat([fx_prices, fx_prices_flipped])
+    merged_fx_prices = pd.concat([fx_prices, fx_prices_flipped], axis=1)
     merged_fx_prices.rename(columns=ccy_pair_to_bb_id, inplace=True)
-    for (cur_date, cur_row) in merged_fx_prices.to_dict(orient='index').iteritems():
-        cur_prices = pd.from_dict(cur_row, orient='index')
-        common_extraday_tools.write_extraday_prices_table_for_single_day(cur_prices, cur_date)
+    merged_fx_prices = merged_fx_prices[list(set(ccy_pair_to_bb_id.values()).intersection(merged_fx_prices.columns))]
+    merged_fx_prices = merged_fx_prices.applymap(lambda x: round(x, 8))
+
+    def write_spot_prices(t):
+        try:
+            cur_date = t[0]
+            cur_row = t[1]
+            cur_prices = pd.DataFrame.from_dict(cur_row, orient='index', dtype=float)
+            cur_prices.columns = ['Close']
+            cur_prices.index.name = 'ID_BB_GLOBAL'
+            cur_prices['AdjClose'] = cur_prices['Close']
+            cur_prices['Open'] = 0
+            cur_prices['Volume'] = 0
+            cur_prices = cur_prices[common_extraday_tools.STANDARD_COL_NAMES]
+            cur_prices.index.name = common_extraday_tools.STANDARD_INDEX_NAME
+            cur_prices = cur_prices[cur_prices['Close'] > 0]
+            common_extraday_tools.write_extraday_prices_table_for_single_day(cur_prices, cur_date)
+        except:
+            return
+        return
+
+    map(write_spot_prices, merged_fx_prices.to_dict(orient='index').items())
 
 import_boe_london_fix_rates()

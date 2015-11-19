@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 import os.path
 import logging
 import datetime
@@ -83,12 +84,14 @@ def write_extraday_prices_table_for_single_day(new_content, date, resolve_method
         merged_content_resolved = pd.DataFrame(None)
 
         if not old_content.empty:
+            old_content = old_content[map(lambda t: t[0] > 0 or t[1] > 0, zip(
+                old_content['Volume'], old_content['Close']))]
             old_content.loc[:, 'Age'] = 'Old'
-            old_content = old_content[old_content['Volume'] > 0]
 
         if not new_content.empty:
+            new_content = new_content[map(lambda t: t[0] > 0 or t[1] > 0, zip(
+                new_content['Volume'], new_content['Close']))]
             new_content.loc[:, 'Age'] = 'New'
-            new_content = new_content[new_content['Volume'] > 0]
             new_content.index = [[date]*new_content.shape[0], new_content.index]
             new_content.index.names = ['Date', STANDARD_INDEX_NAME]
 
