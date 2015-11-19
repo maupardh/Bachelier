@@ -37,7 +37,7 @@ MAP_BBG_FEED_SOURCE_TO_YAHOO_FEED_SOURCE = \
 
 
 def bb_sec_num_des_to_yahoo(bbg):
-    return str.replace(str.replace(bbg, '/', '-'), '*', '')
+    return str.replace(bbg, '/', '-')
 
 
 def _prepare_fx_assets(fx_assets_df):
