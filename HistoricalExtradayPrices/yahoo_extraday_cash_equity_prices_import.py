@@ -20,11 +20,12 @@ def _get_price_from_yahoo(yahoo_tickers, start_date, end_date, country):
             common_extraday_tools.REINDEXES_CACHE[
                 (country, start_date.isoformat(), end_date.isoformat())] = \
                 common_extraday_tools.get_standardized_extraday_equity_dtindex(
-                    country, start_date.isoformat(), end_date.isoformat())
+                    country, start_date, end_date)
             std_index = common_extraday_tools.REINDEXES_CACHE[(country, start_date.isoformat(), end_date.isoformat())]
 
-        price_dat = pd.concat(map(Utilities.yahoo_import.get_extraday_price_data_of_single_ticker,
-                                  yahoo_tickers), ignore_index=True)
+        price_dat = pd.concat(map(
+            lambda t: Utilities.yahoo_import.get_extraday_price_data_of_single_ticker(t, start_date, end_date),
+            yahoo_tickers), ignore_index=True)
         price_dat.loc[:, 'Date'] = price_dat['Date'].apply(
             lambda d: datetime.datetime.strptime(d, "%Y-%m-%d").date())
         price_dat[common_extraday_tools.STANDARD_COL_NAMES] = price_dat[common_extraday_tools.STANDARD_COL_NAMES]\
@@ -104,8 +105,8 @@ def retrieve_and_store_historical_price_from_yahoo(assets_df, start_date, end_da
                 logging.info('Printing prices of %s tickers for %s successful' % (len(batch), date.isoformat()))
 
         Utilities.general_tools.break_action_into_batches(
-            import_and_write_per_batch, assets_df, Utilities.yahoo_import.QUOTA_PER_INTERVAL,
-            Utilities.yahoo_import.INTERVAL)
+            import_and_write_per_batch, assets_df, Utilities.yahoo_import.EXTRADAY_INTERVAL,
+            Utilities.yahoo_import.EXTRADAY_QUOTA_PER_INTERVAL)
     except AssertionError:
         logging.warning('Calling retrieve_and_store_historical_price_from_yahoo with wrong argument types')
     except Exception as err:

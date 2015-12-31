@@ -7,7 +7,9 @@ import Utilities.markets
 
 REQUEST_TIME_OUT = 10
 QUOTA_PER_INTERVAL = 500
+EXTRADAY_QUOTA_PER_INTERVAL = 15000
 INTERVAL = datetime.timedelta(minutes=15)
+EXTRADAY_INTERVAL = datetime.timedelta(minutes=10)
 MAP_BBG_FEED_SOURCE_TO_YAHOO_FEED_SOURCE = \
     {
         'AT': '.AX', 'AU': '.AX', 'AXG': '.AX',
