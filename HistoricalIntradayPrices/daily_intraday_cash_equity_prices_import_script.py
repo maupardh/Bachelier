@@ -14,10 +14,6 @@ import Utilities.markets
 def refresh():
 
     today = datetime.date.today()
-
-    if today.isoweekday() >= 6:
-        return 0
-
     local_tz = get_localzone()
 
     # Initialization
@@ -25,6 +21,11 @@ def refresh():
         os.path.join('F:/FinancialData/Logs/',
                      today.isoformat(), "IntradayYahooEquityImport.txt")
     Utilities.logging_tools.initialize_logging(log_file_path)
+
+    if today.isoweekday() >= 6:
+        logging.info('Not a weekday - cash equity intraday import shut down')
+        Utilities.logging_tools.shutdown()
+        return 0
 
     # Asian Equities import
     asian_market_close = local_tz.normalize(
@@ -46,7 +47,7 @@ def refresh():
 
     time_to_sleep_until_emea = max(emea_market_close + datetime.timedelta(minutes=30) -
                                    local_tz.localize(datetime.datetime.now()), datetime.timedelta(minutes=5))
-    logging.info('System to sleep until emea markets, for : %s minutes', time_to_sleep_until_emea.total_seconds() / 60)
+
     Utilities.datetime_tools.sleep_with_infinite_loop(time_to_sleep_until_emea.total_seconds())
     zone_intraday_cash_equity_prices_import.refresh_emea(today)
 
