@@ -2,6 +2,8 @@ import logging
 from StringIO import StringIO
 import zipfile
 
+# SIMPLE TOOLS
+
 
 def unzip_string_with_zipfile(zipped_string):
 

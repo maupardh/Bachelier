@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import os.path
 import datetime
 import logging
@@ -12,6 +14,18 @@ import Utilities.markets
 
 
 def refresh():
+
+    """Daily scheduled task for equities intraday scraping throughout the day from 8:00 am EST T+0 to 1:00 am EST T+1
+    This is currently scraping intraday prices for all exchange-listed equities for ~30 countries
+    Yahoo provides non-empty data for ~16,000 equities
+    1. scraping starts with Asian markets 30 minutes after the last local market closes (China)
+    Asia :~= Shanghai, Hong Kong, Sidney
+    2. continues 30 minutes after the last EMEA market closes (Germany)
+    EMEA :~= most of European Union + some Easter countries and Israel
+    3. finishes with the Americas 30 minutes after the US close
+    AMER :~= US, Brazil, Canada, Mexico
+    See the EQUITY_FEED_SOURCES_BY_CONTINENT map in Utilities.markets for the full config
+    each zone starts with scraping asset symbols (BBG symbiology) to get the most recent IPOs / name changes"""
 
     today = datetime.date.today()
     local_tz = get_localzone()

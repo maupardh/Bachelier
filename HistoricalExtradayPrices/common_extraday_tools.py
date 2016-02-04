@@ -7,8 +7,11 @@ import Utilities.general_tools
 import Utilities.holidays
 import Utilities.markets
 
+# standard schema of extraday pandas df
 STANDARD_COL_NAMES = ['Open', 'Close', 'AdjClose', 'Volume']
+# standard index for extraday pandas df for one day (for multiple days, the index 'DATE' is added)
 STANDARD_INDEX_NAME = 'ID_BB_GLOBAL'
+# directory where daily price files are historized in .zip format
 __EXTRADAY_PRICES_DIRECTORY = os.path.join('F:/', 'financialData', 'HistoricalExtradayPrices')
 
 

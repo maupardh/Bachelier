@@ -6,6 +6,8 @@ import pytz
 import logging
 import common_intraday_tools
 
+# google not used at the moment as small quotas + US prices do not consolidate as many exchange feeds as yahoo
+
 
 def _get_price_from_google(ticker, country):
 

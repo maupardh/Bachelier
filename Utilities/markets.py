@@ -1,6 +1,10 @@
 import datetime
 import pytz
 
+# THIS MAP OUTLINES ALL COUNTRY CODES INGESTED FOR SCRAPING FROM BBG OPEN SYMBIOLOGY
+# MarketOpen, MarketClose and TimeZone are used to build the datetime index time series for reindex
+# during intraday scraping of Yahoo. This way, all stored intraday price time series have standardized time indices
+# keeping track of timezones.
 
 EQUITY_MARKETS_BY_COUNTRY_CONFIG = \
     {
@@ -144,6 +148,9 @@ EQUITY_MARKETS_BY_COUNTRY_CONFIG = \
             }
     }
 
+# THIS MAP DEFINES WHICH FEED SOURCES TO AGGREGATE FROM THE BBG OPEN SYMBIOLOGY INTO A SINGLE HEADLINE SYMBOL
+# AGGREGATION OF FEEDS IS DONE ON A PER COUNTRY BASIS, OR PER ZONE FOR EUROPE.
+# BBG OPEN SYMBIOLOGY ALREADY PREVENTS AGGREGATION OF FEEDS IN DIFFERENT CURRENCIES.
 EQUITY_FEED_SOURCES_BY_CONTINENT = \
     {
         'AMER':
@@ -182,8 +189,10 @@ EQUITY_FEED_SOURCES_BY_CONTINENT = \
             }
     }
 
+# LIST OF HISTORIZED COUNTRIES - 23 ATM. TODO: JAPAN
 COUNTRIES = [k for d in EQUITY_FEED_SOURCES_BY_CONTINENT.values() for k in d.keys()]
 
+# LIST OF HISTORIZED FX CURRENCIES
 HISTORIZED_FX_SPOTS = {
     'AUD', 'BRL', 'CAD', 'CHF', 'CNY', 'DKK', 'EUR', 'GBP', 'HKD', 'ILS', 'INR', 'JPY',
     'KRW', 'MYR', 'NOK', 'NZD', 'PLN', 'RUB', 'SAR', 'SEK', 'SGD', 'TRY', 'TWD', 'ZAR'}

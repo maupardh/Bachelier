@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import datetime
 import os.path
 import logging
@@ -12,7 +14,7 @@ import Utilities.markets
 
 
 def run():
-
+    """monthly update of extraday prices files on disk"""
     today = datetime.date.today()
 
     log_file_path = \
@@ -21,6 +23,7 @@ def run():
     Utilities.logging_tools.initialize_logging(log_file_path)
 
     def refresh_zone(zone, start_date, end_date):
+        #let's do this one zone at a time
         logging.info('Starting extraday cash equity prices refresh for zone: %s' % zone)
         assets = Utilities.assets.get_assets()
         assets = assets[assets['MARKET_SECTOR_DES'] == 'Equity']

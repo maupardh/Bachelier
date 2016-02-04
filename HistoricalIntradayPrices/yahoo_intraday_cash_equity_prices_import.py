@@ -11,6 +11,15 @@ import Utilities.markets
 
 
 def get_price_from_yahoo(yahoo_tickers, country, date):
+    """This returns a pandas df of intraday prices aggregating feeds for the list of yahoo tickers provided, with
+    minute-by-minute time as index and open, close, high, low, volume as schema as defined in the common_intraday_tools.
+    Data is scraped over Yahoo.
+    In extraday prices consolidation, volume is summed across feeds, but only prices from the most liquid ticker are kept.
+    Here, in intraday prices, open and closing minute-by-minute prices are vwaps across feed sources.
+    Low and High are min and max across feed sources.
+    This is useful when aggregating feeds from multiple exchanges for example:
+    Germany with XETRA where most of the volume takes place vs 5-6 regional floors where
+    some intraday trading still occurs."""
 
     std_index = common_intraday_tools.REINDEXES_CACHE.get(country, {}).get(date.isoformat(), None)
 
@@ -67,6 +76,11 @@ def get_price_from_yahoo(yahoo_tickers, country, date):
 
 
 def retrieve_and_store_today_price_from_yahoo(assets_df, root_directory_name, date):
+    """scrapes and stores intraday prices for the assets pandas df provided, from start date until end date.
+    The assets df is first prepared for yahoo import.
+    Scraping and storing is then done in batches in order to be gentle on Yahoo quotas.
+    Extraday and intraday scraping and storing are done in a similar fashion, broken into batches.
+    """
 
     try:
         assert (isinstance(assets_df, pd.DataFrame) and isinstance(root_directory_name, basestring)

@@ -6,6 +6,8 @@ __console_handler_already_initialized = False
 
 __LOG_DIRECTORY = 'F:/financialData/'
 
+# CUSTOMIZED LOGGING FACILITY
+
 
 def initialize_logging(log_file_path):
 

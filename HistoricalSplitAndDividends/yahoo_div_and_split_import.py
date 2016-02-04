@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-__author__ = 'hmaupard'
+# OLD STUFF NOT CURRENTLY USED
 
 import datetime
 import urllib2

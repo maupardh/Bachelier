@@ -17,6 +17,8 @@ __QUOTA_SAFETY_MARGIN = 50
 __QUOTA_SAFE = __QUOTA_PER_INTERVAL - __QUOTA_SAFETY_MARGIN
 __INTERVAL_SAFE = __INTERVAL + __INTERVAL_SAFETY_MARGIN
 
+# not used ATM as yahoo > quandl intraday
+
 
 def _get_price_from_quandl(ticker, start_date, end_date, country):
 

@@ -10,7 +10,9 @@ import Utilities.datetime_tools
 
 
 def get_price_from_yahoo(yahoo_fx_tickers, date):
-
+    """Intraday scraping of FX prices from yahoo. Thisi ssimilar to equities,
+    but here there is little consolidation across feeds as there is just one feed
+    (the groupby statement is more of a safety check for unique indices than real aggregation) """
     try:
         assert (isinstance(yahoo_fx_tickers, list) and isinstance(date, datetime.date))
         std_index = common_intraday_tools.get_standardized_intraday_fx_dtindex(date)
@@ -55,6 +57,7 @@ def get_price_from_yahoo(yahoo_fx_tickers, date):
 
 
 def retrieve_and_store_today_price_from_yahoo(assets_df, root_directory_name, date):
+    """Exact same as equities routine for scraping and storing fx prices from an assets pandas df"""
     try:
         assert (isinstance(assets_df, pd.DataFrame) and isinstance(root_directory_name, basestring) and
                 isinstance(date, datetime.date))

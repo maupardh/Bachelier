@@ -9,6 +9,13 @@ import Utilities.general_tools
 
 
 def _get_price_from_yahoo(yahoo_tickers, start_date, end_date, country):
+    """This returns a pandas df of extraday prices aggregating feeds for the list of yahoo tickers provided, with
+    date as index and open, close, adjclose, volume as schema.
+    Data is scraped over Yahoo.
+    Volume is summed across feeds, but only prices from the most liquid ticker are kept
+    - kind of an argmax fashion (alternative would have been VWAP).
+    This is useful when aggregating feeds from multiple exchanges for example:
+    Germany with XETRA vs 5-6 regional floors"""
 
     try:
         assert(isinstance(yahoo_tickers, list) and isinstance(start_date, datetime.date) and
@@ -64,6 +71,10 @@ def _get_price_from_yahoo(yahoo_tickers, start_date, end_date, country):
 
 
 def retrieve_and_store_historical_price_from_yahoo(assets_df, start_date, end_date):
+    """scrapes and stores extraday prices for the assets pandas df provided, from start date until end date.
+    The assets df is first prepared for yahoo import.
+    Scraping and storing is then done in batches in order to be gentle on Yahoo quotas.
+    """
 
     try:
         assert (isinstance(assets_df, pd.DataFrame) and isinstance(start_date, datetime.date) and

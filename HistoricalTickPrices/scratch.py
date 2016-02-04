@@ -1,4 +1,4 @@
-__author__ = 'hmaupard'
+# OLD STUFF NOT CURRENTLY USED
 
 import urllib2
 

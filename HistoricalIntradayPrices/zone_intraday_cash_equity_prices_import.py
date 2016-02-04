@@ -10,6 +10,10 @@ import Utilities.markets
 
 
 def refresh_amer(date):
+    """daily job for intraday yahoo cash equity scraping and storing per region. Here AMER.
+    All assets are scraped from the BBG Open Symbiology. Only Americas assets are kept, with a specific logic for US.
+    US symbols historized on a daily basis are the OATS reported securities minus everything that is unlisted.
+    This keeps all US equity symbols primarily listed on NYSE, NASDAQ, NYSE AMEX + a few others."""
 
     try:
         assert(isinstance(date, datetime.date))
@@ -52,6 +56,9 @@ def refresh_amer(date):
 
 
 def refresh_asia(date):
+    """daily job for intraday yahoo cash equity scraping and storing per region. Here ASIA.
+    All assets are scraped from the BBG Open Symbiology. Only ASIA assets are kept i.e the ones
+    with an asian exchange as a feed source."""
 
     try:
         assert(isinstance(date, datetime.date))
@@ -82,6 +89,14 @@ def refresh_asia(date):
 
 
 def refresh_emea(date):
+    """daily job for intraday yahoo cash equity scraping and storing per region. Here ASIA.
+    All assets are scraped from the BBG Open Symbiology. Only EMEA assets are kept i.e the ones
+    with an asian exchange as a feed source with Germany as an exception.
+    A german exception is implemented here to reduce the size of symbols universe:
+    ~10,000 german equities are not listed on XETRA but on regional physical exchanges. These equities would be
+    difficult to trade with an electronic trading framework + not very liquid anyway as
+    XETRA accounts for 90%+ of volume in Germany. Therefore we only keep german symbols which have a listing on XETRA
+    but not necessarily primary."""
 
     try:
         assert(isinstance(date, datetime.date))

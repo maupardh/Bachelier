@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import os.path
 import datetime
 import logging
@@ -13,6 +15,13 @@ import Utilities.markets
 
 
 def refresh():
+    """Daily scheduled task for FX intraday scraping
+    This is currently scraping intraday yahoo prices for ~30 currency pairs (against USD and cross)
+    Yahoo provides minute by minute rates (but no volumes as FX feeds are not consolidated).
+    The yahoo webpage restarts daily at 00:00 UTC.
+    This script scrapes the webpages ~1-2 minutes before 00:00 UTC so there is a 1-2 minute hole around 23:59
+    with no prices.
+    refresh decorates refresh_fx"""
 
     today = datetime.date.today()
     local_tz = get_localzone()

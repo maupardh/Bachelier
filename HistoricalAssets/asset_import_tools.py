@@ -19,7 +19,6 @@ def _validate_bbg_composite_id(x):
 
 
 def get_assets_from_open_bbg_symbiology(market_sector, security_type, date):
-
     """scrapes the BBG assets from the BBG open symbiology for the given inputs"""
     content = None
     logging.info('Importing assets from Open BBG Symbiology, sector: %s, type: %s' % (market_sector, security_type))
@@ -48,7 +47,6 @@ def get_assets_from_open_bbg_symbiology(market_sector, security_type, date):
 
 
 def historize_assets(list_of_symbiology_confs, paths):
-
     """scrapes and historizes the BBG assets from the BBG open symbiology for the given inputs"""
     logging.info('Importing assets from Open BBG Symbiology')
     try:
