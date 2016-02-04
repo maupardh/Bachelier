@@ -13,6 +13,7 @@ __EXTRADAY_PRICES_DIRECTORY = os.path.join('F:/', 'financialData', 'HistoricalEx
 
 
 def get_standardized_extraday_equity_dtindex(country, start_date, end_date):
+    """returns the index of business days in the country's equity markets - useful when re-indexing"""
     try:
         assert(isinstance(country, basestring) and isinstance(start_date, datetime.date)
                and isinstance(end_date, datetime.date))
@@ -28,6 +29,7 @@ def get_standardized_extraday_equity_dtindex(country, start_date, end_date):
 
 
 def get_standardized_extraday_fx_dtindex(start_date, end_date):
+    """returns the index of business days for FX - i.e without any holidays - useful when re-indexing"""
     try:
         assert(isinstance(start_date, datetime.date) and isinstance(end_date, datetime.date))
         reg_idx = pd.bdate_range(start_date, end_date)
@@ -42,11 +44,13 @@ REINDEXES_CACHE = {}
 
 
 def _get_extraday_csv_zip_path(date):
+    """where extraday prices files are stored"""
     return os.path.join(__EXTRADAY_PRICES_DIRECTORY, 'zip', date.isoformat()+'.csv.zip')
 
 
 def _get_extraday_prices(date):
-
+    """reads extraday prices for one day into a pandas df with date and symbol as index.
+    This prepares for reading multiple dates while maintaining a unique index"""
     zip_file = _get_extraday_csv_zip_path(date)
     logging.info('Reading extraday prices for %s at %s' % (date.isoformat(), zip_file))
     try:
@@ -64,6 +68,9 @@ def _get_extraday_prices(date):
 
 
 def get_extraday_prices(start_date, end_date):
+    """reads extraday prices from start_date to end_date into a multi indexed pandas df
+    multiindex is date + symbol
+    columns are open, close, adj close, volume"""
     try:
         content = pd.concat(map(
             lambda d: _get_extraday_prices(d.date()), pd.date_range(start_date, end_date, freq='D')))
@@ -74,7 +81,8 @@ def get_extraday_prices(start_date, end_date):
 
 
 def write_extraday_prices_table_for_single_day(new_content, date, resolve_method='R'):
-
+    """adds a pandas df of extraday prices (schema = symbol as index, open close close adj volume as columns)
+     to existing extraday prices on disk"""
     try:
         assert(isinstance(new_content, pd.DataFrame) and isinstance(date, datetime.date)
                and isinstance(resolve_method, basestring))

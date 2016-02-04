@@ -8,6 +8,8 @@ import common_extraday_tools
 
 def import_boe_london_fix_rates():
 
+    """One off backfill of historical FX daily fixing rates (4pm london WMR fix) to the extraday price files"""
+
     fx_assets = Utilities.assets.get_assets()
     fx_assets['ID_BB_GLOBAL'] = fx_assets.index
     fx_assets = fx_assets[fx_assets['MARKET_SECTOR_DES'] == 'Curncy']

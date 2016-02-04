@@ -6,6 +6,7 @@ import Utilities.logging_tools
 
 def refresh(date):
 
+    """daily task to refresh assets from open source BBG symbiology"""
     log_file_path = \
         os.path.join('F:/FinancialData/Logs/',
                      date.isoformat(), "IntradayYahooEquityImport.txt")
