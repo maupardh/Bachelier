@@ -100,7 +100,7 @@ def _get_intraday_prices(date, bbgids):
 
 
 def get_intraday_prices(start_date, end_date, bbgids):
-    """maps the prive _get_intraday_prices function over a date range"""
+    """maps the _get_intraday_prices function over a date range"""
     try:
         assert(isinstance(start_date, datetime.date) and isinstance(end_date, datetime.date) and
                isinstance(bbgids, list))
