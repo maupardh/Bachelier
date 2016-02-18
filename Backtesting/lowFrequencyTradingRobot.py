@@ -20,9 +20,9 @@ class LowFrequencyTradingRobot:
 
         self.robot_id = None
 
-        self.information = None
+        self.other_information = None
 
-    def update_information(self, **kwargs):
+    def update_other_information(self, **kwargs):
         pass
 
     def update_orders(self, **kwargs):
@@ -31,13 +31,20 @@ class LowFrequencyTradingRobot:
     def update_trades(self, **kwargs):
         pass
 
+    def update_book(self, **kwargs):
+        pass
+
+    def make_trading_decision(self):
+        # this is where the robot updates its signals, takes into account its current trades, orders, book
+        # and decides whether or not to send additional orders, change/correct/abort course depending on strat and
+        # on what's happening in the market
+        pass
+
     def run_checklist(self, **kwargs):
-        # start listening for information, orders and trades
+        # start listening for information, orders and trades by observing the relevant events
+        # thrown by the matchingEngine
         pass
 
     def switch_contact(self, on=True):
         pass
 
-    def run(self):
-        self.run_checklist()
-        self.switch_contact(True)
