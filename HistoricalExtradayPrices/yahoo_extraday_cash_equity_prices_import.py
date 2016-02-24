@@ -35,7 +35,7 @@ def _get_price_from_yahoo(yahoo_tickers, start_date, end_date, country):
             yahoo_tickers), ignore_index=True)
         price_dat.loc[:, 'Date'] = price_dat['Date'].apply(
             lambda d: datetime.datetime.strptime(d, "%Y-%m-%d").date())
-        price_dat[common_extraday_tools.STANDARD_COL_NAMES] = price_dat[common_extraday_tools.STANDARD_COL_NAMES]\
+        price_dat[['Open', 'Close', 'AdjClose', 'Volume']] = price_dat[['Open', 'Close', 'AdjClose', 'Volume']]\
             .astype(float)
         price_dat['Volume'] = price_dat['Volume'].fillna(0)
         price_dat = price_dat[price_dat['Volume'] > 0]
@@ -53,12 +53,14 @@ def _get_price_from_yahoo(yahoo_tickers, start_date, end_date, country):
         price_dat['Open'] = price_dat['Open'].fillna(0)
         price_dat = price_dat.fillna(0)
         price_dat = price_dat[price_dat['Volume'] > 0]
-        price_dat = price_dat[common_extraday_tools.STANDARD_COL_NAMES]
+        price_dat = price_dat[['Open', 'Close', 'AdjClose', 'Volume']]
 
+        assert(isinstance(price_dat, pd.DataFrame) and price_dat.index.name == 'YAHOO_TICKER'
+               and tuple(price_dat.columns)==('Open', 'Close', 'AdjClose'))
         logging.info('Yahoo price import and pandas enrich successful for: %s' % yahoo_tickers)
+
         if price_dat.shape[0] == 0:
             return pd.DataFrame(None)
-
         return price_dat
 
     except AssertionError:
@@ -97,7 +99,7 @@ def retrieve_and_store_historical_price_from_yahoo(assets_df, start_date, end_da
             new_pandas_content['Date'] = new_pandas_content.index
             new_pandas_content.index = [new_pandas_content['ID_BB_GLOBAL'], new_pandas_content['Date']]
             new_pandas_content.index.name = ['ID_BB_GLOBAL', 'Date']
-            new_pandas_content = new_pandas_content[common_extraday_tools.STANDARD_COL_NAMES]
+            new_pandas_content = new_pandas_content[['Open', 'Close', 'AdjClose', 'Volume']]
             return new_pandas_content
 
         def import_and_write_per_batch(batch):
@@ -110,8 +112,8 @@ def retrieve_and_store_historical_price_from_yahoo(assets_df, start_date, end_da
             for date, group in grouped_by_date:
                 date = datetime.date(date.year, date.month, date.day)
                 group.index = group['ID_BB_GLOBAL']
-                group = group[common_extraday_tools.STANDARD_COL_NAMES]
-                group.index.name = common_extraday_tools.STANDARD_INDEX_NAME
+                group = group[['Open', 'Close', 'AdjClose', 'Volume']]
+                group.index.name = 'Date'
                 common_extraday_tools.write_extraday_prices_table_for_single_day(group, date)
                 logging.info('Printing prices of %s tickers for %s successful' % (len(batch), date.isoformat()))
 

@@ -7,12 +7,9 @@ import Utilities.markets
 import Utilities.general_tools
 import iso8601
 
-# standard storing schema for intraday prices pandas df
-STANDARD_COL_NAMES = ['Close', 'High', 'Low', 'Open', 'Volume']
 # standard index for intraday prices pandas df
 # intraday prices are stored as one file per symbol (one row per minute i.e time as index),
 # as opposed to extraday prices which are one file per date for all symbols (one row per symbol i.e symbol as index)
-STANDARD_INDEX_NAME = 'Time'
 # gaps to account for pre/after hours activity - this is rare with yahoo
 _EQUITY_GAP_AFTER_MARKET_OPEN = datetime.timedelta(minutes=0)
 _EQUITY_GAP_AFTER_MARKET_CLOSE = datetime.timedelta(minutes=5)
@@ -35,7 +32,7 @@ def get_standardized_intraday_equity_dtindex(country, date):
                   Utilities.markets.EQUITY_MARKETS_BY_COUNTRY_CONFIG[country]['MarketClose'] \
                   + _EQUITY_GAP_AFTER_MARKET_CLOSE
         reg_idx = pd.date_range(start_reg, end_reg, freq='1T')
-        reg_idx.name = STANDARD_INDEX_NAME
+        reg_idx.name = 'Time'
         return reg_idx
     except AssertionError:
         logging.warning('Calling get_standardized_intraday_equity_dtindex with wrong argument types')
@@ -51,7 +48,7 @@ def get_standardized_intraday_fx_dtindex(date):
         end_reg = pytz.utc.localize(datetime.datetime(date.year, date.month, date.day) +
                                     datetime.timedelta(days=1) - datetime.timedelta(minutes=1))
         reg_idx = pd.date_range(start_reg, end_reg, freq='1T')
-        reg_idx.name = STANDARD_INDEX_NAME
+        reg_idx.name = 'Time'
         return reg_idx
     except AssertionError:
         logging.warning('Calling get_standardized_intraday_fx_dtindex with wrong argument types')
@@ -83,11 +80,11 @@ def _get_intraday_prices(date, bbgids):
         try:
             content = Utilities.general_tools.read_and_log_pandas_df(zip_file)
             content['ID_BB_GLOBAL'] = id
-            content[STANDARD_COL_NAMES] = content[STANDARD_COL_NAMES].astype(float)
-            content[STANDARD_INDEX_NAME] = map (iso8601.parse_date, content[STANDARD_INDEX_NAME])
-            content.index = [content['ID_BB_GLOBAL'], content[STANDARD_INDEX_NAME]]
-            content.index.names = ['ID_BB_GLOBAL', STANDARD_INDEX_NAME]
-            content = content[STANDARD_COL_NAMES]
+            content[['Close', 'High', 'Low', 'Open', 'Volume']] = content[['Close', 'High', 'Low', 'Open', 'Volume']].astype(float)
+            content['Time'] = map (iso8601.parse_date, content['Time'])
+            content.index = [content['ID_BB_GLOBAL'], content['Time']]
+            content.index.names = ['ID_BB_GLOBAL', 'Time']
+            content = content[['Close', 'High', 'Low', 'Open', 'Volume']]
             logging.info('Reading successful')
             return content
         except Exception as err:

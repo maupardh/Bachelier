@@ -2,12 +2,22 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cf67a859-3775-4497-b694-6ee3f0d34375" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Backtesting/clock.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Utilities/events.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Utilities/Clocks/__init__.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Utilities/Clocks/clock.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Utilities/Clocks/regularTickClock.py" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Backtesting/clock.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Backtesting/order.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Backtesting/trade.py" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/HistoricalExtradayPrices/common_extraday_tools.py" afterPath="$PROJECT_DIR$/HistoricalExtradayPrices/common_extraday_tools.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/HistoricalIntradayPrices/common_intraday_tools.py" afterPath="$PROJECT_DIR$/HistoricalIntradayPrices/common_intraday_tools.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Backtesting/debug.py" afterPath="$PROJECT_DIR$/Backtesting/debug.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Utilities/events.py" afterPath="$PROJECT_DIR$/Utilities/events.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Backtesting/lowFrequencyMatchingEngine.py" afterPath="$PROJECT_DIR$/Backtesting/lowFrequencyMatchingEngine.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Backtesting/lowFrequencyTradingEnvironment.py" afterPath="$PROJECT_DIR$/Backtesting/lowFrequencyTradingEnvironment.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Backtesting/lowFrequencyTradingRobot.py" afterPath="$PROJECT_DIR$/Backtesting/lowFrequencyTradingRobot.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Backtesting/observer_pattern.py" afterPath="$PROJECT_DIR$/Backtesting/observer_pattern.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/HistoricalExtradayPrices/yahoo_extraday_cash_equity_prices_import.py" afterPath="$PROJECT_DIR$/HistoricalExtradayPrices/yahoo_extraday_cash_equity_prices_import.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/HistoricalIntradayPrices/yahoo_intraday_cash_equity_prices_import.py" afterPath="$PROJECT_DIR$/HistoricalIntradayPrices/yahoo_intraday_cash_equity_prices_import.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/HistoricalIntradayPrices/yahoo_intraday_fx_spot_prices_import.py" afterPath="$PROJECT_DIR$/HistoricalIntradayPrices/yahoo_intraday_fx_spot_prices_import.py" />
     </list>
     <ignored path="pythonCode.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -28,33 +38,73 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="lowFrequencyTradingRobot.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Backtesting/lowFrequencyTradingRobot.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="lowFrequencyMatchingEngine.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Backtesting/lowFrequencyMatchingEngine.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.79252577">
-              <caret line="41" column="8" selection-start-line="41" selection-start-column="8" selection-end-line="41" selection-end-column="8" />
+            <state vertical-scroll-proportion="0.55541235">
+              <caret line="113" column="58" selection-start-line="113" selection-start-column="58" selection-end-line="113" selection-end-column="58" />
               <folding>
-                <element signature="e#153#172#0" expanded="true" />
+                <element signature="e#153#167#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="yahoo_extraday_cash_equity_prices_import.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/HistoricalExtradayPrices/yahoo_extraday_cash_equity_prices_import.py">
+      <file leaf-file-name="common_intraday_tools.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/HistoricalIntradayPrices/common_intraday_tools.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="91" column="58" selection-start-line="91" selection-start-column="58" selection-end-line="91" selection-end-column="58" />
+              <caret line="26" column="8" selection-start-line="26" selection-start-column="8" selection-end-line="28" selection-end-column="93" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="daily_intraday_cash_equity_prices_import_script.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/HistoricalIntradayPrices/daily_intraday_cash_equity_prices_import_script.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="28" column="0" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="daily_intraday_fx_spot_prices_import_script.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/HistoricalIntradayPrices/daily_intraday_fx_spot_prices_import_script.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="yahoo_intraday_cash_equity_prices_import.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/HistoricalIntradayPrices/yahoo_intraday_cash_equity_prices_import.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="39" column="0" selection-start-line="39" selection-start-column="0" selection-end-line="39" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="yahoo_intraday_fx_spot_prices_import.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/HistoricalIntradayPrices/yahoo_intraday_fx_spot_prices_import.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="30" column="72" selection-start-line="30" selection-start-column="72" selection-end-line="30" selection-end-column="72" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="zone_intraday_cash_equity_prices_import.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/HistoricalIntradayPrices/zone_intraday_cash_equity_prices_import.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="103" column="69" selection-start-line="103" selection-start-column="69" selection-end-line="103" selection-end-column="69" />
               <folding />
             </state>
           </provider>
@@ -64,67 +114,19 @@
         <entry file="file://$PROJECT_DIR$/HistoricalExtradayPrices/common_extraday_tools.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="40" column="26" selection-start-line="40" selection-start-column="26" selection-end-line="40" selection-end-column="26" />
-              <folding />
+              <caret line="168" column="28" selection-start-line="168" selection-start-column="28" selection-end-line="168" selection-end-column="28" />
+              <folding>
+                <element signature="e#0#19#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="common_intraday_tools.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/HistoricalIntradayPrices/common_intraday_tools.py">
+      <file leaf-file-name="markets.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Utilities/markets.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="107" column="76" selection-start-line="107" selection-start-column="62" selection-end-line="107" selection-end-column="76" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="lowFrequencyTradingEnvironment.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Backtesting/lowFrequencyTradingEnvironment.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="14" column="7" selection-start-line="14" selection-start-column="7" selection-end-line="14" selection-end-column="7" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="clock.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Backtesting/clock.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="events.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Utilities/events.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="21" column="0" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="general_tools.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Utilities/general_tools.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="42" column="0" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="observer_pattern.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Backtesting/observer_pattern.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="11" column="50" selection-start-line="0" selection-start-column="0" selection-end-line="24" selection-end-column="32" />
+              <caret line="191" column="35" selection-start-line="191" selection-start-column="35" selection-end-line="191" selection-end-column="35" />
               <folding />
             </state>
           </provider>
@@ -162,12 +164,8 @@
         <option value="$PROJECT_DIR$/HistoricalAssets/daily_asset_refresh_from_bbg_script.py" />
         <option value="$PROJECT_DIR$/HistoricalExtradayPrices/boe_fx_london_fix_rates.py" />
         <option value="$PROJECT_DIR$/HistoricalExtradayPrices/quandl_extraday_import.py" />
-        <option value="$PROJECT_DIR$/HistoricalExtradayPrices/common_extraday_tools.py" />
         <option value="$PROJECT_DIR$/HistoricalAssets/asset_import_tools.py" />
-        <option value="$PROJECT_DIR$/HistoricalExtradayPrices/yahoo_extraday_cash_equity_prices_import.py" />
         <option value="$PROJECT_DIR$/HistoricalIntradayPrices/google_intraday_cash_equity_prices_import.py" />
-        <option value="$PROJECT_DIR$/HistoricalIntradayPrices/yahoo_intraday_cash_equity_prices_import.py" />
-        <option value="$PROJECT_DIR$/HistoricalIntradayPrices/yahoo_intraday_fx_spot_prices_import.py" />
         <option value="$PROJECT_DIR$/HistoricalIntradayPrices/zone_intraday_cash_equity_prices_import.py" />
         <option value="$PROJECT_DIR$/HistoricalIntradayPrices/daily_intraday_cash_equity_prices_import_script.py" />
         <option value="$PROJECT_DIR$/HistoricalIntradayPrices/daily_intraday_fx_spot_prices_import_script.py" />
@@ -181,16 +179,23 @@
         <option value="$PROJECT_DIR$/Utilities/markets.py" />
         <option value="$PROJECT_DIR$/Utilities/zipping.py" />
         <option value="$PROJECT_DIR$/HistoricalIntradayPrices/scratch.py" />
-        <option value="$PROJECT_DIR$/HistoricalIntradayPrices/common_intraday_tools.py" />
-        <option value="$PROJECT_DIR$/Backtesting/debug.py" />
-        <option value="$PROJECT_DIR$/Backtesting/observer_pattern.py" />
         <option value="$PROJECT_DIR$/Backtesting/simpleExtradayBacktester.py" />
         <option value="$PROJECT_DIR$/Backtesting/trade.py" />
         <option value="$PROJECT_DIR$/Backtesting/order.py" />
         <option value="$PROJECT_DIR$/Backtesting/lowFrequencyTradingRobot.py" />
-        <option value="$PROJECT_DIR$/Backtesting/clock.py" />
         <option value="$PROJECT_DIR$/Backtesting/lowFrequencyTradingEnvironment.py" />
         <option value="$PROJECT_DIR$/Utilities/events.py" />
+        <option value="$PROJECT_DIR$/Backtesting/observer_pattern.py" />
+        <option value="$PROJECT_DIR$/Backtesting/clock.py" />
+        <option value="$PROJECT_DIR$/Utilities/Clock/lowFrequencyClock.py" />
+        <option value="$PROJECT_DIR$/Utilities/Clocks/regularTickClock.py" />
+        <option value="$PROJECT_DIR$/Utilities/Clocks/clock.py" />
+        <option value="$PROJECT_DIR$/Backtesting/debug.py" />
+        <option value="$PROJECT_DIR$/HistoricalExtradayPrices/yahoo_extraday_cash_equity_prices_import.py" />
+        <option value="$PROJECT_DIR$/HistoricalIntradayPrices/common_intraday_tools.py" />
+        <option value="$PROJECT_DIR$/HistoricalIntradayPrices/yahoo_intraday_cash_equity_prices_import.py" />
+        <option value="$PROJECT_DIR$/HistoricalIntradayPrices/yahoo_intraday_fx_spot_prices_import.py" />
+        <option value="$PROJECT_DIR$/HistoricalExtradayPrices/common_extraday_tools.py" />
         <option value="$PROJECT_DIR$/Backtesting/lowFrequencyMatchingEngine.py" />
       </list>
     </option>
@@ -225,7 +230,7 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scratches" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -255,6 +260,24 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="Utilities" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Bachelier" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Bachelier" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Utilities" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Clocks" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -344,7 +367,7 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -354,24 +377,20 @@
     <property name="recentsLimit" value="5" />
     <property name="FullScreen" value="true" />
   </component>
-  <component name="RunManager" selected="Python.debug">
-    <configuration default="false" name="daily_intraday_cash_equity_prices_import_script" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/HistoricalIntradayPrices" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="pythonCode" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/HistoricalIntradayPrices/daily_intraday_cash_equity_prices_import_script.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <method />
-    </configuration>
+  <component name="PyConsoleOptionsProvider">
+    <option name="myPythonConsoleState">
+      <console-settings module-name="pythonCode" is-module-sdk="true">
+        <option name="myUseModuleSdk" value="true" />
+        <option name="myModuleName" value="pythonCode" />
+      </console-settings>
+    </option>
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/Utilities/Clock" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.common_extraday_tools">
     <configuration default="false" name="boe_fx_london_fix_rates" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -419,6 +438,40 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="pythonCode" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Backtesting/debug.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="events" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Utilities" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="pythonCode" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Utilities/events.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="common_extraday_tools" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/HistoricalExtradayPrices" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="pythonCode" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/HistoricalExtradayPrices/common_extraday_tools.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
@@ -545,18 +598,20 @@
       <option name="USE_KEYWORD" value="false" />
       <method />
     </configuration>
-    <list size="4">
-      <item index="0" class="java.lang.String" itemvalue="Python.daily_intraday_cash_equity_prices_import_script" />
-      <item index="1" class="java.lang.String" itemvalue="Python.boe_fx_london_fix_rates" />
-      <item index="2" class="java.lang.String" itemvalue="Python.monthly_extraday_cash_equity_prices_import_script" />
-      <item index="3" class="java.lang.String" itemvalue="Python.debug" />
+    <list size="5">
+      <item index="0" class="java.lang.String" itemvalue="Python.boe_fx_london_fix_rates" />
+      <item index="1" class="java.lang.String" itemvalue="Python.monthly_extraday_cash_equity_prices_import_script" />
+      <item index="2" class="java.lang.String" itemvalue="Python.debug" />
+      <item index="3" class="java.lang.String" itemvalue="Python.events" />
+      <item index="4" class="java.lang.String" itemvalue="Python.common_extraday_tools" />
     </list>
     <recent_temporary>
-      <list size="4">
-        <item index="0" class="java.lang.String" itemvalue="Python.debug" />
-        <item index="1" class="java.lang.String" itemvalue="Python.monthly_extraday_cash_equity_prices_import_script" />
-        <item index="2" class="java.lang.String" itemvalue="Python.boe_fx_london_fix_rates" />
-        <item index="3" class="java.lang.String" itemvalue="Python.daily_intraday_cash_equity_prices_import_script" />
+      <list size="5">
+        <item index="0" class="java.lang.String" itemvalue="Python.common_extraday_tools" />
+        <item index="1" class="java.lang.String" itemvalue="Python.debug" />
+        <item index="2" class="java.lang.String" itemvalue="Python.events" />
+        <item index="3" class="java.lang.String" itemvalue="Python.monthly_extraday_cash_equity_prices_import_script" />
+        <item index="4" class="java.lang.String" itemvalue="Python.boe_fx_london_fix_rates" />
       </list>
     </recent_temporary>
   </component>
@@ -754,23 +809,23 @@
     <layout>
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.16044776" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329602" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24973656" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.29175475" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32711443" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32630274" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32936078" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32936078" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.50270855" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329602" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.50124377" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32936078" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3283582" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -801,6 +856,16 @@
           <line>64</line>
           <option name="timeStamp" value="30" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/Backtesting/debug.py</url>
+          <line>19</line>
+          <option name="timeStamp" value="55" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/Backtesting/debug.py</url>
+          <line>18</line>
+          <option name="timeStamp" value="56" />
+        </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
         <breakpoint type="python-exception">
@@ -809,15 +874,23 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="55" />
+      <option name="time" value="61" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/HistoricalIntradayPrices/daily_intraday_fx_spot_prices_import_script.py">
+    <entry file="file://$PROJECT_DIR$/HistoricalExtradayPrices/monthly_extraday_cash_equity_prices_import_script.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="6" column="23" selection-start-line="6" selection-start-column="23" selection-end-line="6" selection-end-column="23" />
+          <caret line="5" column="29" selection-start-line="5" selection-start-column="29" selection-end-line="5" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Utilities/events.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -884,13 +957,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/pydevd.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="2402" column="0" selection-start-line="2402" selection-start-column="0" selection-end-line="2402" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Backtesting/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -909,20 +975,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/HistoricalIntradayPrices/google_intraday_cash_equity_prices_import.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/HistoricalExtradayPrices/monthly_extraday_cash_equity_prices_import_script.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="5" column="29" selection-start-line="5" selection-start-column="29" selection-end-line="5" selection-end-column="29" />
         </state>
       </provider>
     </entry>
@@ -982,25 +1034,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/HistoricalIntradayPrices/daily_intraday_fx_spot_prices_import_script.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/HistoricalExtradayPrices/boe_fx_london_fix_rates.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Utilities/markets.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="191" column="35" selection-start-line="191" selection-start-column="35" selection-end-line="191" selection-end-column="35" />
         </state>
       </provider>
     </entry>
@@ -1039,38 +1077,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/HistoricalIntradayPrices/daily_intraday_cash_equity_prices_import_script.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="28" column="0" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Utilities/assets.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="71" column="5" selection-start-line="71" selection-start-column="5" selection-end-line="71" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/HistoricalIntradayPrices/yahoo_intraday_fx_spot_prices_import.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="59" column="97" selection-start-line="59" selection-start-column="97" selection-end-line="59" selection-end-column="97" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/HistoricalIntradayPrices/zone_intraday_cash_equity_prices_import.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="47" column="58" selection-start-line="47" selection-start-column="58" selection-end-line="47" selection-end-column="58" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/HistoricalIntradayPrices/yahoo_intraday_cash_equity_prices_import.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="88" column="60" selection-start-line="88" selection-start-column="60" selection-end-line="88" selection-end-column="60" />
         </state>
       </provider>
     </entry>
@@ -1081,43 +1091,38 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Backtesting/debug.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="21" column="0" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Backtesting/trade.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Backtesting/order.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Backtesting/observer_pattern.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="11" column="50" selection-start-line="0" selection-start-column="0" selection-end-line="24" selection-end-column="32" />
-          <folding />
+          <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Backtesting/clock.py">
+    <entry file="file://$PROJECT_DIR$/Utilities/Clocks/regularTickClock.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
-          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Utilities/Clocks/clock.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/pydevd.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="1777" column="0" selection-start-line="1777" selection-start-column="0" selection-end-line="1777" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Backtesting/lowFrequencyTradingRobot.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -1125,14 +1130,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="14" column="7" selection-start-line="14" selection-start-column="7" selection-end-line="14" selection-end-column="7" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Utilities/events.py">
+    <entry file="file://$PROJECT_DIR$/Backtesting/debug.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="21" column="0" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
+          <caret line="18" column="16" selection-start-line="18" selection-start-column="16" selection-end-line="18" selection-end-column="16" />
           <folding />
         </state>
       </provider>
@@ -1141,22 +1145,82 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="42" column="0" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Utilities/events.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/HistoricalExtradayPrices/monthly_extraday_cash_equity_prices_import_script.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="5" column="29" selection-start-line="5" selection-start-column="29" selection-end-line="5" selection-end-column="29" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/HistoricalExtradayPrices/yahoo_extraday_cash_equity_prices_import.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="91" column="58" selection-start-line="91" selection-start-column="58" selection-end-line="91" selection-end-column="58" />
+          <caret line="103" column="0" selection-start-line="103" selection-start-column="0" selection-end-line="103" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/HistoricalIntradayPrices/daily_intraday_cash_equity_prices_import_script.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="28" column="0" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/HistoricalExtradayPrices/common_extraday_tools.py">
+    <entry file="file://$PROJECT_DIR$/HistoricalIntradayPrices/yahoo_intraday_fx_spot_prices_import.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="40" column="26" selection-start-line="40" selection-start-column="26" selection-end-line="40" selection-end-column="26" />
+          <caret line="30" column="72" selection-start-line="30" selection-start-column="72" selection-end-line="30" selection-end-column="72" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/HistoricalIntradayPrices/zone_intraday_cash_equity_prices_import.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="103" column="69" selection-start-line="103" selection-start-column="69" selection-end-line="103" selection-end-column="69" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/HistoricalIntradayPrices/google_intraday_cash_equity_prices_import.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="26" column="17" selection-start-line="26" selection-start-column="17" selection-end-line="26" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/HistoricalIntradayPrices/daily_intraday_fx_spot_prices_import_script.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="1" column="0" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/HistoricalIntradayPrices/yahoo_intraday_cash_equity_prices_import.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="39" column="0" selection-start-line="39" selection-start-column="0" selection-end-line="39" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Utilities/markets.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="191" column="35" selection-start-line="191" selection-start-column="35" selection-end-line="191" selection-end-column="35" />
           <folding />
         </state>
       </provider>
@@ -1164,25 +1228,27 @@
     <entry file="file://$PROJECT_DIR$/HistoricalIntradayPrices/common_intraday_tools.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="107" column="76" selection-start-line="107" selection-start-column="62" selection-end-line="107" selection-end-column="76" />
+          <caret line="26" column="8" selection-start-line="26" selection-start-column="8" selection-end-line="28" selection-end-column="93" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Backtesting/lowFrequencyTradingRobot.py">
+    <entry file="file://$PROJECT_DIR$/HistoricalExtradayPrices/common_extraday_tools.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
-          <folding />
+          <caret line="168" column="28" selection-start-line="168" selection-start-column="28" selection-end-line="168" selection-end-column="28" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Backtesting/lowFrequencyMatchingEngine.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.79252577">
-          <caret line="41" column="8" selection-start-line="41" selection-start-column="8" selection-end-line="41" selection-end-column="8" />
+        <state vertical-scroll-proportion="0.55541235">
+          <caret line="113" column="58" selection-start-line="113" selection-start-column="58" selection-end-line="113" selection-end-column="58" />
           <folding>
-            <element signature="e#153#172#0" expanded="true" />
+            <element signature="e#153#167#0" expanded="true" />
           </folding>
         </state>
       </provider>

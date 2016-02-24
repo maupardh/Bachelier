@@ -38,7 +38,7 @@ def get_price_from_yahoo(yahoo_tickers, country, date):
         price_dat['Time'] = map(lambda t: pytz.utc.localize(datetime.datetime.utcfromtimestamp(t)), price_dat['Time'])
         price_dat['Time'] = map(Utilities.datetime_tools.truncate_to_next_minute, price_dat['Time'])
 
-        price_dat = price_dat[common_intraday_tools.STANDARD_COL_NAMES+[common_intraday_tools.STANDARD_INDEX_NAME]]
+        price_dat = price_dat[['Close', 'High', 'Low', 'Open', 'Volume']+['Time']]
         price_dat = price_dat[price_dat['Volume'] > 0]
         price_dat.loc[:, 'Open'] = price_dat['Open'] * price_dat['Volume']
         price_dat.loc[:, 'Close'] = price_dat['Close'] * price_dat['Volume']
@@ -47,7 +47,7 @@ def get_price_from_yahoo(yahoo_tickers, country, date):
         price_dat.loc[:, 'Open'] = map(lambda x: round(x, 6), price_dat['Open']/price_dat['Volume'])
         price_dat.loc[:, 'Close'] = map(lambda x: round(x, 6), price_dat['Close']/price_dat['Volume'])
 
-        price_dat = price_dat[common_intraday_tools.STANDARD_COL_NAMES]
+        price_dat = price_dat[['Close', 'High', 'Low', 'Open', 'Volume']]
         price_dat = price_dat.reindex(index=std_index)
         price_dat.loc[:, 'Volume'] = price_dat['Volume'].fillna(0)
         price_dat.loc[:, 'Close'] = price_dat['Close'].fillna(method='ffill')

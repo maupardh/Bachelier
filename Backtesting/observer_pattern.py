@@ -13,13 +13,12 @@ class Observable:
  
  
 class Observer:
-    def __init__(self, observable):
+    def __init__(self):
+        self.observables = []
+
+    def register_observable(self, observable):
+        self.observables.append(observable)
         observable.register_observer(self)
 
     def notify(self, observable, *args, **kwargs):
-        print('Got', args, kwargs, 'From', observable)
- 
- 
-subject = Observable()
-observer = Observer(subject)
-subject.notify_observers('test')
+        pass
