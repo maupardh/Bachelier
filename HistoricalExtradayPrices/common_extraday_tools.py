@@ -126,7 +126,7 @@ def write_extraday_prices_table_for_single_day(new_content, date, resolve_method
                         % (date.isoformat(), err.message))
 
 
-def _get_extraday_prices_as_events(date, asset_codes):
+def get_extraday_prices_as_events(date, asset_codes):
     """returns a pandas dataframe with extraday price updates at the times of open/close: bbg id and time as multiindex,
     eventtype, price, volume, adjratio as columns"""
     try:

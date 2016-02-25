@@ -12,4 +12,17 @@ class LowFrequencyTradingEnvironment:
         self.matching_engine = matching_engine_
         self.clock = clock_
 
-    def
+    def run(self):
+        self.matching_engine.plug_clock(self.clock)
+        self.matching_engine.plug_trading_robot(self.trading_robot)
+        self.matching_engine.load_assets(self.trading_robot.get_asset_universe())
+
+        self.trading_robot.plug_clock(self.clock)
+        self.trading_robot.plug_matching_engine(self.matching_engine)
+
+        while self.clock.tick():
+            self.matching_engine.refresh_prices()
+            self.matching_engine.send_updates()
+            self.trading_robot.make_trading_decision()
+
+        self.trading_robot.save_snaphost()

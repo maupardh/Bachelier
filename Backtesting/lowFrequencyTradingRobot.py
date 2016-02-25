@@ -1,45 +1,76 @@
 import pandas as pd
 
 
-class LowFrequencyTradingRobot:
+class iLowFrequencyTradingRobot:
+
+    def plug_clock(self, clock):
+        raise NotImplementedError
+
+    def plug_matching_engine(self, matching_engine):
+        raise NotImplementedError
+
+    def receive_updates(self, **kwargs):
+        raise NotImplementedError
+
+    def receive_strat_updates(self, **kwargs):
+        raise NotImplementedError
+
+    def send_updates(self):
+        raise NotImplementedError
+
+    def get_book(self):
+        raise NotImplementedError
+
+    def get_asset_universe(self):
+        raise NotImplementedError
+
+    def get_pnl(self, **kwargs):
+        raise NotImplementedError
+
+
+class LowFrequencyTradingRobot(iLowFrequencyTradingRobot):
 
     def __init__(self):
 
+        self.assets = pd.DataFrame(None, columns=['FeedSource', 'Country'], index='AssetId')
         self.trade_executions = pd.DataFrame(None, columns=['Size', 'Price', 'Direction', 'AssetId',
                                                             'EnteredDateTime', 'TradeDate',
                                                             'HeadlineTradeId', 'HeadlineOrderId', 'Version', 'Status'])
-        # Status can be {"DONE", "AMEND", "CANCEL"}
-        # Version gets incremeted at each update
-        self.orders = pd.DataFrame(None, columns=['Size', 'Type', 'Direction', 'AssetId',
-                                                  'EnteredDateTime', 'TradeDate', 'UpdateDateTime', 'ActivationTime',
-                                                  'ExpirationTime', 'HeadlineOrderId', 'Version', 'Status'])
-        # Status can be {"LIVE", "FILLED", "CANCEL"}
-        # Version gets incremented at each update
-        # Type can be {"TWAP", "VWAP", "OPEN", "CLOSE"}
-
+        self.outstanding_orders = pd.DataFrame(None,
+                                               columns=['Size', 'Type', 'Direction', 'AssetId',
+                                                        'EnteredDateTime', 'TradeDate',
+                                                        'UpdateDateTime', 'ActivationTime',
+                                                        'ExpirationTime', 'Version', 'Status'],
+                                               index='HeadlineOrderId')
         self.book = pd.DataFrame(None, columns=['Size', 'AvgPrice'], index='AssetId')
 
-        self.robot_id = None
+        self.time_interval = (None, None)
         self.market_information = None
-        self.current_time = None
 
-    def process_updates(self, source, **kwargs):
-        pass
+    # TODO
+    def plug_clock(self, clock):
+        raise NotImplementedError
 
-    def make_trading_decision(self):
-        # this is where the robot updates its signals, takes into account its current trades, orders, book
-        # and decides whether or not to send additional orders, change/correct/abort course depending on strat and
-        # on what's happening in the market
-        pass
+    def plug_matching_engine(self, matching_engine):
+        raise NotImplementedError
 
-    def run_checklist(self, **kwargs):
-        # start listening for information, orders and trades by observing the relevant events
-        # thrown by the matchingEngine
-        pass
+    def receive_updates(self, **kwargs):
+        raise NotImplementedError
 
-    def switch_contact(self, on):
-        pass
+    def receive_strat_updates(self, **kwargs):
+        # That's information other than prices, execs, and time
+        raise NotImplementedError
 
-    def save_snapshot(self):
-        pass
+    def send_updates(self):
+        #That's the algo
+        raise NotImplementedError
+
+    def get_book(self):
+        raise NotImplementedError
+
+    def get_asset_universe(self):
+        raise NotImplementedError
+
+    def get_pnl(self, **kwargs):
+        raise NotImplementedError
 
