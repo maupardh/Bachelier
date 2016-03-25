@@ -3,7 +3,7 @@
 # OLD STUFF NOT CURRENTLY USED
 
 import datetime
-import urllib2
+import urllib3
 import logging
 import os.path
 
@@ -20,14 +20,14 @@ def _get_dividends_and_splits(ticker, start_date, end_date):
             + '&s=' + ticker + '&g=v'
 
         query = 'http://ichart.finance.yahoo.com/x?' + payload
-        f = urllib2.urlopen(query)
+        f = urllib3.urlopen(query)
         content = f.read()
         f.close()
         logging.info('Single ticker div split Yahoo import completed')
         return content
 
-    except Exception, err:
-        logging.warning('   Yahoo import failed for ticker: '+ticker+' with error message: '+err.message)
+    except Exception as err:
+        logging.warning('   Yahoo import failed for ticker: '+ticker+' with error message: '+err)
         return ""
 
 
@@ -41,9 +41,9 @@ def _store_content(output_path, content, ticker):
             f.write(content)
         if len(str.split(content, '\n')) <= 8:
             logging.warning('       Empty/small Yahoo data for ticker '+ticker)
-    except Exception, err:
+    except Exception as err:
         logging.critical('      Storing Yahoo price data failed for ticker ' + ticker
-                         + ': error: ' + err.message)
+                         + ': error: ' + err)
 
 
 def retrieve_and_store_split_and_div(list_of_tickers, start_date, end_date, directory_name):

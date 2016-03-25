@@ -1,6 +1,6 @@
 import datetime
 import os.path
-import yahoo_extraday_cash_equity_prices_import
+import HistoricalExtradayPrices.yahoo_extraday_cash_equity_prices_import
 import logging
 import pandas as pd
 import Utilities.datetime_tools
@@ -54,7 +54,7 @@ def run():
     start_date = Utilities.datetime_tools.add_business_days(
         end_date, -252 * 5, Utilities.holidays.HOLIDAYS_BY_COUNTRY_CONFIG['US'])
 
-    yahoo_extraday_cash_equity_prices_import.retrieve_and_store_historical_price_from_yahoo(
+    HistoricalExtradayPrices.yahoo_extraday_cash_equity_prices_import.retrieve_and_store_historical_price_from_yahoo(
         assets, start_date, end_date)
     Utilities.logging_tools.shutdown()
     logging.info('NA extraday price import complete')

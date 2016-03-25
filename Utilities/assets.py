@@ -1,7 +1,7 @@
 import pandas as pd
 import logging
 import os.path
-import general_tools
+import Utilities.general_tools
 import HistoricalAssets.asset_import_tools
 
 __ASSETS_DIRECTORY = os.path.join('F:/', 'financialData', 'Assets')
@@ -13,11 +13,11 @@ def get_assets():
     try:
         assets_path = os.path.join(__ASSETS_DIRECTORY, 'BBGSymbiologyAssets.csv.zip')
         logging.info('Reading assets at %s' % assets_path)
-        content = general_tools.read_and_log_pandas_df(assets_path)
+        content = Utilities.general_tools.read_and_log_pandas_df(assets_path)
         content = content.applymap(str)
         content.index = content['ID_BB_GLOBAL']
-    except Exception, err:
-        logging.critical('Reading assets failed with error message: %s' % err.message)
+    except Exception as err:
+        logging.critical('Reading assets failed with error message: %s' % err)
 
     return content
 
@@ -34,8 +34,8 @@ def get_equity_import_universe_from_nasdaq_trader():
         logging.info('Successful')
         return content_first_piece.union(content_second_piece)
 
-    except Exception, err:
-        logging.critical('Nasdaq Trader import failed with error message: %s' % err.message)
+    except Exception as err:
+        logging.critical('Nasdaq Trader import failed with error message: %s' % err)
         return None
 
 
@@ -49,8 +49,8 @@ def get_equity_import_universe_from_oats(file_type='SOD'):
         logging.info('Successful')
         return content
 
-    except Exception, err:
-        logging.critical('Oats symbols import failed with error message: %s' % err.message)
+    except Exception as err:
+        logging.critical('Oats symbols import failed with error message: %s' % err)
         return pd.DataFrame(None)
 
 

@@ -1,10 +1,10 @@
-import urllib2
+import urllib3
 import pandas as pd
-from StringIO import StringIO
+from io import StringIO
 import datetime
 import pytz
 import logging
-import common_intraday_tools
+import HistoricalIntradayPrices.common_intraday_tools
 
 # google not used at the moment as small quotas + US prices do not consolidate as many exchange feeds as yahoo
 
@@ -12,23 +12,23 @@ import common_intraday_tools
 def _get_price_from_google(ticker, country):
 
     today = datetime.date.today()
-    std_index = common_intraday_tools.REINDEXES_CACHE[country][today]
+    std_index = HistoricalIntradayPrices.common_intraday_tools.REINDEXES_CACHE[country][today]
 
     if std_index is None:
-        common_intraday_tools.REINDEXES_CACHE[country][today.isoformat()] = \
-            common_intraday_tools.get_standardized_intraday_equity_dtindex(country, today.isoformat())
-        std_index = common_intraday_tools.REINDEXES_CACHE[country][today.isoformat()]
+        HistoricalIntradayPrices.common_intraday_tools.REINDEXES_CACHE[country][today.isoformat()] = \
+            HistoricalIntradayPrices.common_intraday_tools.get_standardized_intraday_equity_dtindex(country, today.isoformat())
+        std_index = HistoricalIntradayPrices.common_intraday_tools.REINDEXES_CACHE[country][today.isoformat()]
 
     try:
 
         query = 'http://www.google.com/finance/getprices?i=60&p=1d&f=d,o,h,l,c,v&df=cpct&q='+ticker
-        f = urllib2.urlopen(query)
+        f = urllib3.urlopen(query)
         s = f.read()
         f.close()
 
         content = StringIO(s)
-        price_dat = pd.read_csv(content, skiprows=7, names=[common_intraday_tools.STANDARD_INDEX_NAME] +
-                                                            common_intraday_tools.STANDARD_COL_NAMES)
+        price_dat = pd.read_csv(content, skiprows=7, names=[HistoricalIntradayPrices.common_intraday_tools.STANDARD_INDEX_NAME] +
+                                                            HistoricalIntradayPrices.common_intraday_tools.STANDARD_COL_NAMES)
 
         content = StringIO(s)
         stock_dat = pd.read_csv(content, sep='=', skiprows=1, names=['Value'], index_col=0, nrows=6)
@@ -41,7 +41,7 @@ def _get_price_from_google(ticker, country):
         price_dat['Time'] = price_dat['Time'].fillna(0)
         price_dat['Time'] = price_dat['Time'].apply(lambda t: start_time+datetime.timedelta(minutes=t))
         price_dat.set_index('Time', inplace=True)
-        price_dat = price_dat.reindex(index=common_intraday_tools.REINDEXES_CACHE[country][today], method=None)
+        price_dat = price_dat.reindex(index=HistoricalIntradayPrices.common_intraday_tools.REINDEXES_CACHE[country][today], method=None)
         price_dat['Volume'] = price_dat['Volume'].fillna(0)
 
         def propagate_on_zero_volume(t, field):
@@ -60,5 +60,5 @@ def _get_price_from_google(ticker, country):
 
     except:
         logging.warning('Google price import and pandas enrich failed for: %s' % ticker)
-        price_dat = pd.DataFrame(data=0, index=std_index, columns=common_intraday_tools.STANDARD_COL_NAMES, dtype=float)
+        price_dat = pd.DataFrame(data=0, index=std_index, columns=HistoricalIntradayPrices.common_intraday_tools.STANDARD_COL_NAMES, dtype=float)
         return price_dat

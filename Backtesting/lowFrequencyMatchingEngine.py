@@ -9,7 +9,7 @@ import HistoricalExtradayPrices.common_extraday_tools
 import HistoricalIntradayPrices.common_intraday_tools
 import Utilities.events
 import Utilities.markets
-import lowFrequencyTradingRobot
+import Backtesting.lowFrequencyTradingRobot
 import Utilities.Clocks.clock
 
 
@@ -58,7 +58,7 @@ class LowFrequencyMatchingEngine(iLowFrequencyMatchingEngine):
         self.register_observable(clock)
 
     def plug_trading_robot(self, trading_robot):
-        assert (isinstance(trading_robot, lowFrequencyTradingRobot))
+        assert (isinstance(trading_robot, Backtesting.lowFrequencyTradingRobot))
         self.register_observable(trading_robot)
         self.register_observer(trading_robot)
 

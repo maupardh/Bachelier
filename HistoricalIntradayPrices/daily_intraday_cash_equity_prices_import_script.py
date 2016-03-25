@@ -5,8 +5,8 @@ import datetime
 import logging
 from tzlocal import get_localzone
 import sys
-sys.path.append('F:/prod/pythonCode')
-import zone_intraday_cash_equity_prices_import
+sys.path.append('F:/dev/pythonCode')
+import HistoricalIntradayPrices.zone_intraday_cash_equity_prices_import
 import Utilities.datetime_tools
 import Utilities.logging_tools
 import Utilities.assets
@@ -51,7 +51,7 @@ def refresh():
                                    local_tz.localize(datetime.datetime.now()), datetime.timedelta(minutes=5))
     Utilities.datetime_tools.sleep_with_infinite_loop(time_to_sleep_until_asia.total_seconds())
     logging.info('System to sleep until asian markets, for : %s minutes', time_to_sleep_until_asia.total_seconds() / 60)
-    zone_intraday_cash_equity_prices_import.refresh_asia(today)
+    HistoricalIntradayPrices.zone_intraday_cash_equity_prices_import.refresh_asia(today)
 
     # European Equities import
     emea_market_close = local_tz.normalize(
@@ -63,7 +63,7 @@ def refresh():
                                    local_tz.localize(datetime.datetime.now()), datetime.timedelta(minutes=5))
 
     Utilities.datetime_tools.sleep_with_infinite_loop(time_to_sleep_until_emea.total_seconds())
-    zone_intraday_cash_equity_prices_import.refresh_emea(today)
+    HistoricalIntradayPrices.zone_intraday_cash_equity_prices_import.refresh_emea(today)
 
     # Americas Equities import
     us_market_close = local_tz.normalize(
@@ -75,7 +75,7 @@ def refresh():
                                  local_tz.localize(datetime.datetime.now()), datetime.timedelta(minutes=5))
     logging.info('System to sleep until us markets, for : %s minutes', time_to_sleep_until_us.total_seconds() / 60)
     Utilities.datetime_tools.sleep_with_infinite_loop(time_to_sleep_until_us.total_seconds())
-    zone_intraday_cash_equity_prices_import.refresh_amer(today)
+    HistoricalIntradayPrices.zone_intraday_cash_equity_prices_import.refresh_amer(today)
 
     Utilities.logging_tools.shutdown()
     return 0

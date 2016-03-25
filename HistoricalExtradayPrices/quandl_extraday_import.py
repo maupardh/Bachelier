@@ -1,12 +1,12 @@
-import urllib2
+import urllib3
 import os.path
 import logging
 import chrono
 import time
 import datetime
 import pandas as pd
-import common_extraday_tools
-from StringIO import StringIO
+import HistoricalExtradayPrices.common_extraday_tools
+from io import StringIO
 import Utilities.general_tools
 
 __API_KEY = 'hszzExszkLyULRzUyGzP'
@@ -22,13 +22,13 @@ __INTERVAL_SAFE = __INTERVAL + __INTERVAL_SAFETY_MARGIN
 
 def _get_price_from_quandl(ticker, start_date, end_date, country):
 
-    std_index = common_extraday_tools.REINDEXES_CACHE.get((country, start_date.isoformat(), end_date.isoformat()))
+    std_index = HistoricalExtradayPrices.common_extraday_tools.REINDEXES_CACHE.get((country, start_date.isoformat(), end_date.isoformat()))
 
     if std_index is None:
-        common_extraday_tools.REINDEXES_CACHE[
+        HistoricalExtradayPrices.common_extraday_tools.REINDEXES_CACHE[
             (country, start_date.isoformat(), end_date.isoformat())
-        ] = common_extraday_tools.get_standardized_extraday_dtindex(country, start_date.isoformat(), end_date.isoformat())
-        std_index = common_extraday_tools.REINDEXES_CACHE[(country, start_date.isoformat(), end_date.isoformat())]
+        ] = HistoricalExtradayPrices.common_extraday_tools.get_standardized_extraday_dtindex(country, start_date.isoformat(), end_date.isoformat())
+        std_index = HistoricalExtradayPrices.common_extraday_tools.REINDEXES_CACHE[(country, start_date.isoformat(), end_date.isoformat())]
 
 
     try:
@@ -37,7 +37,7 @@ def _get_price_from_quandl(ticker, start_date, end_date, country):
                 + '&end_date=' + end_date.isoformat() + '&api_key=' + __API_KEY
         else:
             query = 'https://www.quandl.com/api/v3/datasets/WIKI/' + ticker + '.csv?api_key=' + __API_KEY
-        s = urllib2.urlopen(query).read()
+        s = urllib3.urlopen(query).read()
 
         content = StringIO(s)
         price_dat = pd.read_csv(content, sep=',')
@@ -45,7 +45,7 @@ def _get_price_from_quandl(ticker, start_date, end_date, country):
         price_dat.columns = map(lambda col: str.replace(str.replace(col, ' ', ''), '.', ''), price_dat.columns)
         price_dat['Date'] = map(lambda d: datetime.datetime.strptime(d, "%Y-%m-%d").date(), price_dat['Date'])
         price_dat.index = price_dat['Date']
-        price_dat = price_dat[common_extraday_tools.STANDARD_COL_NAMES]
+        price_dat = price_dat[HistoricalExtradayPrices.common_extraday_tools.STANDARD_COL_NAMES]
 
         price_dat = price_dat.reindex(index=std_index, method=None)
 
@@ -74,9 +74,9 @@ def _get_price_from_quandl(ticker, start_date, end_date, country):
         logging.info('Single ticker Quandl price import completed')
         return price_dat
 
-    except Exception, err:
+    except Exception as err:
         logging.critical('      Quandl import failed for ticker %s with error: %s' % (ticker, err.message))
-        price_dat = pd.DataFrame(data=0, index=std_index, columns=common_extraday_tools.STANDARD_COL_NAMES, dtype=float)
+        price_dat = pd.DataFrame(data=0, index=std_index, columns=HistoricalExtradayPrices.common_extraday_tools.STANDARD_COL_NAMES, dtype=float)
         return price_dat
 
 
@@ -124,8 +124,8 @@ def retrieve_and_store_historical_prices(list_of_tickers, root_directory_name, s
     for date, group in groups_by_date:
         date = datetime.date(date.year, date.month, date.day)
         group.index = group['Ticker']
-        group = group[common_extraday_tools.STANDARD_COL_NAMES]
-        group.index.name = common_extraday_tools.STANDARD_INDEX_NAME
+        group = group[HistoricalExtradayPrices.common_extraday_tools.STANDARD_COL_NAMES]
+        group.index.name = HistoricalExtradayPrices.common_extraday_tools.STANDARD_INDEX_NAME
         csv_output_path = os.path.join(csv_directory, date.isoformat() + '.csv')
         cpickle_output_path = os.path.join(cpickle_directory, date.isoformat() + '.pk2')
         Utilities.general_tools.store_and_log_pandas_df(csv_output_path, group)

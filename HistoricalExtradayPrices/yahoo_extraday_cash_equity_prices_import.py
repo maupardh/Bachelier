@@ -1,7 +1,7 @@
 import logging
 import datetime
 import pandas as pd
-import common_extraday_tools
+import HistoricalExtradayPrices.common_extraday_tools
 import Utilities.datetime_tools
 import Utilities.markets
 import Utilities.yahoo_import
@@ -19,16 +19,16 @@ def _get_price_from_yahoo(yahoo_tickers, start_date, end_date, country):
 
     try:
         assert(isinstance(yahoo_tickers, list) and isinstance(start_date, datetime.date) and
-               isinstance(end_date, datetime.date) and isinstance(country, basestring))
-        std_index = common_extraday_tools.REINDEXES_CACHE.get(
+               isinstance(end_date, datetime.date) and isinstance(country, str))
+        std_index = HistoricalExtradayPrices.common_extraday_tools.REINDEXES_CACHE.get(
             (country, start_date.isoformat(), end_date.isoformat()), None)
 
         if std_index is None:
-            common_extraday_tools.REINDEXES_CACHE[
+            HistoricalExtradayPrices.common_extraday_tools.REINDEXES_CACHE[
                 (country, start_date.isoformat(), end_date.isoformat())] = \
-                common_extraday_tools.get_standardized_extraday_equity_dtindex(
+                HistoricalExtradayPrices.common_extraday_tools.get_standardized_extraday_equity_dtindex(
                     country, start_date, end_date)
-            std_index = common_extraday_tools.REINDEXES_CACHE[(country, start_date.isoformat(), end_date.isoformat())]
+            std_index = HistoricalExtradayPrices.common_extraday_tools.REINDEXES_CACHE[(country, start_date.isoformat(), end_date.isoformat())]
 
         price_dat = pd.concat(map(
             lambda t: Utilities.yahoo_import.get_extraday_price_data_of_single_ticker(t, start_date, end_date),
@@ -114,7 +114,7 @@ def retrieve_and_store_historical_price_from_yahoo(assets_df, start_date, end_da
                 group.index = group['ID_BB_GLOBAL']
                 group = group[['Open', 'Close', 'AdjClose', 'Volume']]
                 group.index.name = 'Date'
-                common_extraday_tools.write_extraday_prices_table_for_single_day(group, date)
+                HistoricalExtradayPrices.common_extraday_tools.write_extraday_prices_table_for_single_day(group, date)
                 logging.info('Printing prices of %s tickers for %s successful' % (len(batch), date.isoformat()))
 
         Utilities.general_tools.break_action_into_batches(

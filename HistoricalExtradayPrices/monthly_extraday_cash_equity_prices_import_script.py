@@ -3,7 +3,7 @@
 import datetime
 import os.path
 import logging
-import yahoo_extraday_cash_equity_prices_import
+import HistoricalIntradayPrices.yahoo_extraday_cash_equity_prices_import
 import sys
 sys.path.append('F:/prod/pythonCode')
 import Utilities.datetime_tools
@@ -33,7 +33,7 @@ def run():
         assets = assets[assets['FEED_SOURCE'].apply(
             lambda feed_source: feed_source in feed_sources_of_zone)]
 
-        yahoo_extraday_cash_equity_prices_import.retrieve_and_store_historical_price_from_yahoo(
+        HistoricalIntradayPrices.yahoo_extraday_cash_equity_prices_import.retrieve_and_store_historical_price_from_yahoo(
             assets, start_date, end_date)
         logging.info('Extraday cash equity prices refresh for zone: %s completed' % zone)
 

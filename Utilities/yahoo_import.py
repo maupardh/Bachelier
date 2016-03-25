@@ -1,8 +1,8 @@
 import pandas as pd
 import logging
 import datetime
-from StringIO import StringIO
-import urllib2
+from io import StringIO
+import urllib3
 import Utilities.markets
 
 REQUEST_TIME_OUT = 10
@@ -108,10 +108,10 @@ def prepare_assets_for_yahoo_import(assets_df):
 def get_intraday_price_data_of_single_ticker(yahoo_ticker):
 
     try:
-        assert(isinstance(yahoo_ticker, basestring))
+        assert(isinstance(yahoo_ticker, str))
         query = 'http://chartapi.finance.yahoo.com/instrument/2.0/' + \
                 yahoo_ticker + '/chartdata;type=quote;range=1d/csv'
-        s = urllib2.urlopen(query, timeout=REQUEST_TIME_OUT).read()
+        s = urllib3.urlopen(query, timeout=REQUEST_TIME_OUT).read()
         lines = s.split('\n')
         number_of_info_lines = min([i for i in range(0, len(lines)) if lines[i][:1].isdigit()])
 
@@ -144,7 +144,7 @@ def get_extraday_price_data_of_single_ticker(yahoo_ticker, start_date, end_date)
                 '&g=d' + \
                 '&s=' + yahoo_ticker + \
                 '&ignore=.csv'
-        s = urllib2.urlopen(query, timeout=REQUEST_TIME_OUT).read()
+        s = urllib3.urlopen(query, timeout=REQUEST_TIME_OUT).read()
 
         content = StringIO(s)
         small_price_dat = pd.read_csv(content, sep=',')

@@ -3,7 +3,7 @@ import datetime
 import logging
 import os.path
 import pytz
-import common_intraday_tools
+import HistoricalIntradayPrices.common_intraday_tools
 import Utilities.yahoo_import
 import Utilities.general_tools
 import Utilities.datetime_tools
@@ -21,15 +21,15 @@ def get_price_from_yahoo(yahoo_tickers, country, date):
     Germany with XETRA where most of the volume takes place vs 5-6 regional floors where
     some intraday trading still occurs."""
 
-    std_index = common_intraday_tools.REINDEXES_CACHE.get(country, {}).get(date.isoformat(), None)
+    std_index = HistoricalIntradayPrices.common_intraday_tools.REINDEXES_CACHE.get(country, {}).get(date.isoformat(), None)
 
     if std_index is None:
-        common_intraday_tools.REINDEXES_CACHE[country][date.isoformat()] = \
-            common_intraday_tools.get_standardized_intraday_equity_dtindex(country, date)
-        std_index = common_intraday_tools.REINDEXES_CACHE[country][date.isoformat()]
+        HistoricalIntradayPrices.common_intraday_tools.REINDEXES_CACHE[country][date.isoformat()] = \
+            HistoricalIntradayPrices.common_intraday_tools.get_standardized_intraday_equity_dtindex(country, date)
+        std_index = HistoricalIntradayPrices.common_intraday_tools.REINDEXES_CACHE[country][date.isoformat()]
 
     try:
-        assert(isinstance(yahoo_tickers, list) and isinstance(country, basestring) and isinstance(date, datetime.date))
+        assert(isinstance(yahoo_tickers, list) and isinstance(country, str) and isinstance(date, datetime.date))
         price_dat = pd.concat(map(Utilities.yahoo_import.get_intraday_price_data_of_single_ticker, yahoo_tickers),
                               ignore_index=True)
         price_dat = price_dat.applymap(float)
@@ -83,7 +83,7 @@ def retrieve_and_store_today_price_from_yahoo(assets_df, root_directory_name, da
     """
 
     try:
-        assert (isinstance(assets_df, pd.DataFrame) and isinstance(root_directory_name, basestring)
+        assert (isinstance(assets_df, pd.DataFrame) and isinstance(root_directory_name, str)
                 and isinstance(date, datetime.date))
 
         assets_df = Utilities.yahoo_import.prepare_assets_for_yahoo_import(assets_df)

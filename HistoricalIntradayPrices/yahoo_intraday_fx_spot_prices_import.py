@@ -3,7 +3,7 @@ import datetime
 import logging
 import os.path
 import pytz
-import common_intraday_tools
+import HistoricalIntradayPrices.common_intraday_tools
 import Utilities.yahoo_import
 import Utilities.general_tools
 import Utilities.datetime_tools
@@ -15,7 +15,7 @@ def get_price_from_yahoo(yahoo_fx_tickers, date):
     (the groupby statement is more of a safety check for unique indices than real aggregation) """
     try:
         assert (isinstance(yahoo_fx_tickers, list) and isinstance(date, datetime.date))
-        std_index = common_intraday_tools.get_standardized_intraday_fx_dtindex(date)
+        std_index = HistoricalIntradayPrices.common_intraday_tools.get_standardized_intraday_fx_dtindex(date)
         price_dat = pd.concat(map(Utilities.yahoo_import.get_intraday_price_data_of_single_ticker, yahoo_fx_tickers),
                               ignore_index=True)
         price_dat = price_dat.applymap(float)
@@ -59,7 +59,7 @@ def get_price_from_yahoo(yahoo_fx_tickers, date):
 def retrieve_and_store_today_price_from_yahoo(assets_df, root_directory_name, date):
     """Exact same as equities routine for scraping and storing fx prices from an assets pandas df"""
     try:
-        assert (isinstance(assets_df, pd.DataFrame) and isinstance(root_directory_name, basestring) and
+        assert (isinstance(assets_df, pd.DataFrame) and isinstance(root_directory_name, str) and
                 isinstance(date, datetime.date))
         fx_assets_df = Utilities.yahoo_import.prepare_assets_for_yahoo_import(assets_df)
 

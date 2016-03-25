@@ -1,8 +1,8 @@
-import urllib2
+import urllib3
 import pandas as pd
 import logging
 import datetime
-import StringIO
+import io
 import os.path
 import Utilities.zipping
 import Utilities.general_tools
@@ -27,10 +27,10 @@ def get_assets_from_open_bbg_symbiology(market_sector, security_type, date):
 
         query = 'http://bdn-ak.bloomberg.com/precanned/' + market_sector + '_' + security_type + \
                 '_' + date.strftime('%Y%m%d') + '.txt.zip'
-        f = urllib2.urlopen(query)
+        f = urllib3.urlopen(query)
         content = Utilities.zipping.unzip_string_with_zipfile(f.read())
         f.close()
-        s = StringIO.StringIO(content)
+        s = io.StringIO(content)
         content = pd.read_csv(s, sep='|', comment='#')
         s.close()
 
@@ -40,8 +40,8 @@ def get_assets_from_open_bbg_symbiology(market_sector, security_type, date):
         logging.info('Import successful')
     except AssertionError:
             logging.warning('Calling get_assets_from_open_bbg_symbiology with wrong argument types')
-    except Exception, err:
-        logging.critical('Import failed with error message: %s' % err.message)
+    except Exception as err:
+        logging.critical('Import failed with error message: %s' % err)
 
     return content
 

@@ -14,7 +14,7 @@ __EXTRADAY_PRICES_DIRECTORY = os.path.join('F:/', 'financialData', 'HistoricalEx
 def get_standardized_extraday_equity_dtindex(country, start_date, end_date):
     """returns the index of business days in the country's equity markets - useful when re-indexing"""
     try:
-        assert(isinstance(country, basestring) and isinstance(start_date, datetime.date)
+        assert(isinstance(country, str) and isinstance(start_date, datetime.date)
                and isinstance(end_date, datetime.date))
         reg_idx = pd.bdate_range(start_date, end_date)
         reg_idx.name = 'Date'
@@ -58,11 +58,11 @@ def _get_extraday_prices(date, asset_codes=None):
         content['Date'] = date
         content[['Open', 'Close', 'AdjClose', 'Volume']] = content[['Open', 'Close', 'AdjClose', 'Volume']]\
             .astype(float)
-        content.index = [content['Date'], content['ID_BB_GLOBAL']]
-        content.index.names = ['Date', 'ID_BB_GLOBAL']
-        content = content[['Open', 'Close', 'AdjClose', 'Volume']]
         if asset_codes is not None:
-            content = content[map(lambda i: i['ID_BB_GLOBAL'] in asset_codes, content.index)]
+            content = content.loc[content['ID_BB_GLOBAL'].isin(asset_codes)]
+        content.set_index(['Date', 'ID_BB_GLOBAL'], inplace=True)
+        content = content[['Open', 'Close', 'AdjClose', 'Volume']]
+
         logging.info('Reading successful')
         assert(isinstance(content, pd.DataFrame) and tuple(content.index.names) == ('Date', 'ID_BB_GLOBAL') and
                tuple(content.columns) == ('Open', 'Close', 'AdjClose', 'Volume'))
@@ -77,7 +77,7 @@ def get_extraday_prices(start_date, end_date, asset_codes=None):
     multiindex is date + symbol
     columns are open, close, adj close, volume"""
     try:
-        assert(asset_codes is None or (asset_codes, pd.Index))
+        assert(asset_codes is None or isinstance(asset_codes, pd.Index))
         content = pd.concat(map(
             lambda d: _get_extraday_prices(d.date(), asset_codes), pd.date_range(start_date, end_date, freq='D')))
         assert(isinstance(content, pd.DataFrame) and tuple(content.index.names) == ('Date', 'ID_BB_GLOBAL') and
@@ -93,7 +93,7 @@ def write_extraday_prices_table_for_single_day(new_content, date, resolve_method
      to existing extraday prices on disk"""
     try:
         assert(isinstance(new_content, pd.DataFrame) and isinstance(date, datetime.date)
-               and isinstance(resolve_method, basestring))
+               and isinstance(resolve_method, str))
         logging.info('Retrieving existing prices')
         old_content = _get_extraday_prices(date)
 

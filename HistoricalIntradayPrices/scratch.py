@@ -4,7 +4,7 @@ import logging
 from tzlocal import get_localzone
 import sys
 sys.path.append('F:/prod/pythonCode')
-import zone_intraday_cash_equity_prices_import
+import HistoricalIntradayPrices.zone_intraday_cash_equity_prices_import
 import Utilities.datetime_tools
 import Utilities.logging_tools
 import Utilities.assets

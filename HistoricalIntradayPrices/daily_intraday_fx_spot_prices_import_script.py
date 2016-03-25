@@ -7,7 +7,7 @@ import pytz
 from tzlocal import get_localzone
 import sys
 sys.path.append('F:/prod/pythonCode')
-import yahoo_intraday_fx_spot_prices_import
+import HistoricalIntradayPrices.yahoo_intraday_fx_spot_prices_import
 import Utilities.datetime_tools
 import Utilities.logging_tools
 import Utilities.assets
@@ -61,7 +61,7 @@ def refresh_fx(date):
         fx_assets.drop_duplicates(inplace=True)
         fx_assets.sort_values(by='ID_BB_SEC_NUM_DES', axis=0, ascending=True, inplace=True)
 
-        yahoo_intraday_fx_spot_prices_import.retrieve_and_store_today_price_from_yahoo(
+        HistoricalIntradayPrices.yahoo_intraday_fx_spot_prices_import.retrieve_and_store_today_price_from_yahoo(
             fx_assets, 'F:/FinancialData/HistoricalIntradayPrices/', date=date)
         logging.info('FX intraday price import complete')
 
