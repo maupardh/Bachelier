@@ -71,7 +71,7 @@ def get_price_from_yahoo(yahoo_tickers, country, date):
         return pd.DataFrame(None)
     except Exception as err:
         logging.warning('Yahoo price import and pandas enrich failed for: %s with message %s' %
-                        (yahoo_tickers, err.message))
+                        (yahoo_tickers, err))
         return pd.DataFrame(None)
 
 
@@ -110,4 +110,4 @@ def retrieve_and_store_today_price_from_yahoo(assets_df, root_directory_name, da
     except AssertionError:
         logging.warning('Calling retrieve_and_store_today_price_from_yahoo with wrong argument types')
     except Exception as err:
-        logging.warning('retrieve_and_store_today_price_from_yahoo failed with message: %s' % err.message)
+        logging.warning('retrieve_and_store_today_price_from_yahoo failed with message: %s' % err)

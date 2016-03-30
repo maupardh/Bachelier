@@ -8,7 +8,8 @@ import Utilities.holidays
 import Utilities.markets
 
 # directory where daily price files are historized in .zip format
-__EXTRADAY_PRICES_DIRECTORY = os.path.join('F:/', 'financialData', 'HistoricalExtradayPrices')
+__EXTRADAY_PRICES_DIRECTORY = os.path.join('F:/', 'financialData', 'HistoricalExtradayPrices', 'zip')
+Utilities.general_tools.mkdir_and_log(__EXTRADAY_PRICES_DIRECTORY)
 
 
 def get_standardized_extraday_equity_dtindex(country, start_date, end_date):
@@ -17,10 +18,9 @@ def get_standardized_extraday_equity_dtindex(country, start_date, end_date):
         assert(isinstance(country, str) and isinstance(start_date, datetime.date)
                and isinstance(end_date, datetime.date))
         reg_idx = pd.bdate_range(start_date, end_date)
-        reg_idx.name = 'Date'
         holidays_idx = Utilities.holidays.HOLIDAYS_BY_COUNTRY_CONFIG.get(country, {})
         reg_idx = reg_idx.difference(holidays_idx)
-        assert(isinstance(reg_idx, pd.DatetimeIndex) and reg_idx.name == 'Date')
+        assert(isinstance(reg_idx, pd.DatetimeIndex))
         return reg_idx
     except Exception as err:
         logging.warning(type(err))
@@ -32,8 +32,7 @@ def get_standardized_extraday_fx_dtindex(start_date, end_date):
     try:
         assert(isinstance(start_date, datetime.date) and isinstance(end_date, datetime.date))
         reg_idx = pd.bdate_range(start_date, end_date)
-        reg_idx.name = 'Date'
-        assert(isinstance(reg_idx, pd.DatetimeIndex) and reg_idx.name == 'Date')
+        assert(isinstance(reg_idx, pd.DatetimeIndex))
         return reg_idx
     except Exception as err:
         logging.warning(type(err))
@@ -44,7 +43,7 @@ REINDEXES_CACHE = {}
 
 def _get_extraday_csv_zip_path(date):
     """where extraday prices files are stored"""
-    return os.path.join(__EXTRADAY_PRICES_DIRECTORY, 'zip', date.isoformat()+'.csv.zip')
+    return os.path.join(__EXTRADAY_PRICES_DIRECTORY, date.isoformat()+'.csv.zip')
 
 
 def _get_extraday_prices(date, asset_codes=None):
@@ -59,13 +58,12 @@ def _get_extraday_prices(date, asset_codes=None):
         content[['Open', 'Close', 'AdjClose', 'Volume']] = content[['Open', 'Close', 'AdjClose', 'Volume']]\
             .astype(float)
         if asset_codes is not None:
-            content = content.loc[content['ID_BB_GLOBAL'].isin(asset_codes)]
-        content.set_index(['Date', 'ID_BB_GLOBAL'], inplace=True)
-        content = content[['Open', 'Close', 'AdjClose', 'Volume']]
+            content = content.loc[content['COMPOSITE_ID_BB_GLOBAL'].isin(asset_codes)]
 
         logging.info('Reading successful')
-        assert(isinstance(content, pd.DataFrame) and tuple(content.index.names) == ('Date', 'ID_BB_GLOBAL') and
-               tuple(content.columns) == ('Open', 'Close', 'AdjClose', 'Volume'))
+        assert(isinstance(content, pd.DataFrame) and
+               tuple(sorted(content.columns)) == tuple(
+                   sorted(['Open', 'Close', 'AdjClose', 'Volume', 'Date', 'COMPOSITE_ID_BB_GLOBAL'])))
         return content
     except Exception as err:
         logging.warning(type(err))
@@ -79,12 +77,14 @@ def get_extraday_prices(start_date, end_date, asset_codes=None):
     try:
         assert(asset_codes is None or isinstance(asset_codes, pd.Index))
         content = pd.concat(map(
-            lambda d: _get_extraday_prices(d.date(), asset_codes), pd.date_range(start_date, end_date, freq='D')))
-        assert(isinstance(content, pd.DataFrame) and tuple(content.index.names) == ('Date', 'ID_BB_GLOBAL') and
-               tuple(content.columns) == ('Open', 'Close', 'AdjClose', 'Volume'))
+            lambda d: _get_extraday_prices(d.date(), asset_codes), pd.date_range(
+                start_date, end_date, freq='D')), ignore_index=True)
+        assert(isinstance(content, pd.DataFrame) and
+               tuple(sorted(content.columns)) == tuple(
+                   sorted(['Open', 'Close', 'AdjClose', 'Volume', 'Date', 'COMPOSITE_ID_BB_GLOBAL'])))
         return content
     except Exception as err:
-        logging.warning('get_extraday_prices failed with error: %s' % err.message)
+        logging.warning('get_extraday_prices failed with error: %s' % err)
         return pd.DataFrame(None)
 
 
@@ -105,25 +105,23 @@ def write_extraday_prices_table_for_single_day(new_content, date, resolve_method
             old_content.loc[:, 'Age'] = 'Old'
 
         if not new_content.empty:
-            new_content = new_content[map(lambda t: t[0] > 0 or t[1] > 0, zip(
-                new_content['Volume'], new_content['Close']))]
+            new_content = new_content[list(map(lambda t: t[0] > 0 or t[1] > 0, list(zip(
+                new_content['Volume'], new_content['Close']))))]
             new_content.loc[:, 'Age'] = 'New'
-            new_content.index = [[date]*new_content.shape[0], new_content.index]
-            new_content.index.names = ['Date', 'ID_BB_GLOBAL']
+            new_content['Date'] = date
 
         if resolve_method == 'R':
-            old_content.drop(new_content.index, axis=0, inplace=True, errors='ignore')
-            merged_content_resolved = pd.concat([old_content, new_content])
+            old_content = old_content.loc[np.logical_not(old_content['COMPOSITE_ID_BB_GLOBAL'].isin(
+                new_content['COMPOSITE_ID_BB_GLOBAL']))] if not old_content.empty else pd.DataFrame(None)
+            merged_content_resolved = pd.concat([old_content, new_content], ignore_index=True)
 
-        merged_content_resolved.reset_index(inplace=True, drop=False)
-        merged_content_resolved.index = merged_content_resolved[['Date', 'ID_BB_GLOBAL']]
-        merged_content_resolved = merged_content_resolved[['Open', 'Close', 'AdjClose', 'Volume']]
+        merged_content_resolved = merged_content_resolved[['COMPOSITE_ID_BB_GLOBAL', 'Open', 'Close', 'AdjClose', 'Volume']]
         Utilities.general_tools.store_and_log_pandas_df(_get_extraday_csv_zip_path(date), merged_content_resolved)
     except AssertionError:
         logging.warning('Calling write_extraday_prices_table_for_single_day with wrong argument types')
     except Exception as err:
         logging.warning('Something went wrong during rewrite of date: %s, with message: %s'
-                        % (date.isoformat(), err.message))
+                        % (date.isoformat(), err))
 
 
 def get_extraday_prices_as_events(date, asset_codes):
@@ -168,5 +166,5 @@ def get_extraday_prices_as_events(date, asset_codes):
         return events_df
     except Exception as err:
         logging.warning('Something went wrong during get_extraday_prices_as_events: %s, with message: %s'
-                        % (date.isoformat(), err.message))
+                        % (date.isoformat(), err))
         return pd.DataFrame(None)

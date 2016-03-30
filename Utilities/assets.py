@@ -15,7 +15,6 @@ def get_assets():
         logging.info('Reading assets at %s' % assets_path)
         content = Utilities.general_tools.read_and_log_pandas_df(assets_path)
         content = content.applymap(str)
-        content.index = content['ID_BB_GLOBAL']
     except Exception as err:
         logging.critical('Reading assets failed with error message: %s' % err)
 

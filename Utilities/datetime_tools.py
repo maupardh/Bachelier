@@ -7,7 +7,7 @@ def add_business_days(d, number, holidays=[]):
     if number == 0:
         return d
     sign = np.sign(number)
-    direction = datetime.timedelta(days=sign)
+    direction = datetime.timedelta(days=int(sign))
     while np.abs(number) > 0:
         d += direction
         if not (d.isoweekday() in [6, 7] or d in holidays):

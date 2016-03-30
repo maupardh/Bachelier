@@ -52,7 +52,7 @@ def refresh_amer(date):
     except AssertionError:
         logging.warning('Calling refresh_amer with wrong argument types')
     except Exception as err:
-        logging.warning('refresh_amer failed with message: %s' % err.message)
+        logging.warning('refresh_amer failed with message: %s' % err)
 
 
 def refresh_asia(date):

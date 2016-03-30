@@ -27,13 +27,13 @@ def store_and_log_pandas_df(file_path, pandas_content):
             logging.warning(' Storing pandas d.f. failed to path: %s, because pandas table is empty' % file_path)
             return
         if file_path.endswith('zip'):
-            Utilities.zipping.zip_string_with_zipfile(pandas_content.to_csv(), file_path, file_name='pd_df.csv')
+            Utilities.zipping.zip_string_with_zipfile(pandas_content.to_csv(index=False), file_path, file_name='pd_df.csv')
             logging.info('Storing pandas as zip successful for path: %s' % file_path)
         elif file_path.endswith('csv'):
-            pandas_content.to_csv(file_path, mode='w+')
+            pandas_content.to_csv(file_path, mode='w+', index=False)
             logging.info('Storing pandas as csv successful for path: %s' % file_path)
         else:
-            pandas_content.to_csv(file_path, mode='w+')
+            pandas_content.to_csv(file_path, mode='w+', index=False)
             logging.info('Storing pandas as csv successful for path: %s' % file_path)
     except Exception as err:
         logging.critical('      Storing pandas d.f. failed to path: %s, with error: %s' % (file_path, err))

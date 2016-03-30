@@ -1,5 +1,5 @@
 import logging
-from io import StringIO
+from io import BytesIO
 import zipfile
 
 # SIMPLE TOOLS
@@ -10,9 +10,9 @@ def unzip_string_with_zipfile(zipped_string):
     unzipped_string = ''
     logging.info('Unzipping..')
     try:
-        zip_file = zipfile.ZipFile(StringIO(zipped_string))
+        zip_file = zipfile.ZipFile(BytesIO(zipped_string))
         for name in zip_file.namelist():
-            unzipped_string += zip_file.open(name).read()
+            unzipped_string += zip_file.open(name).read().decode('UTF-8', 'ignore')
         logging.info('Unzipping successful')
     except Exception as err:
         logging.critical('Unzip failed with message: %s' % err)

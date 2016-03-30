@@ -1,4 +1,3 @@
-import urllib3
 import pandas as pd
 import logging
 import datetime
@@ -27,9 +26,8 @@ def get_assets_from_open_bbg_symbiology(market_sector, security_type, date):
 
         query = 'http://bdn-ak.bloomberg.com/precanned/' + market_sector + '_' + security_type + \
                 '_' + date.strftime('%Y%m%d') + '.txt.zip'
-        f = urllib3.urlopen(query)
-        content = Utilities.zipping.unzip_string_with_zipfile(f.read())
-        f.close()
+        req = requests.get(query)
+        content = Utilities.zipping.unzip_string_with_zipfile(req.content)
         s = io.StringIO(content)
         content = pd.read_csv(s, sep='|', comment='#')
         s.close()
