@@ -28,7 +28,7 @@ def refresh():
                      today.isoformat(), "IntradayYahooEquityImport.txt")
     Utilities.logging_tools.initialize_logging(log_file_path)
 
-    zone_intraday_cash_equity_prices_import.refresh_amer(today)
+    HistoricalIntradayPrices.zone_intraday_cash_equity_prices_import.refresh_amer(today)
 
     Utilities.logging_tools.shutdown()
     return 0

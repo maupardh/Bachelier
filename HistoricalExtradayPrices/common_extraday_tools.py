@@ -100,13 +100,13 @@ def write_extraday_prices_table_for_single_day(new_content, date, resolve_method
         merged_content_resolved = pd.DataFrame(None)
 
         if not old_content.empty:
-            old_content = old_content[map(lambda t: t[0] > 0 or t[1] > 0, zip(
-                old_content['Volume'], old_content['Close']))]
+            old_content = old_content[list(map(lambda t: t[0] > 0 or t[1] > 0, zip(
+                old_content['Volume'], old_content['Close'])))]
             old_content.loc[:, 'Age'] = 'Old'
 
         if not new_content.empty:
-            new_content = new_content[list(map(lambda t: t[0] > 0 or t[1] > 0, list(zip(
-                new_content['Volume'], new_content['Close']))))]
+            new_content = new_content[list(map(lambda t: t[0] > 0 or t[1] > 0, zip(
+                new_content['Volume'], new_content['Close'])))]
             new_content.loc[:, 'Age'] = 'New'
             new_content['Date'] = date
 

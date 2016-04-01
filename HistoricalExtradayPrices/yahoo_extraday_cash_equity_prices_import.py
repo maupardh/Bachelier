@@ -101,9 +101,8 @@ def retrieve_and_store_historical_price_from_yahoo(assets_df, start_date, end_da
         def import_and_write_per_batch(batch):
             batch = batch.to_dict(orient='index')
             pandas_content = pd.concat(map(retrieve_prices, batch.values()), ignore_index=True)
-
-
             logging.info('Printing Extraday Prices by date..')
+
             def print_group(group):
                 date = group.pop('Date').iloc[1]
                 date = datetime.date(date.year, date.month, date.day)

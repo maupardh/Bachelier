@@ -48,8 +48,7 @@ def run():
     na_assets.sort_values(by='ID_BB_SEC_NUM_DES', axis=0, ascending=True, inplace=True)
 
     end_date = Utilities.datetime_tools.nearest_past_or_now_workday(datetime.date.today())
-    start_date = datetime.date(2005, 1, 3)# Utilities.datetime_tools.add_business_days(
-       # end_date, -252 * 5, Utilities.holidays.HOLIDAYS_BY_COUNTRY_CONFIG['US'])
+    start_date = Utilities.datetime_tools.add_business_days(end_date, -252 * 5, Utilities.holidays.HOLIDAYS_BY_COUNTRY_CONFIG['US'])
 
     HistoricalExtradayPrices.yahoo_extraday_cash_equity_prices_import.retrieve_and_store_historical_price_from_yahoo(
         assets, start_date, end_date)

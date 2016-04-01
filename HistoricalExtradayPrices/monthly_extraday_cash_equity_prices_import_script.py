@@ -3,7 +3,7 @@
 import datetime
 import os.path
 import logging
-import HistoricalIntradayPrices.yahoo_extraday_cash_equity_prices_import
+import HistoricalExtradayPrices.yahoo_extraday_cash_equity_prices_import
 import sys
 sys.path.append('F:/prod/pythonCode')
 import Utilities.datetime_tools
@@ -33,15 +33,15 @@ def run():
         assets = assets[assets['FEED_SOURCE'].apply(
             lambda feed_source: feed_source in feed_sources_of_zone)]
 
-        HistoricalIntradayPrices.yahoo_extraday_cash_equity_prices_import.retrieve_and_store_historical_price_from_yahoo(
+        HistoricalExtradayPrices.yahoo_extraday_cash_equity_prices_import.retrieve_and_store_historical_price_from_yahoo(
             assets, start_date, end_date)
         logging.info('Extraday cash equity prices refresh for zone: %s completed' % zone)
 
     for year in range(2005, 2016, 2):
 
-        end_date = min(Utilities.datetime_tools.nearest_past_or_now_workday(datetime.date(year+2, 1, 1)),
+        end_date = min(Utilities.datetime_tools.nearest_past_or_now_workday(datetime.date(year+2, 1, 10)),
                        datetime.date.today())
-        start_date = Utilities.datetime_tools.nearest_past_or_now_workday(datetime.date(year-1, 12, 31))
+        start_date = Utilities.datetime_tools.nearest_past_or_now_workday(datetime.date(year-1, 12, 20))
         refresh_zone('AMER', start_date, end_date)
         #refresh_zone('EMEA', start_date, end_date)
         #refresh_zone('ASIA', start_date, end_date)

@@ -7,7 +7,7 @@ import urllib
 
 REQUEST_TIME_OUT = 10
 QUOTA_PER_INTERVAL = 500
-EXTRADAY_QUOTA_PER_INTERVAL = 200 # 15000
+EXTRADAY_QUOTA_PER_INTERVAL = 15000
 INTERVAL = datetime.timedelta(minutes=15)
 EXTRADAY_INTERVAL = datetime.timedelta(minutes=10)
 MAP_BBG_FEED_SOURCE_TO_YAHOO_FEED_SOURCE = \
@@ -44,14 +44,14 @@ def bb_sec_num_des_to_yahoo(bbg):
 
 def _prepare_fx_assets(fx_assets_df):
     if fx_assets_df.empty: return pd.DataFrame(None)
-    fx_assets_df = fx_assets_df[['ID_BB_GLOBAL', 'ID_BB_SEC_NUM_DES']]
+    fx_assets_df = fx_assets_df[['COMPOSITE_ID_BB_GLOBAL', 'ID_BB_SEC_NUM_DES']]
     fx_assets_df.sort_values('ID_BB_SEC_NUM_DES', inplace=True)
     fx_assets_df.drop_duplicates(inplace=True)
     fx_assets_df['YAHOO_TICKERS'] = fx_assets_df['ID_BB_SEC_NUM_DES'].apply(lambda t: t+'=X')
-    fx_assets_df = fx_assets_df.groupby('YAHOO_TICKERS').agg({'ID_BB_GLOBAL': lambda x: list(set(x))})
+    fx_assets_df = fx_assets_df.groupby('YAHOO_TICKERS').agg({'COMPOSITE_ID_BB_GLOBAL': lambda x: list(set(x))})
     fx_assets_df.reset_index(drop=False, inplace=True)
-    fx_assets_df = fx_assets_df[fx_assets_df['ID_BB_GLOBAL'].apply(lambda x: len(x) == 1)]
-    fx_assets_df['ID_BB_GLOBAL'] = fx_assets_df['ID_BB_GLOBAL'].apply(lambda x: x[0])
+    fx_assets_df = fx_assets_df[fx_assets_df['COMPOSITE_ID_BB_GLOBAL'].apply(lambda x: len(x) == 1)]
+    fx_assets_df['COMPOSITE_ID_BB_GLOBAL'] = fx_assets_df['COMPOSITE_ID_BB_GLOBAL'].apply(lambda x: x[0])
     fx_assets_df['YAHOO_TICKERS'] = fx_assets_df['YAHOO_TICKERS'].apply(lambda t: [t])
     fx_assets_df['COUNTRY'] = ['WORLD'] * fx_assets_df.shape[0]
 
