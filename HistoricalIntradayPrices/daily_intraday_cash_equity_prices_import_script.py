@@ -3,8 +3,9 @@
 import os.path
 import datetime
 import logging
-from tzlocal import get_localzone
 import sys
+import pytz
+
 sys.path.append('F:/dev/pythonCode')
 import HistoricalIntradayPrices.zone_intraday_cash_equity_prices_import
 import Utilities.datetime_tools
@@ -14,7 +15,6 @@ import Utilities.markets
 
 
 def refresh():
-
     """Daily scheduled task for equities intraday scraping throughout the day from 8:00 am EST T+0 to 1:00 am EST T+1
     This is currently scraping intraday prices for all exchange-listed equities for ~30 countries
     Yahoo provides non-empty data for ~16,000 equities
@@ -28,7 +28,7 @@ def refresh():
     each zone starts with scraping asset symbols (BBG symbiology) to get the most recent IPOs / name changes"""
 
     today = datetime.date.today()
-    local_tz = get_localzone()
+    local_tz = pytz.timezone('America/New_York')
 
     # Initialization
     log_file_path = \
