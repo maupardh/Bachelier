@@ -3,8 +3,9 @@ import logging
 import os.path
 import Utilities.general_tools
 import HistoricalAssets.asset_import_tools
+import Utilities.config
 
-__ASSETS_DIRECTORY = os.path.join('F:/', 'financialData', 'Assets')
+__ASSETS_DIRECTORY = Utilities.config['assetsPath']
 
 
 def get_assets():

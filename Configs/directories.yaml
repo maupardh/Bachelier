@@ -1,0 +1,8 @@
+{
+  "bachelierOutputRootDirectory": "/Users/hmaupard/Documents/Personal/Data/Bachelier/",
+  "assetsDirectoryPath": "Assets",
+  "extradayPricesPath": "HistoricalExtradayPrices",
+  "intradayPricesPath": "HistoricalIntradayPrices",
+  "logsPath": "Logs"
+  "environmentPythonPath":"/Users/hmaupard/Documents/Personal/python-projects"
+}

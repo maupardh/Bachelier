@@ -1,10 +1,11 @@
 import logging
 import logging.config
 import os.path
+import Utilities.config
 
 __console_handler_already_initialized = False
 
-__LOG_DIRECTORY = 'F:/financialData/'
+__LOG_DIRECTORY = Utilities.config['logsPath']
 
 # CUSTOMIZED LOGGING FACILITY
 

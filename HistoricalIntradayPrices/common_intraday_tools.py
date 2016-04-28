@@ -6,6 +6,7 @@ import logging
 import Utilities.markets
 import Utilities.general_tools
 import iso8601
+import Utilities.config
 
 # standard index for intraday prices pandas df
 # intraday prices are stored as one file per symbol (one row per minute i.e time as index),
@@ -15,7 +16,7 @@ _EQUITY_GAP_AFTER_MARKET_OPEN = datetime.timedelta(minutes=0)
 _EQUITY_GAP_AFTER_MARKET_CLOSE = datetime.timedelta(minutes=5)
 # directory where intraday prices are stored in .zip format.
 # the directory contains one folder per date, and then each folder contains ~15k zip files, one per symbol
-__INTRADAY_PRICES_DIRECTORY = os.path.join('F:/', 'financialData', 'HistoricalIntradayPrices')
+__INTRADAY_PRICES_DIRECTORY = Utilities.config['intradayPricesPath']
 
 
 def get_standardized_intraday_equity_dtindex(country, date):

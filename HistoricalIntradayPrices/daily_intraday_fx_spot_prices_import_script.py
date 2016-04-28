@@ -12,7 +12,7 @@ import Utilities.datetime_tools
 import Utilities.logging_tools
 import Utilities.assets
 import Utilities.markets
-
+import Utilities.config
 
 def refresh():
     """Daily scheduled task for FX intraday scraping
@@ -27,7 +27,7 @@ def refresh():
     local_tz = get_localzone()
 
     # Initialization
-    log_file_path = os.path.join('F:/FinancialData/Logs/', today.isoformat(), "IntradayYahooFXImport.txt")
+    log_file_path = os.path.join(Utilities.config['logsPath'], today.isoformat(), "IntradayYahooFXImport.txt")
     Utilities.logging_tools.initialize_logging(log_file_path)
 
     # FX Import
@@ -62,7 +62,7 @@ def refresh_fx(date):
         fx_assets.sort_values(by='ID_BB_SEC_NUM_DES', axis=0, ascending=True, inplace=True)
 
         HistoricalIntradayPrices.yahoo_intraday_fx_spot_prices_import.retrieve_and_store_today_price_from_yahoo(
-            fx_assets, 'F:/FinancialData/HistoricalIntradayPrices/', date=date)
+            fx_assets, Utilities.config['intradayPricesPath'], date=date)
         logging.info('FX intraday price import complete')
 
     except AssertionError:

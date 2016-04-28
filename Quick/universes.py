@@ -6,8 +6,7 @@ import numpy as np
 
 
 def run():
-
-    #SELECT UNIVERSE
+    # SELECT UNIVERSE
     all_assets = Utilities.assets.get_assets().reset_index()
     US_stocks = all_assets.copy(deep=True)
     US_stocks = US_stocks.loc[
@@ -26,14 +25,15 @@ def run():
     min_days_count = int(.80 * float(
         HistoricalExtradayPrices.common_extraday_tools.get_standardized_extraday_equity_dtindex('US', start_date,
                                                                                                 end_date).size))
+
+    extraday_prices['DollarVolume'] = extraday_prices['Volume'] * extraday_prices['Close']
     liquid_securities = extraday_prices.copy(deep=True)
-    liquid_securities['DollarVolume'] = liquid_securities['Volume'] * liquid_securities['Close']
     liquid_securities['Count'] = 1
     liquid_securities = liquid_securities.groupby("ID_BB_GLOBAL").agg({'DollarVolume': np.mean, 'Count': np.sum})
     liquid_securities = liquid_securities.loc[np.logical_and(liquid_securities['DollarVolume'] > min_dollar_volume,
                                                              liquid_securities['Count'] > min_days_count), :]
 
-    #COMPUTE RETURNS
+    # COMPUTE RETURNS
     extraday_prices = extraday_prices.loc[extraday_prices['ID_BB_GLOBAL'].isin(liquid_securities.index)]
     extraday_prices.sort_values(by='Date', ascending=True, inplace=True)
 
@@ -71,16 +71,32 @@ def run():
                             left_on='ID_BB_GLOBAL', right_on='COMPOSITE_ID_BB_GLOBAL')
 
 
-    #DEFINE HEDGES
-    country_hedge_instruments = US_stocks.loc[US_stocks['ID_BB_SEC_NUM_DES'].isin(['SPY', 'MDY', 'IWM'])]
-    sector_hedge_instruments = US_stocks.loc[US_stocks['ID_BB_SEC_NUM_DES'].isin()]
-    hedge_returns = signals.loc[signals['ID_BB_SEC_NUM_DES'] == 'SPY']
-    hedge_returns = hedge_returns.rename({
-        'BWD_CTO_1D': 'BWD_CTO_1D_SPY',
+    # DEFINE HEDGES
+    capi_hedge_instruments = US_stocks.loc[US_stocks['ID_BB_SEC_NUM_DES'].isin(['SPY', 'MDY', 'IWM'])]
+    sector_hedge_instruments = US_stocks.loc[
+        US_stocks['ID_BB_SEC_NUM_DES'].isin(['XLF', 'XLV', 'XLI', 'XLY', 'XLP', 'XLB', 'XLK', 'XLU', 'XLE'])]
 
-    })
+    min_dollar_volume = 100000000
+    min_days_count = HistoricalExtradayPrices.common_extraday_tools.get_standardized_extraday_equity_dtindex('US',
+                                                                                                             start_date,
+                                                                                                             end_date).size
+    factor_hedge_instruments = extraday_prices.copy(deep=True)
+    factor_hedge_instruments = factor_hedge_instruments.loc[factor_hedge_instruments['SECURITY_TYP'] == 'ETP']
+    factor_hedge_instruments['Count'] = 1
+    factor_hedge_instruments = factor_hedge_instruments.groupby("ID_BB_GLOBAL").agg(
+        {'DollarVolume': np.mean, 'Count': np.sum})
+    factor_hedge_instruments = factor_hedge_instruments.loc[
+                               np.logical_and(factor_hedge_instruments['DollarVolume'] > factor_hedge_instruments,
+                                              factor_hedge_instruments['Count'] > min_days_count), :]
 
-    #COMPUTE HEDGED RETURNS
+    returns_matrix = signals[['Date', 'COMPOSITE_ID_BB_GLOBAL', 'BWD_CTC_1D']]
+    returns_matrix = returns_matrix.pivot(index='date', columns='COMPOSITE_ID_BB_GLOBAL', values='BWD_CTC_1D')
+
+
+    def get_single_factor_hedge(returns_matrix, instrument_to_hedge, hedge_candidates):
+        pass
+
+    # COMPUTE HEDGED RETURNS
 
 
 

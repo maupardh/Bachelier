@@ -9,6 +9,7 @@ import Utilities.datetime_tools
 import Utilities.logging_tools
 import Utilities.assets
 import Utilities.markets
+import Utilities.config
 
 # CHANGE TO APPROVE IN PR
 
@@ -24,7 +25,7 @@ def refresh():
 
     # Initialization
     log_file_path = \
-        os.path.join('F:/FinancialData/Logs/',
+        os.path.join(Utilities.config['logsPath'],
                      today.isoformat(), "IntradayYahooEquityImport.txt")
     Utilities.logging_tools.initialize_logging(log_file_path)
 

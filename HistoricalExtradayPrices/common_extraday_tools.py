@@ -6,9 +6,10 @@ import datetime
 import Utilities.general_tools
 import Utilities.holidays
 import Utilities.markets
+import Utilities.config
 
 # directory where daily price files are historized in .zip format
-__EXTRADAY_PRICES_DIRECTORY = os.path.join('F:/', 'financialData', 'HistoricalExtradayPrices', 'zip')
+__EXTRADAY_PRICES_DIRECTORY = os.path.join(Utilities.config['extradayPricesPath'], 'zip')
 Utilities.general_tools.mkdir_and_log(__EXTRADAY_PRICES_DIRECTORY)
 
 

@@ -1,11 +1,13 @@
 #!/usr/bin/env python
 
-import datetime
 import os.path
+import Utilities.config
+import sys
+sys.path.append(Utilities.config.directories['environmentPythonPath'])
+
+import datetime
 import logging
 import HistoricalExtradayPrices.yahoo_extraday_cash_equity_prices_import
-import sys
-sys.path.append('F:/prod/pythonCode')
 import Utilities.datetime_tools
 import Utilities.holidays
 import Utilities.logging_tools
@@ -18,7 +20,7 @@ def run():
     today = datetime.date.today()
 
     log_file_path = \
-        os.path.join('F:/FinancialData/Logs/',
+        os.path.join(Utilities.config['logsPath'],
                      today.isoformat(), "ExtradayYahooEquityImport.txt")
     Utilities.logging_tools.initialize_logging(log_file_path)
 

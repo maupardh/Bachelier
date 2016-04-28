@@ -8,7 +8,7 @@ import Utilities.holidays
 import Utilities.logging_tools
 import Utilities.assets
 import Utilities.markets
-
+import Utilities.config
 
 def run():
 
@@ -18,7 +18,7 @@ def run():
     #     return 0
 
     log_file_path = \
-        os.path.join('F:/FinancialData/Logs/',
+        os.path.join(Utilities.config['logsPath'],
                      today.isoformat(), "ExtradayYahooEquityImport.txt")
     Utilities.logging_tools.initialize_logging(log_file_path)
 
