@@ -2,8 +2,8 @@
 
 import os.path
 import Utilities.config
-import sys
-sys.path.append(Utilities.config.directories['environmentPythonPath'])
+#import sys
+#sys.path.append(Utilities.config.directories['environmentPythonPath'])
 
 import datetime
 import logging
@@ -20,7 +20,7 @@ def run():
     today = datetime.date.today()
 
     log_file_path = \
-        os.path.join(Utilities.config['logsPath'],
+        os.path.join(Utilities.config.directories['logsPath'],
                      today.isoformat(), "ExtradayYahooEquityImport.txt")
     Utilities.logging_tools.initialize_logging(log_file_path)
 

@@ -1,12 +1,23 @@
-import HistoricalExtradayPrices.common_extraday_tools
-import Utilities.assets
-import HistoricalExtradayPrices.common_extraday_tools
 import datetime
 import numpy as np
+import os.path
+
+import Utilities.assets
+import Utilities.config
+import Utilities.logging_tools
+import HistoricalExtradayPrices.common_extraday_tools
+import HistoricalExtradayPrices.common_extraday_tools
 
 
 def run():
     # SELECT UNIVERSE
+    # Initialization
+    log_file_path = \
+        os.path.join(Utilities.config.directories['logsPath'],
+                     datetime.date.today().isoformat(), "ExplorationScript.txt")
+    Utilities.logging_tools.initialize_logging(log_file_path)
+
+    #Utilities.assets.refresh_assets(datetime.date.today())
     all_assets = Utilities.assets.get_assets().reset_index()
     US_stocks = all_assets.copy(deep=True)
     US_stocks = US_stocks.loc[

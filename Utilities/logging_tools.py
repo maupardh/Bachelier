@@ -5,7 +5,7 @@ import Utilities.config
 
 __console_handler_already_initialized = False
 
-__LOG_DIRECTORY = Utilities.config['logsPath']
+__LOG_DIRECTORY = Utilities.config.directories['logsPath']
 
 # CUSTOMIZED LOGGING FACILITY
 

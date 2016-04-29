@@ -5,7 +5,7 @@ import Utilities.general_tools
 import HistoricalAssets.asset_import_tools
 import Utilities.config
 
-__ASSETS_DIRECTORY = Utilities.config['assetsPath']
+__ASSETS_DIRECTORY = Utilities.config.directories['assetsPath']
 
 
 def get_assets():

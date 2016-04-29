@@ -9,7 +9,7 @@ import Utilities.markets
 import Utilities.config
 
 # directory where daily price files are historized in .zip format
-__EXTRADAY_PRICES_DIRECTORY = os.path.join(Utilities.config['extradayPricesPath'], 'zip')
+__EXTRADAY_PRICES_DIRECTORY = os.path.join(Utilities.config.directories['extradayPricesPath'], 'zip')
 Utilities.general_tools.mkdir_and_log(__EXTRADAY_PRICES_DIRECTORY)
 
 
