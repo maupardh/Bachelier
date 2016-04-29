@@ -17,7 +17,7 @@ def refresh_amer(date):
     This keeps all US equity symbols primarily listed on NYSE, NASDAQ, NYSE AMEX + a few others."""
 
     try:
-        assert(isinstance(date, datetime.date))
+        assert (isinstance(date, datetime.date))
         Utilities.assets.refresh_assets(date)
         logging.info('Starting to import NA intraday asset prices')
 
@@ -47,7 +47,7 @@ def refresh_amer(date):
         na_assets.sort_values(by='ID_BB_SEC_NUM_DES', axis=0, ascending=True, inplace=True)
 
         HistoricalIntradayPrices.yahoo_intraday_cash_equity_prices_import.retrieve_and_store_today_price_from_yahoo(
-            na_assets, Utilities.config['intradayPricesPath'], date=date)
+            na_assets, Utilities.config.directories['intradayPricesPath'], date=date)
         logging.info('NA intraday price import complete')
 
     except AssertionError:
@@ -62,7 +62,7 @@ def refresh_asia(date):
     with an asian exchange as a feed source."""
 
     try:
-        assert(isinstance(date, datetime.date))
+        assert (isinstance(date, datetime.date))
         Utilities.assets.refresh_assets(date)
         logging.info('Starting to import Asia intraday asset prices')
 
@@ -80,7 +80,7 @@ def refresh_asia(date):
         asia_assets.drop_duplicates(inplace=True)
 
         HistoricalIntradayPrices.yahoo_intraday_cash_equity_prices_import.retrieve_and_store_today_price_from_yahoo(
-            asia_assets, Utilities.config['intradayPricesPath'], date=date)
+            asia_assets, Utilities.config.directories['intradayPricesPath'], date=date)
         logging.info('Asia intraday price import complete')
 
     except AssertionError:
@@ -100,7 +100,7 @@ def refresh_emea(date):
     but not necessarily primary."""
 
     try:
-        assert(isinstance(date, datetime.date))
+        assert (isinstance(date, datetime.date))
         Utilities.assets.refresh_assets(date)
         logging.info('Starting to import Emea intraday asset prices')
 
@@ -112,7 +112,7 @@ def refresh_emea(date):
         emea_assets = emea_assets[emea_assets['MARKET_SECTOR_DES'] == 'Equity']
         set_of_qualified_german_composites = set(emea_assets[emea_assets['FEED_SOURCE'] == 'GY']
                                                  ['COMPOSITE_ID_BB_GLOBAL'])
-        set_of_qualified_feed_sources = set(Utilities.markets.EQUITY_FEED_SOURCES_BY_CONTINENT['EMEA'].keys())\
+        set_of_qualified_feed_sources = set(Utilities.markets.EQUITY_FEED_SOURCES_BY_CONTINENT['EMEA'].keys()) \
             .difference(Utilities.markets.EQUITY_FEED_SOURCES_BY_CONTINENT['EMEA']['GR'])
         set_of_qualified_feed_sources = set_of_qualified_feed_sources.union({'GY'})
 
@@ -126,7 +126,7 @@ def refresh_emea(date):
         emea_assets.drop_duplicates(inplace=True)
 
         HistoricalIntradayPrices.yahoo_intraday_cash_equity_prices_import.retrieve_and_store_today_price_from_yahoo(
-            emea_assets, Utilities.config['intradayPricesPath'], date=date)
+            emea_assets, Utilities.config.directories['intradayPricesPath'], date=date)
         logging.info('Emea intraday price import complete')
 
     except AssertionError:

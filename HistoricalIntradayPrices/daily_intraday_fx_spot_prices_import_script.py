@@ -6,6 +6,7 @@ import logging
 import pytz
 from tzlocal import get_localzone
 import sys
+
 sys.path.append('F:/prod/pythonCode')
 import HistoricalIntradayPrices.yahoo_intraday_fx_spot_prices_import
 import Utilities.datetime_tools
@@ -13,6 +14,7 @@ import Utilities.logging_tools
 import Utilities.assets
 import Utilities.markets
 import Utilities.config
+
 
 def refresh():
     """Daily scheduled task for FX intraday scraping
@@ -44,9 +46,8 @@ def refresh():
 
 
 def refresh_fx(date):
-
     try:
-        assert(isinstance(date, datetime.date))
+        assert (isinstance(date, datetime.date))
         logging.info('Starting to import FX intraday asset prices')
 
         fx_assets = Utilities.assets.get_assets()
@@ -69,5 +70,6 @@ def refresh_fx(date):
         logging.warning('Calling refresh_fx with wrong argument types')
     except Exception as err:
         logging.warning('FX intraday price import failed with error: %s', err.message)
+
 
 refresh()

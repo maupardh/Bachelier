@@ -18,8 +18,8 @@ def _get_price_from_yahoo(yahoo_tickers, start_date, end_date, country):
     Germany with XETRA vs 5-6 regional floors"""
 
     try:
-        assert(isinstance(yahoo_tickers, list) and isinstance(start_date, datetime.date) and
-               isinstance(end_date, datetime.date) and isinstance(country, str))
+        assert (isinstance(yahoo_tickers, list) and isinstance(start_date, datetime.date) and
+                isinstance(end_date, datetime.date) and isinstance(country, str))
         std_index = HistoricalExtradayPrices.common_extraday_tools.REINDEXES_CACHE.get(
             (country, start_date.isoformat(), end_date.isoformat()), None)
 
@@ -28,14 +28,15 @@ def _get_price_from_yahoo(yahoo_tickers, start_date, end_date, country):
                 (country, start_date.isoformat(), end_date.isoformat())] = \
                 HistoricalExtradayPrices.common_extraday_tools.get_standardized_extraday_equity_dtindex(
                     country, start_date, end_date)
-            std_index = HistoricalExtradayPrices.common_extraday_tools.REINDEXES_CACHE[(country, start_date.isoformat(), end_date.isoformat())]
+            std_index = HistoricalExtradayPrices.common_extraday_tools.REINDEXES_CACHE[
+                (country, start_date.isoformat(), end_date.isoformat())]
 
         price_dat = pd.concat(map(
             lambda t: Utilities.yahoo_import.get_extraday_price_data_of_single_ticker(t, start_date, end_date),
             yahoo_tickers), ignore_index=True)
         price_dat['Date'] = price_dat['Date'].apply(
             lambda d: datetime.datetime.strptime(d, "%Y-%m-%d").date())
-        price_dat[['Open', 'Close', 'AdjClose', 'Volume']] = price_dat[['Open', 'Close', 'AdjClose', 'Volume']]\
+        price_dat[['Open', 'Close', 'AdjClose', 'Volume']] = price_dat[['Open', 'Close', 'AdjClose', 'Volume']] \
             .astype(float)
         price_dat['Volume'].fillna(0, inplace=True)
         price_dat = price_dat.loc[price_dat['Volume'] > 0]
@@ -54,7 +55,8 @@ def _get_price_from_yahoo(yahoo_tickers, start_date, end_date, country):
         price_dat = price_dat.loc[price_dat['Open'] > 0.0]
         price_dat = price_dat.loc[price_dat['Volume'] > 0.0]
 
-        assert(isinstance(price_dat, pd.DataFrame) and tuple(sorted(price_dat.columns)) == tuple(sorted(['Date', 'Open', 'Close', 'AdjClose', 'Volume'])))
+        assert (isinstance(price_dat, pd.DataFrame) and tuple(sorted(price_dat.columns)) == tuple(
+            sorted(['Date', 'Open', 'Close', 'AdjClose', 'Volume'])))
         logging.info('Yahoo price import and pandas enrich successful for: %s' % yahoo_tickers)
 
         if price_dat.shape[0] == 0:
@@ -62,8 +64,8 @@ def _get_price_from_yahoo(yahoo_tickers, start_date, end_date, country):
         return price_dat
 
     except AssertionError:
-            logging.warning('Calling get_price_from_yahoo with wrong argument types')
-            return pd.DataFrame(None)
+        logging.warning('Calling get_price_from_yahoo with wrong argument types')
+        return pd.DataFrame(None)
     except Exception as err:
         logging.warning('Yahoo price import and pandas enrich failed for: %s with message %s' % (
             yahoo_tickers, err))
@@ -109,7 +111,7 @@ def retrieve_and_store_historical_price_from_yahoo(assets_df, start_date, end_da
                 HistoricalExtradayPrices.common_extraday_tools.write_extraday_prices_table_for_single_day(group, date)
                 logging.info('Printing prices of %s tickers for %s successful' % (len(batch), date.isoformat()))
 
-            grouped_by_date = pandas_content.groupby('Date').apply(print_group)
+            pandas_content.groupby('Date').apply(print_group)
 
         Utilities.general_tools.break_action_into_batches(
             import_and_write_per_batch, assets_df, Utilities.yahoo_import.EXTRADAY_INTERVAL,

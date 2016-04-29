@@ -14,14 +14,16 @@ def get_price_from_yahoo(yahoo_tickers, country, date):
     """This returns a pandas df of intraday prices aggregating feeds for the list of yahoo tickers provided, with
     minute-by-minute time as index and open, close, high, low, volume as schema as defined in the common_intraday_tools.
     Data is scraped over Yahoo.
-    In extraday prices consolidation, volume is summed across feeds, but only prices from the most liquid ticker are kept.
+    In extraday prices consolidation, volume is summed across feeds, but only prices
+    from the most liquid ticker are kept.
     Here, in intraday prices, open and closing minute-by-minute prices are vwaps across feed sources.
     Low and High are min and max across feed sources.
     This is useful when aggregating feeds from multiple exchanges for example:
     Germany with XETRA where most of the volume takes place vs 5-6 regional floors where
     some intraday trading still occurs."""
 
-    std_index = HistoricalIntradayPrices.common_intraday_tools.REINDEXES_CACHE.get(country, {}).get(date.isoformat(), None)
+    std_index = HistoricalIntradayPrices.common_intraday_tools.REINDEXES_CACHE.get(country, {}).get(date.isoformat(),
+                                                                                                    None)
 
     if std_index is None:
         HistoricalIntradayPrices.common_intraday_tools.REINDEXES_CACHE[country][date.isoformat()] = \
@@ -29,7 +31,7 @@ def get_price_from_yahoo(yahoo_tickers, country, date):
         std_index = HistoricalIntradayPrices.common_intraday_tools.REINDEXES_CACHE[country][date.isoformat()]
 
     try:
-        assert(isinstance(yahoo_tickers, list) and isinstance(country, str) and isinstance(date, datetime.date))
+        assert (isinstance(yahoo_tickers, list) and isinstance(country, str) and isinstance(date, datetime.date))
         price_dat = pd.concat(map(Utilities.yahoo_import.get_intraday_price_data_of_single_ticker, yahoo_tickers),
                               ignore_index=True)
         price_dat = price_dat.applymap(float)
@@ -38,14 +40,14 @@ def get_price_from_yahoo(yahoo_tickers, country, date):
         price_dat['Time'] = map(lambda t: pytz.utc.localize(datetime.datetime.utcfromtimestamp(t)), price_dat['Time'])
         price_dat['Time'] = map(Utilities.datetime_tools.truncate_to_next_minute, price_dat['Time'])
 
-        price_dat = price_dat[['Close', 'High', 'Low', 'Open', 'Volume']+['Time']]
+        price_dat = price_dat[['Close', 'High', 'Low', 'Open', 'Volume'] + ['Time']]
         price_dat = price_dat[price_dat['Volume'] > 0]
         price_dat.loc[:, 'Open'] = price_dat['Open'] * price_dat['Volume']
         price_dat.loc[:, 'Close'] = price_dat['Close'] * price_dat['Volume']
         price_dat = price_dat.groupby('Time', sort=False).agg({
             'Open': sum, 'Close': sum, 'Low': min, 'High': max, 'Volume': sum})
-        price_dat.loc[:, 'Open'] = map(lambda x: round(x, 6), price_dat['Open']/price_dat['Volume'])
-        price_dat.loc[:, 'Close'] = map(lambda x: round(x, 6), price_dat['Close']/price_dat['Volume'])
+        price_dat.loc[:, 'Open'] = map(lambda x: round(x, 6), price_dat['Open'] / price_dat['Volume'])
+        price_dat.loc[:, 'Close'] = map(lambda x: round(x, 6), price_dat['Close'] / price_dat['Volume'])
 
         price_dat = price_dat[['Close', 'High', 'Low', 'Open', 'Volume']]
         price_dat = price_dat.reindex(index=std_index)
@@ -54,7 +56,7 @@ def get_price_from_yahoo(yahoo_tickers, country, date):
 
         def propagate_on_zero_volume(t, field):
             if t['Volume'] == 0:
-                return [t[field]]*(len(t)-1)+[0]
+                return [t[field]] * (len(t) - 1) + [0]
             else:
                 return t.values
 
@@ -97,14 +99,15 @@ def retrieve_and_store_today_price_from_yahoo(assets_df, root_directory_name, da
             return
 
         def historize_asset(asset):
-                        logging.info('   Retrieving Prices for: %s , BBG_ID: %s'
-                                     % (",".join(asset['YAHOO_TICKERS']), asset['ID_BB_GLOBAL']))
-                        pandas_content = get_price_from_yahoo(asset['YAHOO_TICKERS'], asset['COUNTRY'], date=date)
-                        csv_output_path = os.path.join(csv_directory, asset['ID_BB_GLOBAL'] + '.csv.zip')
-                        Utilities.general_tools.store_and_log_pandas_df(csv_output_path, pandas_content)
+            logging.info('   Retrieving Prices for: %s , BBG_ID: %s'
+                         % (",".join(asset['YAHOO_TICKERS']), asset['ID_BB_GLOBAL']))
+            pandas_content = get_price_from_yahoo(asset['YAHOO_TICKERS'], asset['COUNTRY'], date=date)
+            csv_output_path = os.path.join(csv_directory, asset['ID_BB_GLOBAL'] + '.csv.zip')
+            Utilities.general_tools.store_and_log_pandas_df(csv_output_path, pandas_content)
 
         def historize_batch(batch):
             batch.apply(historize_asset, axis=1)
+
         Utilities.general_tools.break_action_into_batches(
             historize_batch, assets_df, Utilities.yahoo_import.INTERVAL, Utilities.yahoo_import.QUOTA_PER_INTERVAL)
     except AssertionError:
