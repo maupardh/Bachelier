@@ -1,6 +1,9 @@
 import datetime
 import numpy as np
+import pandas as pd
 import time
+
+import Utilities.holidays
 
 
 def add_business_days(d, number, holidays=[]):
@@ -20,6 +23,17 @@ def nearest_past_or_now_workday(d, holidays=[]):
         return add_business_days(d, -1, holidays)
     else:
         return d
+
+
+def get_business_days(country, start_date, end_date):
+    """returns the index of business days in the country's equity markets - useful when re-indexing"""
+    assert (isinstance(country, str) and isinstance(start_date, datetime.date)
+            and isinstance(end_date, datetime.date))
+    reg_idx = pd.bdate_range(start_date, end_date)
+    holidays_idx = Utilities.holidays.HOLIDAYS_BY_COUNTRY_CONFIG.get(country, {})
+    reg_idx = list(map(lambda d: d.date(), reg_idx.difference(holidays_idx).tolist()))
+    assert (isinstance(reg_idx, list))
+    return reg_idx
 
 
 def round_to_nearest_minute(t):

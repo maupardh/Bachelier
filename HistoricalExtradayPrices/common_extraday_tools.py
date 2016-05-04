@@ -76,7 +76,7 @@ def get_extraday_prices(start_date, end_date, asset_codes=None):
     multiindex is date + symbol
     columns are open, close, adj close, volume"""
     try:
-        assert(asset_codes is None or isinstance(asset_codes, pd.Index))
+        assert(isinstance(start_date, datetime.date) and isinstance(end_date, datetime.date))
         content = pd.concat(map(
             lambda d: _get_extraday_prices(d.date(), asset_codes), pd.date_range(
                 start_date, end_date, freq='D')), ignore_index=True)
