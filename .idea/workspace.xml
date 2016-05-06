@@ -2,13 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cf67a859-3775-4497-b694-6ee3f0d34375" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Strategies/compute_returns.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Strategies/define_factors.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Strategies/define_universe.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Strategies/predict_returns.py" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Quick/universes.py" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/HistoricalExtradayPrices/common_extraday_tools.py" afterPath="$PROJECT_DIR$/HistoricalExtradayPrices/common_extraday_tools.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Utilities/datetime_tools.py" afterPath="$PROJECT_DIR$/Utilities/datetime_tools.py" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Strategies/compute_returns.py" afterPath="$PROJECT_DIR$/Strategies/returns.py" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Strategies/define_factors.py" afterPath="$PROJECT_DIR$/Strategies/factors.py" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Strategies/define_universe.py" afterPath="$PROJECT_DIR$/Strategies/universes.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Strategies/predict_returns.py" afterPath="$PROJECT_DIR$/Strategies/predict_returns.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="pythonCode.iws" />
@@ -30,8 +27,8 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="define_universe.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Strategies/define_universe.py">
+      <file leaf-file-name="universes.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Strategies/universes.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
               <caret line="64" column="0" selection-start-line="64" selection-start-column="0" selection-end-line="64" selection-end-column="0" />
@@ -52,11 +49,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="compute_returns.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Strategies/compute_returns.py">
+      <file leaf-file-name="returns.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Strategies/returns.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
+              <caret line="65" column="27" selection-start-line="65" selection-start-column="27" selection-end-line="65" selection-end-column="27" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
               </folding>
@@ -76,11 +73,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="define_factors.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Strategies/define_factors.py">
+      <file leaf-file-name="factors.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Strategies/factors.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="92" column="40" selection-start-line="92" selection-start-column="40" selection-end-line="92" selection-end-column="40" />
+              <caret line="32" column="0" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
               </folding>
@@ -91,55 +88,9 @@
       <file leaf-file-name="predict_returns.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Strategies/predict_returns.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.6828753">
-              <caret line="28" column="0" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
-              <folding>
-                <element signature="e#0#15#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="datetime_tools.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Utilities/datetime_tools.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="36" column="0" selection-start-line="36" selection-start-column="0" selection-end-line="36" selection-end-column="0" />
-              <folding>
-                <element signature="e#0#15#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="holidays.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Utilities/holidays.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="221" column="25" selection-start-line="221" selection-start-column="25" selection-end-line="221" selection-end-column="25" />
+            <state vertical-scroll-proportion="0.17979452">
+              <caret line="7" column="25" selection-start-line="7" selection-start-column="25" selection-end-line="7" selection-end-column="25" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="yahoo_div_and_split_import.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/HistoricalSplitAndDividends/yahoo_div_and_split_import.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="31" column="0" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="common_extraday_tools.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/HistoricalExtradayPrices/common_extraday_tools.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="27" selection-end-column="37" />
-              <folding>
-                <element signature="e#0#19#0" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -168,8 +119,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/HistoricalSplitAndDividends/monthly_yahoo_div_and_split_script.plist" />
-        <option value="$PROJECT_DIR$/HistoricalSplitAndDividends/monthly_yahoo_div_and_split_script.py" />
         <option value="$PROJECT_DIR$/HistoricalSplitAndDividends/main.py" />
         <option value="$PROJECT_DIR$/Utilities/markets.py" />
         <option value="$PROJECT_DIR$/Backtesting/simpleExtradayBacktester.py" />
@@ -216,9 +165,11 @@
         <option value="$PROJECT_DIR$/Strategies/hedge_returns.py" />
         <option value="$PROJECT_DIR$/Strategies/compute_returns.py" />
         <option value="$PROJECT_DIR$/Utilities/datetime_tools.py" />
-        <option value="$PROJECT_DIR$/Strategies/predict_returns.py" />
         <option value="$PROJECT_DIR$/Strategies/define_factors.py" />
         <option value="$PROJECT_DIR$/Strategies/define_universe.py" />
+        <option value="$PROJECT_DIR$/Strategies/returns.py" />
+        <option value="$PROJECT_DIR$/Strategies/factors.py" />
+        <option value="$PROJECT_DIR$/Strategies/predict_returns.py" />
       </list>
     </option>
   </component>
@@ -252,8 +203,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -386,6 +335,8 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -422,7 +373,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="pythonCode" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Strategies/define_universe.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Strategies/universes.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
@@ -855,7 +806,13 @@
       <option name="project" value="LOCAL" />
       <updated>1461955545198</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="refactoring strats">
+      <created>1462380415749</created>
+      <option name="number" value="00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1462380415749</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -867,7 +824,7 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24973656" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.29105005" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.37686568" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23880596" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.34577113" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32822758" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -901,7 +858,8 @@
     <MESSAGE value="added a config file for I/O" />
     <MESSAGE value="debugging for extraday refresh" />
     <MESSAGE value="minor refactors" />
-    <option name="LAST_COMMIT_MESSAGE" value="minor refactors" />
+    <MESSAGE value="refactoring strats" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactoring strats" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -937,24 +895,39 @@
           <option name="timeStamp" value="116" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/Strategies/define_factors.py</url>
-          <line>92</line>
-          <option name="timeStamp" value="250" />
+          <url>file://$PROJECT_DIR$/Strategies/predict_returns.py</url>
+          <line>13</line>
+          <option name="timeStamp" value="256" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/Strategies/define_factors.py</url>
+          <url>file://$PROJECT_DIR$/Strategies/predict_returns.py</url>
+          <line>16</line>
+          <option name="timeStamp" value="257" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/Strategies/predict_returns.py</url>
           <line>20</line>
-          <option name="timeStamp" value="251" />
+          <option name="timeStamp" value="258" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/Strategies/define_factors.py</url>
-          <line>23</line>
-          <option name="timeStamp" value="253" />
+          <url>file://$PROJECT_DIR$/Strategies/predict_returns.py</url>
+          <line>40</line>
+          <option name="timeStamp" value="259" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/Strategies/define_factors.py</url>
-          <line>51</line>
-          <option name="timeStamp" value="254" />
+          <url>file://$PROJECT_DIR$/Strategies/predict_returns.py</url>
+          <line>31</line>
+          <option name="timeStamp" value="260" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/Strategies/predict_returns.py</url>
+          <line>24</line>
+          <option name="timeStamp" value="261" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/Strategies/predict_returns.py</url>
+          <line>35</line>
+          <option name="timeStamp" value="262" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
@@ -964,18 +937,11 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="256" />
+      <option name="time" value="263" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Backtesting/lowFrequencyTradingRobot.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="25" column="0" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Quick/universes.ipynb">
       <provider selected="true" editor-type-id="ipnb-editor">
         <state>
@@ -1217,19 +1183,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="117" column="0" selection-start-line="117" selection-start-column="0" selection-end-line="117" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#14#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/HistoricalExtradayPrices/monthly_extraday_cash_equity_prices_import_script.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
-          <folding>
-            <element signature="e#23#37#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1258,7 +1211,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="639" column="0" selection-start-line="639" selection-start-column="0" selection-end-line="639" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1293,7 +1245,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="27" selection-end-column="37" />
           <folding>
-            <element signature="e#0#19#0" expanded="true" />
+            <element signature="e#0#19#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1302,7 +1254,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.53911203">
           <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1311,7 +1262,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="36" column="0" selection-start-line="36" selection-start-column="0" selection-end-line="36" selection-end-column="0" />
           <folding>
-            <element signature="e#0#15#0" expanded="true" />
+            <element signature="e#0#15#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1324,17 +1275,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Strategies/compute_returns.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Strategies/define_universe.py">
+    <entry file="file://$PROJECT_DIR$/Strategies/universes.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="64" column="0" selection-start-line="64" selection-start-column="0" selection-end-line="64" selection-end-column="0" />
@@ -1344,10 +1285,37 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Strategies/define_factors.py">
+    <entry file="file://$PROJECT_DIR$/HistoricalExtradayPrices/monthly_extraday_cash_equity_prices_import_script.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="92" column="40" selection-start-line="92" selection-start-column="40" selection-end-line="92" selection-end-column="40" />
+          <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
+          <folding>
+            <element signature="e#23#37#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Strategies/scratch.ipynb">
+      <provider selected="true" editor-type-id="ipnb-editor">
+        <state>
+          <selected id="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Strategies/factors.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="32" column="0" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Strategies/returns.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="65" column="27" selection-start-line="65" selection-start-column="27" selection-end-line="65" selection-end-column="27" />
           <folding>
             <element signature="e#0#15#0" expanded="true" />
           </folding>
@@ -1356,11 +1324,9 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Strategies/predict_returns.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6828753">
-          <caret line="28" column="0" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="0.17979452">
+          <caret line="7" column="25" selection-start-line="7" selection-start-column="25" selection-end-line="7" selection-end-column="25" />
+          <folding />
         </state>
       </provider>
     </entry>

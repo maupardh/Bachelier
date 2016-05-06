@@ -59,3 +59,53 @@ def compute_returns(assets_df, business_days_calendar):
     assets_df_with_returns = assets_df.merge(returns, how='inner', on='COMPOSITE_ID_BB_GLOBAL')
 
     return assets_df_with_returns
+
+
+def compute_hedged_returns(assets_df_with_factors, business_days_calendar):
+
+    # COMPUTE NAKED RETURNS
+    assets_df_with_hedged_returns = compute_returns(assets_df_with_factors, business_days_calendar)
+
+    # COMPUTE HEDGED RETURNS
+    assets_df_with_hedged_returns = assets_df_with_hedged_returns.merge(
+        assets_df_with_hedged_returns[
+            [col for col in assets_df_with_hedged_returns.columns if col.startswith('NAKED_RETURN')] + [
+                'Date', 'COMPOSITE_ID_BB_GLOBAL']].rename(columns=dict(
+            [(col, 'CAPI_BETA_HEDGED_' + col[6:]) for col in assets_df_with_hedged_returns.columns if
+             col.startswith('NAKED_RETURN')] + [
+                ('COMPOSITE_ID_BB_GLOBAL', 'CapiHedgeInstrument')])),
+        on=['Date', 'CapiHedgeInstrument'])
+    assets_df_with_hedged_returns = assets_df_with_hedged_returns.merge(
+        assets_df_with_hedged_returns[
+            [col for col in assets_df_with_hedged_returns.columns if col.startswith('NAKED_RETURN')] + [
+                'Date', 'COMPOSITE_ID_BB_GLOBAL']].rename(columns=dict(
+            [(col, 'SECTOR_BETA_HEDGED_' + col[6:]) for col in assets_df_with_hedged_returns.columns if
+             col.startswith('NAKED_RETURN')] + [
+                ('COMPOSITE_ID_BB_GLOBAL', 'SectorHedgeInstrument')])),
+        on=['Date', 'SectorHedgeInstrument'])
+    assets_df_with_hedged_returns = assets_df_with_hedged_returns.merge(
+        assets_df_with_hedged_returns[
+            [col for col in assets_df_with_hedged_returns.columns if col.startswith('NAKED_RETURN')] + [
+                'Date', 'COMPOSITE_ID_BB_GLOBAL']].rename(columns=dict(
+            [(col, 'FACTOR_BETA_HEDGED_' + col[6:]) for col in assets_df_with_hedged_returns.columns if
+             col.startswith('NAKED_RETURN')] + [
+                ('COMPOSITE_ID_BB_GLOBAL', 'FactorHedgeInstrument')])),
+        on=['Date', 'FactorHedgeInstrument'])
+
+    for col in [col for col in assets_df_with_hedged_returns.columns if col.startswith('NAKED_RETURN')]:
+        assets_df_with_hedged_returns['CAPI_BETA_HEDGED_' + col[6:]] = assets_df_with_hedged_returns[col] - \
+                                                                       assets_df_with_hedged_returns['CapiHedgeBeta'] * \
+                                                                       assets_df_with_hedged_returns[
+                                                                           'CAPI_BETA_HEDGED_' + col[6:]]
+        assets_df_with_hedged_returns['SECTOR_BETA_HEDGED_' + col[6:]] = assets_df_with_hedged_returns[col] - \
+                                                                         assets_df_with_hedged_returns[
+                                                                             'SectorHedgeBeta'] * \
+                                                                         assets_df_with_hedged_returns[
+                                                                             'SECTOR_BETA_HEDGED_' + col[6:]]
+        assets_df_with_hedged_returns['FACTOR_BETA_HEDGED_' + col[6:]] = assets_df_with_hedged_returns[col] - \
+                                                                         assets_df_with_hedged_returns[
+                                                                             'FactorHedgeBeta'] * \
+                                                                         assets_df_with_hedged_returns[
+                                                                             'FACTOR_BETA_HEDGED_' + col[6:]]
+
+    return assets_df_with_hedged_returns
