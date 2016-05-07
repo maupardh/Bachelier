@@ -9,7 +9,6 @@ __ASSETS_DIRECTORY = Utilities.config.directories['assetsPath']
 
 
 def get_assets():
-
     content = pd.DataFrame(None)
     try:
         assets_path = os.path.join(__ASSETS_DIRECTORY, 'BBGSymbiologyAssets.csv.zip')
@@ -23,7 +22,6 @@ def get_assets():
 
 
 def get_equity_import_universe_from_nasdaq_trader():
-
     logging.info('Retrieving symbols from Nasdaq Trader')
     try:
         query = 'ftp://ftp.nasdaqtrader.com/symboldirectory/nasdaqlisted.txt'
@@ -40,7 +38,6 @@ def get_equity_import_universe_from_nasdaq_trader():
 
 
 def get_equity_import_universe_from_oats(file_type='SOD'):
-
     logging.info('Retrieving symbols from oats')
     try:
         query = 'http://oatsreportable.finra.org/OATSReportableSecurities-' + file_type + '.txt'
@@ -55,7 +52,6 @@ def get_equity_import_universe_from_oats(file_type='SOD'):
 
 
 def refresh_assets(date):
-
     bbg_open_symbiology_configs = [
         {'market_sector': 'Equity', 'security_type': 'ADR', 'date': date},
         {'market_sector': 'Equity', 'security_type': 'BDR', 'date': date},
@@ -74,3 +70,15 @@ def refresh_assets(date):
     path_to_zip = os.path.join(__ASSETS_DIRECTORY, 'BBGSymbiologyAssets.csv.zip')
 
     HistoricalAssets.asset_import_tools.historize_assets(bbg_open_symbiology_configs, [path_to_zip])
+
+
+def get_leveraged_etfs():
+    content = pd.DataFrame(None)
+    try:
+        assets_path = os.path.join(__ASSETS_DIRECTORY, 'LeveragedETFs.csv')
+        logging.info('Reading leveraged ETF assets at %s' % assets_path)
+        content = Utilities.general_tools.read_and_log_pandas_df(assets_path)
+    except Exception as err:
+        logging.critical('Reading leveraged ETF assets failed with error message: %s' % err)
+
+    return content

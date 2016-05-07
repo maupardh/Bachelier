@@ -63,4 +63,8 @@ def get_us_factor_hedges(start_date, end_date):
                                               'COMPOSITE_ID_BB_GLOBAL'].unique()
     assets_universe = US_stocks.loc[US_stocks['COMPOSITE_ID_BB_GLOBAL'].isin(liquid_securities)]
 
+    # excluding leveraged etfs
+    leveraged_etfs = Utilities.assets.get_leveraged_etfs()['COMPOSITE_ID_BB_GLOBAL'].unique()
+    assets_universe = assets_universe.loc[np.logical_not(assets_universe['COMPOSITE_ID_BB_GLOBAL'].isin(leveraged_etfs))]
+
     return assets_universe
