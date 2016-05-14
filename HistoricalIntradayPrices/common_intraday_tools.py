@@ -89,7 +89,7 @@ def _get_intraday_prices(date, bbgids):
             logging.info('Reading successful')
             return content
         except Exception as err:
-            logging.warning('Reading failed with error: %s' % err.message)
+            logging.warning('Reading failed with error: %s' % err)
             return pd.DataFrame(None)
 
     logging.info('Reading intraday prices for %s ids on %s' % (date.isoformat(), len(bbgids)))
@@ -108,5 +108,5 @@ def get_intraday_prices(start_date, end_date, bbgids):
     except AssertionError:
         logging.warning('Calling get_intraday_prices with wrong argument types')
     except Exception as err:
-        logging.warning('_get_intraday_prices failed with error: %s' % err.message)
+        logging.warning('_get_intraday_prices failed with error: %s' % err)
         return pd.DataFrame(None)

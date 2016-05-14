@@ -4,10 +4,9 @@ import os.path
 import datetime
 import logging
 import pytz
-from tzlocal import get_localzone
 import sys
 
-sys.path.append('F:/prod/pythonCode')
+sys.path.append('F:/prod/Bachelier')
 import HistoricalIntradayPrices.yahoo_intraday_fx_spot_prices_import
 import Utilities.datetime_tools
 import Utilities.logging_tools
@@ -26,10 +25,10 @@ def refresh():
     refresh decorates refresh_fx"""
 
     today = datetime.date.today()
-    local_tz = get_localzone()
+    local_tz = pytz.timezone('America/New_York')
 
     # Initialization
-    log_file_path = os.path.join(Utilities.config['logsPath'], today.isoformat(), "IntradayYahooFXImport.txt")
+    log_file_path = os.path.join(Utilities.config.directories['logsPath'], today.isoformat(), "IntradayYahooFXImport.txt")
     Utilities.logging_tools.initialize_logging(log_file_path)
 
     # FX Import
@@ -51,10 +50,9 @@ def refresh_fx(date):
         logging.info('Starting to import FX intraday asset prices')
 
         fx_assets = Utilities.assets.get_assets()
-        fx_assets['ID_BB_GLOBAL'] = fx_assets.index
         fx_assets = fx_assets[fx_assets['MARKET_SECTOR_DES'] == 'Curncy']
         fx_assets = fx_assets[fx_assets['SECURITY_TYP'] == 'CROSS']
-        fx_assets = fx_assets[['ID_BB_GLOBAL', 'ID_BB_SEC_NUM_DES', 'MARKET_SECTOR_DES']]
+        fx_assets = fx_assets[['COMPOSITE_ID_BB_GLOBAL', 'ID_BB_SEC_NUM_DES', 'MARKET_SECTOR_DES']]
         fx_assets = fx_assets[fx_assets['ID_BB_SEC_NUM_DES'].apply(lambda ccy_pair: len(ccy_pair) == 6)]
         fx_assets = fx_assets[fx_assets['ID_BB_SEC_NUM_DES'].apply(
             lambda ccy_pair: (ccy_pair[0:3] in Utilities.markets.HISTORIZED_FX_SPOTS or ccy_pair[0:3] == 'USD') and
@@ -63,13 +61,13 @@ def refresh_fx(date):
         fx_assets.sort_values(by='ID_BB_SEC_NUM_DES', axis=0, ascending=True, inplace=True)
 
         HistoricalIntradayPrices.yahoo_intraday_fx_spot_prices_import.retrieve_and_store_today_price_from_yahoo(
-            fx_assets, Utilities.config['intradayPricesPath'], date=date)
+            fx_assets, Utilities.config.directories['intradayPricesPath'], date=date)
         logging.info('FX intraday price import complete')
 
     except AssertionError:
         logging.warning('Calling refresh_fx with wrong argument types')
     except Exception as err:
-        logging.warning('FX intraday price import failed with error: %s', err.message)
+        logging.warning('FX intraday price import failed with error: %s', err)
 
 
 refresh()

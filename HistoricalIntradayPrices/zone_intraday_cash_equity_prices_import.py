@@ -86,7 +86,7 @@ def refresh_asia(date):
     except AssertionError:
         logging.warning('Calling refresh_asia with wrong argument types')
     except Exception as err:
-        logging.warning('refresh_asia failed with message: %s' % err.message)
+        logging.warning('refresh_asia failed with message: %s' % err)
 
 
 def refresh_emea(date):
@@ -132,4 +132,4 @@ def refresh_emea(date):
     except AssertionError:
         logging.warning('Calling refresh_emea with wrong argument types')
     except Exception as err:
-        logging.warning('refresh_emea failed with message: %s' % err.message)
+        logging.warning('refresh_emea failed with message: %s' % err)
