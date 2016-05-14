@@ -5,7 +5,7 @@ config_loaded = False
 directories = {}
 
 if not config_loaded:
-    with open("/Users/hmaupard/Documents/Personal/python-projects/Bachelier/Configs/directories.yaml", 'r') as f:
+    with open("../Configs/directories.yaml", 'r') as f:
         directories = yaml.safe_load(f)
     config_loaded = True
 

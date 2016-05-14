@@ -48,7 +48,6 @@ def _get_price_from_yahoo(yahoo_tickers, start_date, end_date, country):
             {'Open': sum, 'Close': sum, 'AdjClose': sum, 'Volume': sum})
 
         price_dat = price_dat.reindex(std_index)
-        price_dat.index.name = 'Date'
         price_dat.reset_index(inplace=True)
         price_dat = price_dat.loc[price_dat['AdjClose'] > 0.0]
         price_dat = price_dat.loc[price_dat['Close'] > 0.0]

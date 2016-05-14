@@ -16,7 +16,7 @@ _EQUITY_GAP_AFTER_MARKET_OPEN = datetime.timedelta(minutes=0)
 _EQUITY_GAP_AFTER_MARKET_CLOSE = datetime.timedelta(minutes=5)
 # directory where intraday prices are stored in .zip format.
 # the directory contains one folder per date, and then each folder contains ~15k zip files, one per symbol
-__INTRADAY_PRICES_DIRECTORY = Utilities.config['intradayPricesPath']
+__INTRADAY_PRICES_DIRECTORY = Utilities.config.directories['intradayPricesPath']
 
 
 def get_standardized_intraday_equity_dtindex(country, date):
@@ -33,6 +33,7 @@ def get_standardized_intraday_equity_dtindex(country, date):
                   Utilities.markets.EQUITY_MARKETS_BY_COUNTRY_CONFIG[country]['MarketClose'] \
                   + _EQUITY_GAP_AFTER_MARKET_CLOSE
         reg_idx = pd.date_range(start_reg, end_reg, freq='1T')
+        reg_idx.name = 'Time'
         return reg_idx
     except AssertionError:
         logging.warning('Calling get_standardized_intraday_equity_dtindex with wrong argument types')
@@ -48,6 +49,7 @@ def get_standardized_intraday_fx_dtindex(date):
         end_reg = pytz.utc.localize(datetime.datetime(date.year, date.month, date.day) +
                                     datetime.timedelta(days=1) - datetime.timedelta(minutes=1))
         reg_idx = pd.date_range(start_reg, end_reg, freq='1T')
+        reg_idx.name = 'Time'
         return reg_idx
     except AssertionError:
         logging.warning('Calling get_standardized_intraday_fx_dtindex with wrong argument types')

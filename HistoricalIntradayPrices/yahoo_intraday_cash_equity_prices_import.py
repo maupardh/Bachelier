@@ -37,8 +37,8 @@ def get_price_from_yahoo(yahoo_tickers, country, date):
         price_dat = price_dat.applymap(float)
         price_dat.rename(columns={'Timestamp': 'Time'}, inplace=True)
 
-        price_dat['Time'] = map(lambda t: pytz.utc.localize(datetime.datetime.utcfromtimestamp(t)), price_dat['Time'])
-        price_dat['Time'] = map(Utilities.datetime_tools.truncate_to_next_minute, price_dat['Time'])
+        price_dat['Time'] = list(map(lambda t: pytz.utc.localize(datetime.datetime.utcfromtimestamp(t)), price_dat['Time']))
+        price_dat['Time'] = list(map(Utilities.datetime_tools.truncate_to_next_minute, price_dat['Time']))
 
         price_dat = price_dat[['Close', 'High', 'Low', 'Open', 'Volume'] + ['Time']]
         price_dat = price_dat[price_dat['Volume'] > 0]
@@ -46,8 +46,8 @@ def get_price_from_yahoo(yahoo_tickers, country, date):
         price_dat.loc[:, 'Close'] = price_dat['Close'] * price_dat['Volume']
         price_dat = price_dat.groupby('Time', sort=False).agg({
             'Open': sum, 'Close': sum, 'Low': min, 'High': max, 'Volume': sum})
-        price_dat.loc[:, 'Open'] = map(lambda x: round(x, 6), price_dat['Open'] / price_dat['Volume'])
-        price_dat.loc[:, 'Close'] = map(lambda x: round(x, 6), price_dat['Close'] / price_dat['Volume'])
+        price_dat.loc[:, 'Open'] = list(map(lambda x: round(x, 6), price_dat['Open'] / price_dat['Volume']))
+        price_dat.loc[:, 'Close'] = list(map(lambda x: round(x, 6), price_dat['Close'] / price_dat['Volume']))
 
         price_dat = price_dat[['Close', 'High', 'Low', 'Open', 'Volume']]
         price_dat = price_dat.reindex(index=std_index)
@@ -61,7 +61,10 @@ def get_price_from_yahoo(yahoo_tickers, country, date):
                 return t.values
 
         price_dat = price_dat.apply(lambda t: propagate_on_zero_volume(t, 'Close'), axis=1)
-        price_dat = price_dat.fillna(0)
+        price_dat = price_dat.fillna(0).reset_index()
+
+        assert (isinstance(price_dat, pd.DataFrame) and tuple(sorted(price_dat.columns)) == tuple(
+            sorted(['Close', 'High', 'Low', 'Open', 'Time', 'Volume'])))
 
         logging.info('Yahoo price import and pandas enrich successful for: %s' % yahoo_tickers)
         if price_dat['Volume'].sum() == 0:
@@ -100,9 +103,9 @@ def retrieve_and_store_today_price_from_yahoo(assets_df, root_directory_name, da
 
         def historize_asset(asset):
             logging.info('   Retrieving Prices for: %s , BBG_ID: %s'
-                         % (",".join(asset['YAHOO_TICKERS']), asset['ID_BB_GLOBAL']))
+                         % (",".join(asset['YAHOO_TICKERS']), asset['COMPOSITE_ID_BB_GLOBAL']))
             pandas_content = get_price_from_yahoo(asset['YAHOO_TICKERS'], asset['COUNTRY'], date=date)
-            csv_output_path = os.path.join(csv_directory, asset['ID_BB_GLOBAL'] + '.csv.zip')
+            csv_output_path = os.path.join(csv_directory, asset['COMPOSITE_ID_BB_GLOBAL'] + '.csv.zip')
             Utilities.general_tools.store_and_log_pandas_df(csv_output_path, pandas_content)
 
         def historize_batch(batch):

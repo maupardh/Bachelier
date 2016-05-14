@@ -21,6 +21,7 @@ def get_standardized_extraday_equity_dtindex(country, start_date, end_date):
         reg_idx = pd.bdate_range(start_date, end_date)
         holidays_idx = Utilities.holidays.HOLIDAYS_BY_COUNTRY_CONFIG.get(country, {})
         reg_idx = reg_idx.difference(holidays_idx)
+        reg_idx.name = 'Date'
         assert(isinstance(reg_idx, pd.DatetimeIndex))
         return reg_idx
     except Exception as err:
@@ -33,6 +34,7 @@ def get_standardized_extraday_fx_dtindex(start_date, end_date):
     try:
         assert(isinstance(start_date, datetime.date) and isinstance(end_date, datetime.date))
         reg_idx = pd.bdate_range(start_date, end_date)
+        reg_idx.name = 'Date'
         assert(isinstance(reg_idx, pd.DatetimeIndex))
         return reg_idx
     except Exception as err:

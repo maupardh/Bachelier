@@ -2,15 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cf67a859-3775-4497-b694-6ee3f0d34375" name="Default" comment="">
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Strategies/factors.py" afterPath="$PROJECT_DIR$/Strategies/Targets/factors.py" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Strategies/predict_returns.py" afterPath="$PROJECT_DIR$/Strategies/Training/predict_returns.py" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Strategies/returns.py" afterPath="$PROJECT_DIR$/Strategies/Targets/returns.py" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Strategies/store_clean_leveraged_etfs.ipynb" afterPath="$PROJECT_DIR$/Strategies/Featurization/store_clean_leveraged_etfs.ipynb" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/Strategies/universes.py" afterPath="$PROJECT_DIR$/Strategies/Targets/universes.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/pythonCode.iml" afterPath="$PROJECT_DIR$/.idea/pythonCode.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Strategies/scratch.ipynb" afterPath="$PROJECT_DIR$/Strategies/scratch.ipynb" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Configs/directories.yaml" afterPath="$PROJECT_DIR$/Configs/directories.yaml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/HistoricalExtradayPrices/common_extraday_tools.py" afterPath="$PROJECT_DIR$/HistoricalExtradayPrices/common_extraday_tools.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/HistoricalExtradayPrices/yahoo_extraday_cash_equity_prices_import.py" afterPath="$PROJECT_DIR$/HistoricalExtradayPrices/yahoo_extraday_cash_equity_prices_import.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/HistoricalIntradayPrices/common_intraday_tools.py" afterPath="$PROJECT_DIR$/HistoricalIntradayPrices/common_intraday_tools.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/HistoricalIntradayPrices/daily_intraday_cash_equity_prices_import_script.py" afterPath="$PROJECT_DIR$/HistoricalIntradayPrices/daily_intraday_cash_equity_prices_import_script.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/HistoricalIntradayPrices/yahoo_intraday_cash_equity_prices_import.py" afterPath="$PROJECT_DIR$/HistoricalIntradayPrices/yahoo_intraday_cash_equity_prices_import.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Utilities/config.py" afterPath="$PROJECT_DIR$/Utilities/config.py" />
     </list>
     <ignored path="pythonCode.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -31,12 +32,14 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="assets.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Utilities/assets.py">
+      <file leaf-file-name="daily_intraday_cash_equity_prices_import_script.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/HistoricalIntradayPrices/daily_intraday_cash_equity_prices_import_script.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1005">
-              <caret line="72" column="0" selection-start-line="72" selection-start-column="0" selection-end-line="72" selection-end-column="0" />
-              <folding />
+            <state relative-caret-position="255">
+              <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+              <folding>
+                <element signature="e#23#37#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -44,8 +47,8 @@
       <file leaf-file-name="general_tools.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Utilities/general_tools.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="945">
-              <caret line="71" column="6" selection-start-line="71" selection-start-column="6" selection-end-line="71" selection-end-column="6" />
+            <state relative-caret-position="302">
+              <caret line="28" column="0" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
               <folding>
                 <element signature="e#0#14#0" expanded="true" />
               </folding>
@@ -53,59 +56,75 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="predict_returns.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Strategies/Training/predict_returns.py">
+      <file leaf-file-name="yahoo_extraday_cash_equity_prices_import.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/HistoricalExtradayPrices/yahoo_extraday_cash_equity_prices_import.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="405">
-              <caret line="27" column="0" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
+            <state relative-caret-position="279">
+              <caret line="49" column="48" selection-start-line="49" selection-start-column="48" selection-end-line="49" selection-end-column="48" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="common_intraday_tools.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/HistoricalIntradayPrices/common_intraday_tools.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="387">
+              <caret line="51" column="29" selection-start-line="51" selection-start-column="29" selection-end-line="51" selection-end-column="29" />
               <folding>
-                <element signature="e#0#15#0" expanded="true" />
+                <element signature="e#0#19#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="universes.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Strategies/Targets/universes.py">
+      <file leaf-file-name="yahoo_intraday_cash_equity_prices_import.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/HistoricalIntradayPrices/yahoo_intraday_cash_equity_prices_import.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state relative-caret-position="149">
+              <caret line="65" column="0" selection-start-line="65" selection-start-column="0" selection-end-line="65" selection-end-column="0" />
               <folding>
-                <element signature="e#0#15#0" expanded="true" />
+                <element signature="e#0#19#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="returns.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Strategies/Targets/returns.py">
+      <file leaf-file-name="series.py" pinned="false" current-in-tab="false">
+        <entry file="file://C:/PersoH/VirtualEnvs/Python3/python3/Lib/site-packages/pandas/core/series.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding>
-                <element signature="e#0#15#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="404">
+              <caret line="571" column="0" selection-start-line="571" selection-start-column="0" selection-end-line="571" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="factors.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Strategies/Targets/factors.py">
+      <file leaf-file-name="yahoo_import.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Utilities/yahoo_import.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding>
-                <element signature="e#0#18#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="302">
+              <caret line="97" column="0" selection-start-line="97" selection-start-column="0" selection-end-line="97" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="datetime_tools.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Utilities/datetime_tools.py">
+      <file leaf-file-name="zone_intraday_cash_equity_prices_import.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/HistoricalIntradayPrices/zone_intraday_cash_equity_prices_import.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+            <state relative-caret-position="51">
+              <caret line="12" column="4" selection-start-line="12" selection-start-column="4" selection-end-line="12" selection-end-column="4" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="common_extraday_tools.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/HistoricalExtradayPrices/common_extraday_tools.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="323">
+              <caret line="36" column="29" selection-start-line="36" selection-start-column="29" selection-end-line="36" selection-end-column="29" />
               <folding />
             </state>
           </provider>
@@ -160,20 +179,13 @@
         <option value="$PROJECT_DIR$/Configs/directories.json" />
         <option value="$PROJECT_DIR$/__init__.py" />
         <option value="$PROJECT_DIR$/HistoricalExtradayPrices/scratch.py" />
-        <option value="$PROJECT_DIR$/HistoricalIntradayPrices/common_intraday_tools.py" />
         <option value="$PROJECT_DIR$/HistoricalIntradayPrices/scratch.py" />
         <option value="$PROJECT_DIR$/HistoricalAssets/daily_asset_refresh_from_bbg_script.py" />
-        <option value="$PROJECT_DIR$/Utilities/config.py" />
-        <option value="$PROJECT_DIR$/Configs/directories.yaml" />
         <option value="$PROJECT_DIR$/Utilities/logging_tools.py" />
         <option value="$PROJECT_DIR$/HistoricalExtradayPrices/monthly_extraday_cash_equity_prices_import_script.py" />
-        <option value="$PROJECT_DIR$/HistoricalExtradayPrices/yahoo_extraday_cash_equity_prices_import.py" />
-        <option value="$PROJECT_DIR$/HistoricalIntradayPrices/daily_intraday_cash_equity_prices_import_script.py" />
         <option value="$PROJECT_DIR$/HistoricalIntradayPrices/daily_intraday_fx_spot_prices_import_script.py" />
         <option value="$PROJECT_DIR$/HistoricalIntradayPrices/google_intraday_cash_equity_prices_import.py" />
-        <option value="$PROJECT_DIR$/HistoricalIntradayPrices/yahoo_intraday_cash_equity_prices_import.py" />
         <option value="$PROJECT_DIR$/HistoricalIntradayPrices/zone_intraday_cash_equity_prices_import.py" />
-        <option value="$PROJECT_DIR$/HistoricalExtradayPrices/common_extraday_tools.py" />
         <option value="$PROJECT_DIR$/Quick/universes.py" />
         <option value="$PROJECT_DIR$/Strategies/hedge_returns.py" />
         <option value="$PROJECT_DIR$/Strategies/compute_returns.py" />
@@ -186,12 +198,19 @@
         <option value="$PROJECT_DIR$/Strategies/factors.py" />
         <option value="$PROJECT_DIR$/Strategies/returns.py" />
         <option value="$PROJECT_DIR$/Strategies/Training/predict_returns.py" />
+        <option value="$PROJECT_DIR$/Utilities/config.py" />
+        <option value="$PROJECT_DIR$/Configs/directories.yaml" />
+        <option value="$PROJECT_DIR$/HistoricalIntradayPrices/daily_intraday_cash_equity_prices_import_script.py" />
+        <option value="$PROJECT_DIR$/HistoricalIntradayPrices/common_intraday_tools.py" />
+        <option value="$PROJECT_DIR$/HistoricalIntradayPrices/yahoo_intraday_cash_equity_prices_import.py" />
+        <option value="$PROJECT_DIR$/HistoricalExtradayPrices/common_extraday_tools.py" />
+        <option value="$PROJECT_DIR$/HistoricalExtradayPrices/yahoo_extraday_cash_equity_prices_import.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="width" value="1440" />
-    <option name="height" value="900" />
+    <option name="width" value="1920" />
+    <option name="height" value="1080" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -219,6 +238,7 @@
     </navigator>
     <panes>
       <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -405,12 +425,11 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../python-envs/anaconda3/envs/Bachelier/bin/python3.5" />
-    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
+    <property name="last_opened_file_path" value="F:/python-envs/anaconda3/envs/Bachelier/bin/python3.5" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
     <property name="recentsLimit" value="5" />
     <property name="FullScreen" value="true" />
@@ -430,7 +449,7 @@
       <recent name="$PROJECT_DIR$/Utilities/Clock" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.predict_returns">
+  <component name="RunManager" selected="Python.daily_intraday_cash_equity_prices_import_script">
     <configuration default="false" name="universes" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -444,23 +463,6 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="pythonCode" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Strategies/universes.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <method />
-    </configuration>
-    <configuration default="false" name="scratch" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/HistoricalExtradayPrices" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="pythonCode" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/HistoricalExtradayPrices/scratch.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
@@ -512,6 +514,23 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="pythonCode" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Strategies/Training/predict_returns.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="daily_intraday_cash_equity_prices_import_script" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/HistoricalIntradayPrices" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="pythonCode" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/HistoricalIntradayPrices/daily_intraday_cash_equity_prices_import_script.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
@@ -652,18 +671,18 @@
     </configuration>
     <list size="5">
       <item index="0" class="java.lang.String" itemvalue="Python.universes" />
-      <item index="1" class="java.lang.String" itemvalue="Python.scratch" />
-      <item index="2" class="java.lang.String" itemvalue="Python.config" />
-      <item index="3" class="java.lang.String" itemvalue="Python.monthly_extraday_cash_equity_prices_import_script" />
-      <item index="4" class="java.lang.String" itemvalue="Python.predict_returns" />
+      <item index="1" class="java.lang.String" itemvalue="Python.config" />
+      <item index="2" class="java.lang.String" itemvalue="Python.monthly_extraday_cash_equity_prices_import_script" />
+      <item index="3" class="java.lang.String" itemvalue="Python.predict_returns" />
+      <item index="4" class="java.lang.String" itemvalue="Python.daily_intraday_cash_equity_prices_import_script" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.predict_returns" />
-        <item index="1" class="java.lang.String" itemvalue="Python.universes" />
-        <item index="2" class="java.lang.String" itemvalue="Python.monthly_extraday_cash_equity_prices_import_script" />
-        <item index="3" class="java.lang.String" itemvalue="Python.config" />
-        <item index="4" class="java.lang.String" itemvalue="Python.scratch" />
+        <item index="0" class="java.lang.String" itemvalue="Python.daily_intraday_cash_equity_prices_import_script" />
+        <item index="1" class="java.lang.String" itemvalue="Python.predict_returns" />
+        <item index="2" class="java.lang.String" itemvalue="Python.universes" />
+        <item index="3" class="java.lang.String" itemvalue="Python.monthly_extraday_cash_equity_prices_import_script" />
+        <item index="4" class="java.lang.String" itemvalue="Python.config" />
       </list>
     </recent_temporary>
   </component>
@@ -958,29 +977,32 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1440" height="900" extended-state="0" />
+    <frame x="0" y="0" width="1920" height="1080" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.29105005" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.29083246" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32936078" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.34577113" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3283582" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32804757" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24973656" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.15920398" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.4261645" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32970297" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32822758" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.329602" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4266169" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.yaml" />
   </component>
   <component name="Vcs.Log.UiProperties">
     <option name="RECENTLY_FILTERED_USER_GROUPS">
@@ -1080,31 +1102,11 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="292" />
+      <option name="time" value="306" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Utilities/assets.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="72" column="0" selection-start-line="72" selection-start-column="0" selection-end-line="72" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Strategies/returns.py" />
-    <entry file="file://$PROJECT_DIR$/Utilities/general_tools.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="21" column="27" selection-start-line="21" selection-start-column="4" selection-end-line="21" selection-end-column="27" />
-          <folding>
-            <element signature="e#0#14#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Strategies/factors.py" />
     <entry file="file://$PROJECT_DIR$/Strategies/Training/predict_returns.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -1167,13 +1169,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/HistoricalIntradayPrices/common_intraday_tools.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="82" column="38" selection-start-line="82" selection-start-column="35" selection-end-line="82" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/HistoricalAssets/daily_asset_refresh_from_bbg_script.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -1195,13 +1190,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Utilities/yahoo_import.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="131" column="0" selection-start-line="131" selection-start-column="0" selection-end-line="131" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Utilities/zipping.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -1212,13 +1200,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Utilities/config.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Utilities/logging_tools.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -1226,20 +1207,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Configs/directories.yaml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file:///Library/Frameworks/Python.framework/Versions/3.5/lib/python3.5/logging/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="1837" column="0" selection-start-line="1837" selection-start-column="0" selection-end-line="1837" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file:///Library/Frameworks/Python.framework/Versions/3.5/lib/python3.5/logging/__init__.py" />
     <entry file="file://$PROJECT_DIR$/HistoricalSplitAndDividends/monthly_yahoo_div_and_split_script.plist">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -1247,24 +1215,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/HistoricalIntradayPrices/zone_intraday_cash_equity_prices_import.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="90" column="0" selection-start-line="90" selection-start-column="0" selection-end-line="90" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/HistoricalIntradayPrices/yahoo_intraday_fx_spot_prices_import.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="55" column="33" selection-start-line="55" selection-start-column="33" selection-end-line="55" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/HistoricalIntradayPrices/yahoo_intraday_cash_equity_prices_import.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="20" column="78" selection-start-line="20" selection-start-column="78" selection-end-line="20" selection-end-column="78" />
         </state>
       </provider>
     </entry>
@@ -1289,13 +1243,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/HistoricalIntradayPrices/daily_intraday_cash_equity_prices_import_script.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="43" column="0" selection-start-line="43" selection-start-column="0" selection-end-line="43" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/HistoricalAssets/asset_import_tools.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -1307,13 +1254,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="56" column="0" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/HistoricalExtradayPrices/yahoo_extraday_cash_equity_prices_import.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="117" column="0" selection-start-line="117" selection-start-column="0" selection-end-line="117" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -1329,13 +1269,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="221" column="25" selection-start-line="221" selection-start-column="25" selection-end-line="221" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/HistoricalExtradayPrices/common_extraday_tools.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="27" selection-end-column="37" />
         </state>
       </provider>
     </entry>
@@ -1355,26 +1288,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Utilities/assets.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1005">
+        <state relative-caret-position="1139">
           <caret line="72" column="0" selection-start-line="72" selection-start-column="0" selection-end-line="72" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../python-envs/anaconda3/envs/Bachelier/lib/python3.5/site-packages/pandas/core/generic.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="1537" column="0" selection-start-line="1537" selection-start-column="0" selection-end-line="1537" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../python-envs/anaconda3/envs/Bachelier/lib/python3.5/site-packages/sklearn/utils/validation.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="53" column="0" selection-start-line="53" selection-start-column="0" selection-end-line="53" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://F:/python-envs/anaconda3/envs/Bachelier/lib/python3.5/site-packages/pandas/core/generic.py" />
+    <entry file="file://F:/python-envs/anaconda3/envs/Bachelier/lib/python3.5/site-packages/sklearn/utils/validation.py" />
     <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_imps/_pydev_execfile.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -1385,19 +1306,9 @@
     <entry file="file://$PROJECT_DIR$/Strategies/universes.py" />
     <entry file="file://$PROJECT_DIR$/Utilities/datetime_tools.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
+        <state relative-caret-position="68">
           <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Utilities/general_tools.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="945">
-          <caret line="71" column="6" selection-start-line="71" selection-start-column="6" selection-end-line="71" selection-end-column="6" />
-          <folding>
-            <element signature="e#0#14#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1435,10 +1346,132 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Strategies/Training/predict_returns.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="27" column="0" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
+        <state relative-caret-position="153">
+          <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
           <folding>
             <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Utilities/config.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Configs/directories.yaml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" column="39" selection-start-line="1" selection-start-column="39" selection-end-line="1" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Utilities/yahoo_import.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="302">
+          <caret line="97" column="0" selection-start-line="97" selection-start-column="0" selection-end-line="97" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/PersoH/VirtualEnvs/Python3/python3/Lib/site-packages/chrono.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="313">
+          <caret line="50" column="0" selection-start-line="50" selection-start-column="0" selection-end-line="50" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/PersoH/VirtualEnvs/Python3/python3/Lib/site-packages/pandas/core/frame.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="183">
+          <caret line="4097" column="0" selection-start-line="4097" selection-start-column="0" selection-end-line="4097" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/PersoH/VirtualEnvs/Python3/python3/Lib/site-packages/pandas/core/series.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="404">
+          <caret line="571" column="0" selection-start-line="571" selection-start-column="0" selection-end-line="571" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/HistoricalIntradayPrices/zone_intraday_cash_equity_prices_import.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="12" column="4" selection-start-line="12" selection-start-column="4" selection-end-line="12" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Utilities/general_tools.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="302">
+          <caret line="28" column="0" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#14#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/HistoricalIntradayPrices/common_intraday_tools.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="387">
+          <caret line="51" column="29" selection-start-line="51" selection-start-column="29" selection-end-line="51" selection-end-column="29" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/HistoricalIntradayPrices/yahoo_intraday_cash_equity_prices_import.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="149">
+          <caret line="65" column="0" selection-start-line="65" selection-start-column="0" selection-end-line="65" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/HistoricalExtradayPrices/common_extraday_tools.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="36" column="29" selection-start-line="36" selection-start-column="29" selection-end-line="36" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/HistoricalExtradayPrices/yahoo_extraday_cash_equity_prices_import.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="279">
+          <caret line="49" column="48" selection-start-line="49" selection-start-column="48" selection-end-line="49" selection-end-column="48" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/PersoH/VirtualEnvs/Python3/python3/Lib/site-packages/pandas/indexes/base.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="183">
+          <caret line="1346" column="0" selection-start-line="1346" selection-start-column="0" selection-end-line="1346" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/HistoricalIntradayPrices/daily_intraday_cash_equity_prices_import_script.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+          <folding>
+            <element signature="e#23#37#0" expanded="true" />
           </folding>
         </state>
       </provider>
