@@ -1,9 +1,9 @@
 import pandas as pd
 import logging
 import datetime
-from StringIO import StringIO
-import urllib2
+from io import StringIO
 import Utilities.markets
+import urllib
 
 REQUEST_TIME_OUT = 10
 QUOTA_PER_INTERVAL = 500
@@ -44,14 +44,14 @@ def bb_sec_num_des_to_yahoo(bbg):
 
 def _prepare_fx_assets(fx_assets_df):
     if fx_assets_df.empty: return pd.DataFrame(None)
-    fx_assets_df = fx_assets_df[['ID_BB_GLOBAL', 'ID_BB_SEC_NUM_DES']]
+    fx_assets_df = fx_assets_df[['COMPOSITE_ID_BB_GLOBAL', 'ID_BB_SEC_NUM_DES']]
     fx_assets_df.sort_values('ID_BB_SEC_NUM_DES', inplace=True)
     fx_assets_df.drop_duplicates(inplace=True)
     fx_assets_df['YAHOO_TICKERS'] = fx_assets_df['ID_BB_SEC_NUM_DES'].apply(lambda t: t+'=X')
-    fx_assets_df = fx_assets_df.groupby('YAHOO_TICKERS').agg({'ID_BB_GLOBAL': lambda x: list(set(x))})
+    fx_assets_df = fx_assets_df.groupby('YAHOO_TICKERS').agg({'COMPOSITE_ID_BB_GLOBAL': lambda x: list(set(x))})
     fx_assets_df.reset_index(drop=False, inplace=True)
-    fx_assets_df = fx_assets_df[fx_assets_df['ID_BB_GLOBAL'].apply(lambda x: len(x) == 1)]
-    fx_assets_df['ID_BB_GLOBAL'] = fx_assets_df['ID_BB_GLOBAL'].apply(lambda x: x[0])
+    fx_assets_df = fx_assets_df[fx_assets_df['COMPOSITE_ID_BB_GLOBAL'].apply(lambda x: len(x) == 1)]
+    fx_assets_df['COMPOSITE_ID_BB_GLOBAL'] = fx_assets_df['COMPOSITE_ID_BB_GLOBAL'].apply(lambda x: x[0])
     fx_assets_df['YAHOO_TICKERS'] = fx_assets_df['YAHOO_TICKERS'].apply(lambda t: [t])
     fx_assets_df['COUNTRY'] = ['WORLD'] * fx_assets_df.shape[0]
 
@@ -61,18 +61,18 @@ def _prepare_fx_assets(fx_assets_df):
 def _prepare_equity_assets(equity_assets_df):
     if equity_assets_df.empty: return pd.DataFrame(None)
     equity_assets_df = equity_assets_df[['ID_BB_GLOBAL', 'ID_BB_SEC_NUM_DES', 'FEED_SOURCE', 'COMPOSITE_ID_BB_GLOBAL']]
-    equity_assets_df.sort_values('ID_BB_SEC_NUM_DES', inplace=True)
+    equity_assets_df.sort_values(by='ID_BB_SEC_NUM_DES', ascending=True, inplace=True)
     equity_assets_df.drop_duplicates(inplace=True)
-    equity_assets_df['MNEMO_AND_FEED_SOURCE'] = zip(equity_assets_df['ID_BB_SEC_NUM_DES'],
-                                                    equity_assets_df['FEED_SOURCE'])
+    equity_assets_df['MNEMO_AND_FEED_SOURCE'] = list(zip(equity_assets_df['ID_BB_SEC_NUM_DES'],
+                                                    equity_assets_df['FEED_SOURCE']))
     equity_assets_df = equity_assets_df.groupby(['COMPOSITE_ID_BB_GLOBAL']).agg(
-        {'MNEMO_AND_FEED_SOURCE': lambda x: set(x), 'FEED_SOURCE': lambda x: set(x)})
+        {'MNEMO_AND_FEED_SOURCE': lambda x: set(x.unique()), 'FEED_SOURCE': lambda x: set(x.unique())})
     equity_assets_df = equity_assets_df[equity_assets_df['FEED_SOURCE'].apply(
         lambda sources: any(source in MAP_BBG_FEED_SOURCE_TO_YAHOO_FEED_SOURCE for source in sources))]
     equity_assets_df['COUNTRY'] = equity_assets_df['MNEMO_AND_FEED_SOURCE'].apply(
-        lambda x: list(set(zip(*x)[1]).intersection(Utilities.markets.COUNTRIES)))
+        lambda x: list(set(list(zip(*x))[1]).intersection(Utilities.markets.COUNTRIES)))
     equity_assets_df = equity_assets_df[equity_assets_df['COUNTRY'].apply(lambda c: len(c) == 1)]
-    equity_assets_df['COUNTRY'] = map(lambda c: c[0], equity_assets_df['COUNTRY'])
+    equity_assets_df['COUNTRY'] = list(map(lambda c: c[0], equity_assets_df['COUNTRY']))
 
     def concat_mnemo_and_feed_source(list_of_tuples):
         return list(set([bb_sec_num_des_to_yahoo(t[0]) + MAP_BBG_FEED_SOURCE_TO_YAHOO_FEED_SOURCE[t[1]]
@@ -82,7 +82,6 @@ def _prepare_equity_assets(equity_assets_df):
     equity_assets_df = equity_assets_df[equity_assets_df['YAHOO_TICKERS'].apply(lambda l: len(l) > 0)]
     equity_assets_df.reset_index(drop=False, inplace=True)
     equity_assets_df = equity_assets_df[['COMPOSITE_ID_BB_GLOBAL', 'YAHOO_TICKERS', 'COUNTRY']]
-    equity_assets_df.rename(columns={'COMPOSITE_ID_BB_GLOBAL': 'ID_BB_GLOBAL'}, inplace=True)
 
     return equity_assets_df
 
@@ -101,17 +100,17 @@ def prepare_assets_for_yahoo_import(assets_df):
         logging.warning('Calling prepare_assets_for_yahoo_import with wrong argument types')
         return pd.DataFrame(None)
     except Exception as err:
-        logging.warning('prepare_assets_for_yahoo_import failed with message: %s' % err.message)
+        logging.warning('prepare_assets_for_yahoo_import failed with message: %s' % err)
         return pd.DataFrame(None)
 
 
 def get_intraday_price_data_of_single_ticker(yahoo_ticker):
 
     try:
-        assert(isinstance(yahoo_ticker, basestring))
+        assert(isinstance(yahoo_ticker, str))
         query = 'http://chartapi.finance.yahoo.com/instrument/2.0/' + \
                 yahoo_ticker + '/chartdata;type=quote;range=1d/csv'
-        s = urllib2.urlopen(query, timeout=REQUEST_TIME_OUT).read()
+        s = urllib.request.urlopen(query, timeout=REQUEST_TIME_OUT).read().decode('utf-8', 'ignore')
         lines = s.split('\n')
         number_of_info_lines = min([i for i in range(0, len(lines)) if lines[i][:1].isdigit()])
 
@@ -128,7 +127,7 @@ def get_intraday_price_data_of_single_ticker(yahoo_ticker):
         return pd.DataFrame(None)
     except Exception as err:
         logging.warning('get_price_data_of_single_ticker failed for argument %s with message: %s' % (
-            yahoo_ticker, err.message))
+            yahoo_ticker, err))
         return pd.DataFrame(None)
 
 
@@ -144,7 +143,7 @@ def get_extraday_price_data_of_single_ticker(yahoo_ticker, start_date, end_date)
                 '&g=d' + \
                 '&s=' + yahoo_ticker + \
                 '&ignore=.csv'
-        s = urllib2.urlopen(query, timeout=REQUEST_TIME_OUT).read()
+        s = urllib.request.urlopen(query, timeout=REQUEST_TIME_OUT).read().decode('utf-8', 'ignore')
 
         content = StringIO(s)
         small_price_dat = pd.read_csv(content, sep=',')

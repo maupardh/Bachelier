@@ -3,16 +3,21 @@ import Utilities.logging_tools
 import logging
 import datetime
 import Utilities.datetime_tools
-import yahoo_intraday_cash_equity_prices_import
+import HistoricalIntradayPrices.yahoo_intraday_cash_equity_prices_import
 import Utilities.logging_tools
 import Utilities.assets
 import Utilities.markets
+import Utilities.config
 
 
 def refresh_amer(date):
+    """daily job for intraday yahoo cash equity scraping and storing per region. Here AMER.
+    All assets are scraped from the BBG Open Symbiology. Only Americas assets are kept, with a specific logic for US.
+    US symbols historized on a daily basis are the OATS reported securities minus everything that is unlisted.
+    This keeps all US equity symbols primarily listed on NYSE, NASDAQ, NYSE AMEX + a few others."""
 
     try:
-        assert(isinstance(date, datetime.date))
+        assert (isinstance(date, datetime.date))
         Utilities.assets.refresh_assets(date)
         logging.info('Starting to import NA intraday asset prices')
 
@@ -41,20 +46,23 @@ def refresh_amer(date):
         na_assets.index = na_assets['ID_BB_GLOBAL']
         na_assets.sort_values(by='ID_BB_SEC_NUM_DES', axis=0, ascending=True, inplace=True)
 
-        yahoo_intraday_cash_equity_prices_import.retrieve_and_store_today_price_from_yahoo(
-            na_assets, 'F:/FinancialData/HistoricalIntradayPrices/', date=date)
+        HistoricalIntradayPrices.yahoo_intraday_cash_equity_prices_import.retrieve_and_store_today_price_from_yahoo(
+            na_assets, Utilities.config.directories['intradayPricesPath'], date=date)
         logging.info('NA intraday price import complete')
 
     except AssertionError:
         logging.warning('Calling refresh_amer with wrong argument types')
     except Exception as err:
-        logging.warning('refresh_amer failed with message: %s' % err.message)
+        logging.warning('refresh_amer failed with message: %s' % err)
 
 
 def refresh_asia(date):
+    """daily job for intraday yahoo cash equity scraping and storing per region. Here ASIA.
+    All assets are scraped from the BBG Open Symbiology. Only ASIA assets are kept i.e the ones
+    with an asian exchange as a feed source."""
 
     try:
-        assert(isinstance(date, datetime.date))
+        assert (isinstance(date, datetime.date))
         Utilities.assets.refresh_assets(date)
         logging.info('Starting to import Asia intraday asset prices')
 
@@ -71,8 +79,8 @@ def refresh_asia(date):
         asia_assets.sort_values(by='ID_BB_SEC_NUM_DES', axis=0, ascending=True, inplace=True)
         asia_assets.drop_duplicates(inplace=True)
 
-        yahoo_intraday_cash_equity_prices_import.retrieve_and_store_today_price_from_yahoo(
-            asia_assets, 'F:/FinancialData/HistoricalIntradayPrices/', date=date)
+        HistoricalIntradayPrices.yahoo_intraday_cash_equity_prices_import.retrieve_and_store_today_price_from_yahoo(
+            asia_assets, Utilities.config.directories['intradayPricesPath'], date=date)
         logging.info('Asia intraday price import complete')
 
     except AssertionError:
@@ -82,9 +90,17 @@ def refresh_asia(date):
 
 
 def refresh_emea(date):
+    """daily job for intraday yahoo cash equity scraping and storing per region. Here ASIA.
+    All assets are scraped from the BBG Open Symbiology. Only EMEA assets are kept i.e the ones
+    with an asian exchange as a feed source with Germany as an exception.
+    A german exception is implemented here to reduce the size of symbols universe:
+    ~10,000 german equities are not listed on XETRA but on regional physical exchanges. These equities would be
+    difficult to trade with an electronic trading framework + not very liquid anyway as
+    XETRA accounts for 90%+ of volume in Germany. Therefore we only keep german symbols which have a listing on XETRA
+    but not necessarily primary."""
 
     try:
-        assert(isinstance(date, datetime.date))
+        assert (isinstance(date, datetime.date))
         Utilities.assets.refresh_assets(date)
         logging.info('Starting to import Emea intraday asset prices')
 
@@ -96,7 +112,7 @@ def refresh_emea(date):
         emea_assets = emea_assets[emea_assets['MARKET_SECTOR_DES'] == 'Equity']
         set_of_qualified_german_composites = set(emea_assets[emea_assets['FEED_SOURCE'] == 'GY']
                                                  ['COMPOSITE_ID_BB_GLOBAL'])
-        set_of_qualified_feed_sources = set(Utilities.markets.EQUITY_FEED_SOURCES_BY_CONTINENT['EMEA'].keys())\
+        set_of_qualified_feed_sources = set(Utilities.markets.EQUITY_FEED_SOURCES_BY_CONTINENT['EMEA'].keys()) \
             .difference(Utilities.markets.EQUITY_FEED_SOURCES_BY_CONTINENT['EMEA']['GR'])
         set_of_qualified_feed_sources = set_of_qualified_feed_sources.union({'GY'})
 
@@ -109,8 +125,8 @@ def refresh_emea(date):
         emea_assets.sort_values(by='ID_BB_SEC_NUM_DES', axis=0, ascending=True, inplace=True)
         emea_assets.drop_duplicates(inplace=True)
 
-        yahoo_intraday_cash_equity_prices_import.retrieve_and_store_today_price_from_yahoo(
-            emea_assets, 'F:/FinancialData/HistoricalIntradayPrices/', date=date)
+        HistoricalIntradayPrices.yahoo_intraday_cash_equity_prices_import.retrieve_and_store_today_price_from_yahoo(
+            emea_assets, Utilities.config.directories['intradayPricesPath'], date=date)
         logging.info('Emea intraday price import complete')
 
     except AssertionError:

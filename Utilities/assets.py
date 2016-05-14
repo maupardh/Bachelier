@@ -1,29 +1,27 @@
 import pandas as pd
 import logging
 import os.path
-import general_tools
+import Utilities.general_tools
 import HistoricalAssets.asset_import_tools
+import Utilities.config
 
-__ASSETS_DIRECTORY = os.path.join('F:/', 'financialData', 'Assets')
+__ASSETS_DIRECTORY = Utilities.config.directories['assetsPath']
 
 
 def get_assets():
-
     content = pd.DataFrame(None)
     try:
         assets_path = os.path.join(__ASSETS_DIRECTORY, 'BBGSymbiologyAssets.csv.zip')
         logging.info('Reading assets at %s' % assets_path)
-        content = general_tools.read_and_log_pandas_df(assets_path)
+        content = Utilities.general_tools.read_and_log_pandas_df(assets_path)
         content = content.applymap(str)
-        content.index = content['ID_BB_GLOBAL']
-    except Exception, err:
-        logging.critical('Reading assets failed with error message: %s' % err.message)
+    except Exception as err:
+        logging.critical('Reading assets failed with error message: %s' % err)
 
     return content
 
 
 def get_equity_import_universe_from_nasdaq_trader():
-
     logging.info('Retrieving symbols from Nasdaq Trader')
     try:
         query = 'ftp://ftp.nasdaqtrader.com/symboldirectory/nasdaqlisted.txt'
@@ -34,13 +32,12 @@ def get_equity_import_universe_from_nasdaq_trader():
         logging.info('Successful')
         return content_first_piece.union(content_second_piece)
 
-    except Exception, err:
-        logging.critical('Nasdaq Trader import failed with error message: %s' % err.message)
+    except Exception as err:
+        logging.critical('Nasdaq Trader import failed with error message: %s' % err)
         return None
 
 
 def get_equity_import_universe_from_oats(file_type='SOD'):
-
     logging.info('Retrieving symbols from oats')
     try:
         query = 'http://oatsreportable.finra.org/OATSReportableSecurities-' + file_type + '.txt'
@@ -49,13 +46,12 @@ def get_equity_import_universe_from_oats(file_type='SOD'):
         logging.info('Successful')
         return content
 
-    except Exception, err:
-        logging.critical('Oats symbols import failed with error message: %s' % err.message)
+    except Exception as err:
+        logging.critical('Oats symbols import failed with error message: %s' % err)
         return pd.DataFrame(None)
 
 
 def refresh_assets(date):
-
     bbg_open_symbiology_configs = [
         {'market_sector': 'Equity', 'security_type': 'ADR', 'date': date},
         {'market_sector': 'Equity', 'security_type': 'BDR', 'date': date},
@@ -74,3 +70,15 @@ def refresh_assets(date):
     path_to_zip = os.path.join(__ASSETS_DIRECTORY, 'BBGSymbiologyAssets.csv.zip')
 
     HistoricalAssets.asset_import_tools.historize_assets(bbg_open_symbiology_configs, [path_to_zip])
+
+
+def get_leveraged_etfs():
+    content = pd.DataFrame(None)
+    try:
+        assets_path = os.path.join(__ASSETS_DIRECTORY, 'LeveragedETFs.csv')
+        logging.info('Reading leveraged ETF assets at %s' % assets_path)
+        content = Utilities.general_tools.read_and_log_pandas_df(assets_path)
+    except Exception as err:
+        logging.critical('Reading leveraged ETF assets failed with error message: %s' % err)
+
+    return content

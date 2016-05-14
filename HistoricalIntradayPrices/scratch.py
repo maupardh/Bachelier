@@ -4,11 +4,14 @@ import logging
 from tzlocal import get_localzone
 import sys
 sys.path.append('F:/prod/pythonCode')
-import zone_intraday_cash_equity_prices_import
+import HistoricalIntradayPrices.zone_intraday_cash_equity_prices_import
 import Utilities.datetime_tools
 import Utilities.logging_tools
 import Utilities.assets
 import Utilities.markets
+import Utilities.config
+
+# CHANGE TO APPROVE IN PR
 
 
 def refresh():
@@ -22,11 +25,11 @@ def refresh():
 
     # Initialization
     log_file_path = \
-        os.path.join('F:/FinancialData/Logs/',
+        os.path.join(Utilities.config['logsPath'],
                      today.isoformat(), "IntradayYahooEquityImport.txt")
     Utilities.logging_tools.initialize_logging(log_file_path)
 
-    zone_intraday_cash_equity_prices_import.refresh_amer(today)
+    HistoricalIntradayPrices.zone_intraday_cash_equity_prices_import.refresh_amer(today)
 
     Utilities.logging_tools.shutdown()
     return 0

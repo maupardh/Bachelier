@@ -1,24 +1,35 @@
+#!/usr/bin/env python
+
 import os.path
 import datetime
 import logging
 import pytz
 from tzlocal import get_localzone
 import sys
+
 sys.path.append('F:/prod/pythonCode')
-import yahoo_intraday_fx_spot_prices_import
+import HistoricalIntradayPrices.yahoo_intraday_fx_spot_prices_import
 import Utilities.datetime_tools
 import Utilities.logging_tools
 import Utilities.assets
 import Utilities.markets
+import Utilities.config
 
 
 def refresh():
+    """Daily scheduled task for FX intraday scraping
+    This is currently scraping intraday yahoo prices for ~30 currency pairs (against USD and cross)
+    Yahoo provides minute by minute rates (but no volumes as FX feeds are not consolidated).
+    The yahoo webpage restarts daily at 00:00 UTC.
+    This script scrapes the webpages ~1-2 minutes before 00:00 UTC so there is a 1-2 minute hole around 23:59
+    with no prices.
+    refresh decorates refresh_fx"""
 
     today = datetime.date.today()
     local_tz = get_localzone()
 
     # Initialization
-    log_file_path = os.path.join('F:/FinancialData/Logs/', today.isoformat(), "IntradayYahooFXImport.txt")
+    log_file_path = os.path.join(Utilities.config['logsPath'], today.isoformat(), "IntradayYahooFXImport.txt")
     Utilities.logging_tools.initialize_logging(log_file_path)
 
     # FX Import
@@ -35,9 +46,8 @@ def refresh():
 
 
 def refresh_fx(date):
-
     try:
-        assert(isinstance(date, datetime.date))
+        assert (isinstance(date, datetime.date))
         logging.info('Starting to import FX intraday asset prices')
 
         fx_assets = Utilities.assets.get_assets()
@@ -52,13 +62,14 @@ def refresh_fx(date):
         fx_assets.drop_duplicates(inplace=True)
         fx_assets.sort_values(by='ID_BB_SEC_NUM_DES', axis=0, ascending=True, inplace=True)
 
-        yahoo_intraday_fx_spot_prices_import.retrieve_and_store_today_price_from_yahoo(
-            fx_assets, 'F:/FinancialData/HistoricalIntradayPrices/', date=date)
+        HistoricalIntradayPrices.yahoo_intraday_fx_spot_prices_import.retrieve_and_store_today_price_from_yahoo(
+            fx_assets, Utilities.config['intradayPricesPath'], date=date)
         logging.info('FX intraday price import complete')
 
     except AssertionError:
         logging.warning('Calling refresh_fx with wrong argument types')
     except Exception as err:
         logging.warning('FX intraday price import failed with error: %s', err.message)
+
 
 refresh()
