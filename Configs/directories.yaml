@@ -2,6 +2,6 @@
   "bachelierOutputRootDirectory": "F:\\financialData\\",
   "assetsPath": "Assets",
   "extradayPricesPath": "HistoricalExtradayPrices",
-  "intradayPricesPath": "HistoricalIntradayPrices",
+  "intradayPricesPath": "Test",
   "logsPath": "Logs"
 }

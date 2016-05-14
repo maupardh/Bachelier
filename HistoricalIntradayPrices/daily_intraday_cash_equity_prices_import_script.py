@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 
 import os.path
 import datetime
@@ -6,7 +5,7 @@ import logging
 import sys
 import pytz
 
-sys.path.append('F:/dev/pythonCode')
+sys.path.append('F:/prod/Bachelier')
 import HistoricalIntradayPrices.zone_intraday_cash_equity_prices_import
 import Utilities.datetime_tools
 import Utilities.logging_tools
@@ -50,9 +49,9 @@ def refresh():
 
     time_to_sleep_until_asia = max(asian_market_close + datetime.timedelta(minutes=30) -
                                    local_tz.localize(datetime.datetime.now()), datetime.timedelta(minutes=5))
-    #Utilities.datetime_tools.sleep_with_infinite_loop(time_to_sleep_until_asia.total_seconds())
+    Utilities.datetime_tools.sleep_with_infinite_loop(time_to_sleep_until_asia.total_seconds())
     logging.info('System to sleep until asian markets, for : %s minutes', time_to_sleep_until_asia.total_seconds() / 60)
-    #HistoricalIntradayPrices.zone_intraday_cash_equity_prices_import.refresh_asia(today)
+    HistoricalIntradayPrices.zone_intraday_cash_equity_prices_import.refresh_asia(today)
 
     # European Equities import
     emea_market_close = local_tz.normalize(
@@ -63,8 +62,8 @@ def refresh():
     time_to_sleep_until_emea = max(emea_market_close + datetime.timedelta(minutes=30) -
                                    local_tz.localize(datetime.datetime.now()), datetime.timedelta(minutes=5))
 
-    #Utilities.datetime_tools.sleep_with_infinite_loop(time_to_sleep_until_emea.total_seconds())
-    #HistoricalIntradayPrices.zone_intraday_cash_equity_prices_import.refresh_emea(today)
+    Utilities.datetime_tools.sleep_with_infinite_loop(time_to_sleep_until_emea.total_seconds())
+    HistoricalIntradayPrices.zone_intraday_cash_equity_prices_import.refresh_emea(today)
 
     # Americas Equities import
     us_market_close = local_tz.normalize(
@@ -75,7 +74,7 @@ def refresh():
     time_to_sleep_until_us = max(us_market_close + datetime.timedelta(minutes=30) -
                                  local_tz.localize(datetime.datetime.now()), datetime.timedelta(minutes=5))
     logging.info('System to sleep until us markets, for : %s minutes', time_to_sleep_until_us.total_seconds() / 60)
-    #Utilities.datetime_tools.sleep_with_infinite_loop(time_to_sleep_until_us.total_seconds())
+    Utilities.datetime_tools.sleep_with_infinite_loop(time_to_sleep_until_us.total_seconds())
     HistoricalIntradayPrices.zone_intraday_cash_equity_prices_import.refresh_amer(today)
 
     Utilities.logging_tools.shutdown()

@@ -21,8 +21,8 @@ def get_price_from_yahoo(yahoo_fx_tickers, date):
         price_dat = price_dat.applymap(float)
         price_dat.rename(columns={'Timestamp': 'Time'}, inplace=True)
 
-        price_dat['Time'] = map(lambda t: pytz.utc.localize(datetime.datetime.utcfromtimestamp(t)), price_dat['Time'])
-        price_dat['Time'] = map(Utilities.datetime_tools.truncate_to_next_minute, price_dat['Time'])
+        price_dat['Time'] = list(map(lambda t: pytz.utc.localize(datetime.datetime.utcfromtimestamp(t)), price_dat['Time']))
+        price_dat['Time'] = list(map(Utilities.datetime_tools.truncate_to_next_minute, price_dat['Time']))
 
         price_dat = price_dat[['Close', 'High', 'Low', 'Open', 'Volume']+['Time']]
         price_dat = price_dat.groupby('Time').agg({
@@ -41,7 +41,10 @@ def get_price_from_yahoo(yahoo_fx_tickers, date):
                 return t.values
 
         price_dat = price_dat.apply(lambda t: propagate_on_zero_open(t, 'Close'), axis=1)
-        price_dat = price_dat.fillna(0)
+        price_dat = price_dat.fillna(0).reset_index()
+
+        assert (isinstance(price_dat, pd.DataFrame) and tuple(sorted(price_dat.columns)) == tuple(
+            sorted(['Close', 'High', 'Low', 'Open', 'Time', 'Volume'])))
 
         logging.info('Yahoo price import and pandas enrich successful for: %s' % yahoo_fx_tickers)
         if price_dat['Close'].sum() == 0:
@@ -52,7 +55,7 @@ def get_price_from_yahoo(yahoo_fx_tickers, date):
         logging.warning('Calling get_price_from_yahoo with wrong argument types')
     except Exception as err:
         logging.warning('Yahoo price import and pandas enrich failed for: %s with message %s' %
-                        (yahoo_fx_tickers, err.message))
+                        (yahoo_fx_tickers, err))
         return pd.DataFrame(None)
 
 
@@ -72,9 +75,9 @@ def retrieve_and_store_today_price_from_yahoo(assets_df, root_directory_name, da
 
         def historize_asset(asset):
             logging.info('   Retrieving Prices for: %s , BBG_COMPOSITE: %s'
-                         % (asset['YAHOO_TICKERS'], asset['ID_BB_GLOBAL']))
+                         % (asset['YAHOO_TICKERS'], asset['COMPOSITE_ID_BB_GLOBAL']))
             pandas_content = get_price_from_yahoo(asset['YAHOO_TICKERS'], date=date)
-            csv_output_path = os.path.join(csv_directory, asset['ID_BB_GLOBAL'] + '.csv.zip')
+            csv_output_path = os.path.join(csv_directory, asset['COMPOSITE_ID_BB_GLOBAL'] + '.csv.zip')
             Utilities.general_tools.store_and_log_pandas_df(csv_output_path, pandas_content)
 
         fx_assets_df.apply(historize_asset, axis=1)
@@ -82,4 +85,4 @@ def retrieve_and_store_today_price_from_yahoo(assets_df, root_directory_name, da
     except AssertionError:
         logging.warning('Calling retrieve_and_store_today_price_from_yahoo with wrong argument types')
     except Exception as err:
-        logging.warning('retrieve_and_store_today_price_from_yahoo failed with message: %s' % err.message)
+        logging.warning('retrieve_and_store_today_price_from_yahoo failed with message: %s' % err)
