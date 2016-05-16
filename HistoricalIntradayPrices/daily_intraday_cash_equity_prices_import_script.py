@@ -27,7 +27,7 @@ def refresh():
     See the EQUITY_FEED_SOURCES_BY_CONTINENT map in Utilities.markets for the full config
     each zone starts with scraping asset symbols (BBG symbiology) to get the most recent IPOs / name changes"""
 
-    today = datetime.date(2016, 5, 13) #datetime.date.today()
+    today = datetime.date.today()
     local_tz = pytz.timezone('America/New_York')
 
     # Initialization
