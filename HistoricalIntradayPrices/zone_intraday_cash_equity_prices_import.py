@@ -18,7 +18,8 @@ def refresh_amer(date):
 
     try:
         assert (isinstance(date, datetime.date))
-        Utilities.assets.refresh_assets(date)
+        # NOT REFRESHING ASSETS FOR NOW BECAUSE OF BBG
+        # Utilities.assets.refresh_assets(date)
         logging.info('Starting to import NA intraday asset prices')
 
         assets = Utilities.assets.get_assets()
@@ -63,7 +64,8 @@ def refresh_asia(date):
 
     try:
         assert (isinstance(date, datetime.date))
-        Utilities.assets.refresh_assets(date)
+        # NOT REFRESHING ASSETS FOR NOW BECAUSE OF BBG
+        # Utilities.assets.refresh_assets(date)
         logging.info('Starting to import Asia intraday asset prices')
 
         assets = Utilities.assets.get_assets()
@@ -101,7 +103,8 @@ def refresh_emea(date):
 
     try:
         assert (isinstance(date, datetime.date))
-        Utilities.assets.refresh_assets(date)
+        # NOT REFRESHING ASSETS FOR NOW BECAUSE OF BBG
+        # Utilities.assets.refresh_assets(date)
         logging.info('Starting to import Emea intraday asset prices')
 
         assets = Utilities.assets.get_assets()
