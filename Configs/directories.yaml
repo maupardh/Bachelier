@@ -1,5 +1,5 @@
 {
-  "bachelierOutputRootDirectory": "F:\\financialData\\",
+  "bachelierOutputRootDirectory": "Users/hmaupard/Documents/Personal/Data/Bachelier", # "F:\\financialData\\",
   "assetsPath": "Assets",
   "extradayPricesPath": "HistoricalExtradayPrices",
   "intradayPricesPath": "HistoricalIntradayPrices",
